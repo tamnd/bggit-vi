@@ -1,10 +1,8 @@
-# Submodules {#submodules}
+# Submodule (Mô-đun Con) {#submodules}
 
 [i[Submodules]<]
 
-You can't really have a Git repo _inside_ a Git repo. I mean, yes, you
-can make one, but when you try to add it to the outer repo, Git will
-have a lot to say about it.
+Bạn thực sự không thể có một Git repo _bên trong_ một Git repo khác. Ý tôi là, bạn có thể tạo ra nó, nhưng khi thử thêm nó vào repo ngoài, Git sẽ có rất nhiều điều để nói.
 
 ``` {.default}
 warning: adding embedded git repository: inner
@@ -25,76 +23,42 @@ hint: Disable this message with "git config advice.addEmbeddedRepo
 hint: false"
 ```
 
-So it's probably not what you want, but Git offers a hint: maybe you
-wanted something to do with submodules, instead!
+Vậy có lẽ không phải thứ bạn muốn, nhưng Git gợi ý: có thể bạn muốn làm gì đó với submodule!
 
-Submodules give you a way to make a completely separate repo appear
-inside the working tree of your current repo. Not only that, it allows
-the current working tree to have a specific commit of the submodule
-represented in that submodule's tree.
+Submodule cho bạn cách tạo một repo hoàn toàn riêng biệt xuất hiện bên trong working tree của repo hiện tại. Không chỉ vậy, nó còn cho phép working tree hiện tại có một commit cụ thể của submodule được đại diện trong cây submodule đó.
 
-The canonical use case for this is when your project depends on a
-library that you also have the source for. You can include the library's
-repo as a submodule of your repo, and effectively pin it to a particular
-version (specifically to a particular commit).
+Trường hợp điển hình là khi dự án của bạn phụ thuộc vào một thư viện mà bạn cũng có mã nguồn. Bạn có thể đưa repo của thư viện vào làm submodule trong repo của mình, và hiệu quả là ghim nó vào một phiên bản cụ thể (cụ thể là một commit cụ thể).
 
-For example, maybe your code works with FooLib version 3.4.90. So you
-include FooLib as a submodule and make sure it's pinned to that version.
-Then even though another team might be updating FooLib, you'll always
-have version 3.4.90 available to build against.
+Ví dụ, có thể code của bạn hoạt động với FooLib phiên bản 3.4.90. Vì vậy bạn đưa FooLib vào làm submodule và đảm bảo nó được ghim vào phiên bản đó. Rồi dù một team khác có thể đang cập nhật FooLib, bạn sẽ luôn có phiên bản 3.4.90 để build.
 
-Then later when you're ready, you can update the submodule to the latest
-version, say 4.0.1, and pin that one in place.
+Sau này khi sẵn sàng, bạn có thể cập nhật submodule lên phiên bản mới nhất, giả sử 4.0.1, và ghim cái đó vào.
 
-It's important to note that a submodule is just another regular Git
-repo. Nothing special about it. The only thing that's notable is that
-we've decided to effectively clone it inside another repo, and logically
-tie it to that repo.
+Điều quan trọng cần lưu ý là submodule chỉ là một Git repo thông thường khác. Không có gì đặc biệt cả. Điều duy nhất đáng chú ý là chúng ta đã quyết định clone nó vào trong một repo khác, và liên kết logic nó với repo đó.
 
-## Using a Repo with Submodules
+## Dùng Repo Có Submodule
 
-Let's start by talking about what happens when you clone a repo that
-already uses submodules. In this case, someone else has done the work of
-putting the repo together with its submodules, but you have to do a
-little bit of extra effort after cloning it so you get all the
-submodules, as well.
+Hãy bắt đầu bằng cách nói về những gì xảy ra khi bạn clone một repo đã dùng submodule. Trong trường hợp này, người khác đã thực hiện công việc tập hợp repo cùng submodule, nhưng bạn phải làm thêm một chút sau khi clone để lấy tất cả submodule.
 
-Later we'll talk about how to add submodules to a project.
+Sau này chúng ta sẽ nói về cách thêm submodule vào dự án.
 
-Luckily, for demonstration purposes, I have a repo you can clone that
-already has a submodule defined within it. (Fork the repo before you
-clone it if you want to be able to push back.)
+May mắn thay, để minh họa, tôi có một repo bạn có thể clone đã có submodule được định nghĩa trong đó. (Fork repo trước khi clone nếu bạn muốn có khả năng push lại.)
 
-Let's say you already know that the repo you're about to clone has
-submodules. (Because someone told you it did.) You can then clone with a
-flag saying you want to get all the submodule repos, too, please. You do
-this with the `--recurse-submodules` switch:
+Giả sử bạn đã biết repo sắp clone có submodule. (Vì ai đó nói với bạn như vậy.) Bạn có thể clone với cờ nói rằng bạn muốn lấy tất cả repo submodule nữa. Bạn làm điều này với switch `--recurse-submodules`:
 
 ``` {.default}
 $ git clone --recurse-submodules \
         git@github.com:beejjorgensen/git-example-submodule-repo.git
 ```
 
-(Above command split into two lines to fit in the margins.)
+(Lệnh trên được chia thành hai dòng để vừa lề trang.)
 
-And that will clone the repo in question, and it will also clone all
-repos listed as submodules of that repo. Go ahead and run it—it's a real
-repo you can clone.
+Và điều đó sẽ clone repo được nêu, và nó cũng sẽ clone tất cả repo được liệt kê là submodule của repo đó. Hãy thử chạy---đó là repo thực bạn có thể clone.
 
-After you run it and go into the repo directory, you'll see a
-`git-example-repo` directory in there. That's a completely separate repo
-inside this one as a submodule. You can `cd` into it and look at the
-files!
+Sau khi chạy và vào thư mục repo, bạn sẽ thấy thư mục `git-example-repo` trong đó. Đó là một repo hoàn toàn riêng biệt bên trong repo này dưới dạng submodule. Bạn có thể `cd` vào đó và xem các file!
 
-> **Any Git commands you run in the submodule directory tree apply only
-> to the submodule!** Be extra careful making commits in the submodule
-> directory tree—`HEAD` commonly gets detached with submodules. More on
-> that later.
+> **Bất kỳ lệnh Git nào bạn chạy trong cây thư mục submodule chỉ áp dụng cho submodule!** Hãy đặc biệt cẩn thận khi tạo commit trong cây thư mục submodule---`HEAD` thường bị detach (tách rời) với submodule. Thêm về điều đó sau.
 
-But let's say you forget to specify `--recurse-submodules`, or you just
-plain didn't realize there were submodules here. Not to worry! You can
-get them after the fact. The above command is the same as these two (or
-three) commands:
+Nhưng giả sử bạn quên chỉ định `--recurse-submodules`, hoặc đơn giản là không nhận ra có submodule ở đây. Đừng lo! Bạn có thể lấy chúng sau. Lệnh trên tương đương với hai (hoặc ba) lệnh sau:
 
 ``` {.default}
 $ git clone \
@@ -103,44 +67,27 @@ $ cd git-example-submodule-repo
 $ git submodule update --recursive --init
 ```
 
-That will also get the submodules cloned. (`--recursive` is in case the
-submodules have submodules (!!) and the `--init` does some necessary
-bookkeeping work in your local repo. How's that for a handwavy
-statement?)
+Điều đó cũng sẽ clone submodule. (`--recursive` là trong trường hợp submodule có submodule (!!) và `--init` thực hiện một số công việc bookkeeping (quản lý) cần thiết trong repo cục bộ của bạn. Nghe có vẻ qua loa nhỉ?)
 
-And for now, that might be enough for you to get to work! All you really
-needed to build the existing project was the repo and its submodules,
-and you might not be in charge of the submodules and just need them to
-exist for the build. So now you can get to work.
+Và hiện tại, có thể chỉ vậy là đủ để bạn bắt đầu làm việc! Thứ bạn thực sự cần để build dự án hiện tại là repo và submodule của nó, và bạn có thể không phụ trách submodule mà chỉ cần chúng tồn tại cho build. Vậy bây giờ bạn có thể bắt tay vào làm việc.
 
-But in case you need to do more, read on!
+Nhưng trong trường hợp bạn cần làm nhiều hơn, hãy đọc tiếp!
 
-## Creating a Submodule
+## Tạo một Submodule
 
 [i[Submodules-->Creating]<]
 
-Let's say you have a repo already, but you've decided you want to
-include another repo as a submodule.
+Giả sử bạn đã có một repo, nhưng bạn đã quyết định muốn đưa một repo khác vào làm submodule.
 
-Again, a use case for this might be if your main repo project depends on
-another one for the build, e.g. like a library. And you don't want to
-use the binary form of the library (or maybe it doesn't exist), so you
-need to build it.
+Một trường hợp dùng có thể là khi dự án repo chính của bạn phụ thuộc vào dự án khác để build, ví dụ như một thư viện. Và bạn không muốn dùng dạng nhị phân của thư viện (hoặc có thể nó không tồn tại), vì vậy bạn cần build nó.
 
-If you didn't use submodules, anyone who wanted to build your repo would
-need to also clone the library repo and juggle all that. Wouldn't it be
-nicer if they could just add that `--recurse-submodules` flag to their
-`clone` command and have it all set up and ready to build?
+Nếu không dùng submodule, bất kỳ ai muốn build repo của bạn cũng cần clone repo thư viện và xử lý tất cả những thứ đó. Chẳng phải sẽ tốt hơn nếu họ chỉ cần thêm cờ `--recurse-submodules` vào lệnh `clone` và mọi thứ đã được thiết lập sẵn để build?
 
-So let's go through the steps of adding a submodule to an existing repo
-and see how that all works.
+Vậy hãy đi qua các bước thêm submodule vào repo hiện có và xem mọi thứ hoạt động như thế nào.
 
-Feel free to use my sample repo as your submodule, use one of your own,
-or anyone else's. No one knows when you make a submodule out of their
-repo.
+Hãy thoải mái dùng repo mẫu của tôi làm submodule, hoặc dùng một trong các repo của bạn, hoặc của bất kỳ ai. Không ai biết khi bạn làm submodule từ repo của họ.
 
-First, let's create a new repo for testing and put a commit in there for
-fun:
+Trước tiên, hãy tạo một repo mới để thử nghiệm và tạo một commit trong đó cho vui:
 
 ``` {.default}
 $ git init test_repo
@@ -151,7 +98,7 @@ $ git add foo.txt
 $ git commit -m added
 ```
 
-And let's add a submodule!
+Và hãy thêm một submodule!
 
 ``` {.default}
 $ git submodule add \
@@ -165,7 +112,7 @@ $ git submodule add \
   Receiving objects: 100% (4/4), done.
 ```
 
-There you go! Well, almost, anyway. Let's check our status:
+Đó rồi! Ừ, gần như vậy. Hãy kiểm tra trạng thái:
 
 ``` {.default}
 $ git status
@@ -176,17 +123,11 @@ $ git status
 	  new file:   git-example-repo
 ```
 
-What are those things on the stage? Well, `git-example-repo` is the
-submodule. It's a little strange because Git is calling it a "file" when
-it's a directory, but that's just part of the special treatment
-submodules get.
+Những thứ kia trên stage là gì? `git-example-repo` là submodule. Trông hơi lạ vì Git gọi nó là "file" trong khi nó là thư mục, nhưng đó chỉ là một phần trong cách xử lý đặc biệt mà submodule nhận được.
 
-And there's another file in there called `.gitmodules` that holds
-information about all the submodules you've added.
+Và còn có một file khác gọi là `.gitmodules` chứa thông tin về tất cả submodule bạn đã thêm.
 
-Both of these files (treating `git-example-repo` like a file) should be
-committed to your repo so that other people who clone it get the
-submodule information.
+Cả hai file này (coi `git-example-repo` như một file) nên được commit vào repo của bạn để những người clone nó có được thông tin submodule.
 
 ``` {.default}
 $ git commit -m "added submodule"
@@ -196,100 +137,62 @@ $ git commit -m "added submodule"
    create mode 160000 git-example-repo
 ```
 
-Now you're set! Anyone who clones the repo gets that submodule
-information.
+Giờ bạn đã xong! Bất kỳ ai clone repo đều nhận được thông tin submodule đó.
 
-You can even do it with your test repo. Change directory to the parent
-of the test repo and clone it:
+Bạn thậm chí có thể làm với test repo của mình. Chuyển đến thư mục cha của test repo và clone nó:
 
 ``` {.default}
 $ git clone --recurse-submodules test_repo test_repo2
 ```
 
-After that you can `cd` into `test_repo2` and see the submodule there.
+Sau đó bạn có thể `cd` vào `test_repo2` và thấy submodule ở đó.
 
-> **Can I Make a Local Repo a Submodule?** No! Git prohibits that
-> because there's some security risk there that, to be honest, I haven't
-> really read about. There's supposed to be a way to override that with
-> a config setting, which I thought would be quite useful for messing
-> around to see how submodules worked, but apparently that config
-> setting doesn't work as of late 2024. So you'll have to use
-> network-remote repos for submodules.
+> **Tôi Có Thể Tạo Repo Cục Bộ Làm Submodule Không?** Không! Git cấm điều đó vì có một số rủi ro bảo mật mà thành thật mà nói tôi chưa thực sự đọc về. Có cách để ghi đè điều đó với một cài đặt config, điều mà tôi nghĩ sẽ khá hữu ích để mày mò và xem submodule hoạt động như thế nào, nhưng cài đặt config đó dường như không hoạt động kể từ cuối năm 2024. Vì vậy bạn phải dùng repo remote qua mạng cho submodule.
 
 [i[Submodules-->Creating]>]
 
-## Setting the Commit for the Submodule {#set-submodule-commit}
+## Đặt Commit Cho Submodule {#set-submodule-commit}
 
 [i[Submodules-->Setting the commit]<]
 
-What does this section even mean?
+Phần này thực sự có nghĩa là gì?
 
-Here's the deal: the containing repo refers to a specific commit within
-the submodule. That is, the submodule is always checked out to a
-particular commit as defined in the containing repo. (The submodule
-`HEAD` might be attached to a branch, but it also very well might not
-be.)
+Đây là vấn đề: repo chứa tham chiếu đến một commit cụ thể bên trong submodule. Tức là, submodule luôn được checkout tại một commit cụ thể như được định nghĩa trong repo chứa. (`HEAD` của submodule có thể được gắn vào một nhánh, nhưng cũng có thể không.)
 
-The upshot of this is that when we make a repo with a submodule, we get
-to dictate which exact commit of that submodule our repo is using. And
-then, importantly, when someone clones our repo, they'll be looking at
-the submodule at the exact same commit as we are.
+Điều quan trọng ở đây là khi chúng ta tạo một repo với submodule, chúng ta được quyết định commit chính xác nào của submodule repo của chúng ta đang dùng. Và sau đó, quan trọng là khi ai đó clone repo của chúng ta, họ sẽ nhìn thấy submodule tại đúng commit mà chúng ta đang dùng.
 
-This lets us do things like choose a very particular version of a
-library as a submodule, and then everyone who clones our repo will get
-that same version _regardless of whether or not the submodule repo was
-changed elsewhere_. Someone else could move `main` wherever they want,
-but we'll still use the one commit we're pinned to, even if we fetch the
-new `main` commit into our submodule.
+Điều này cho phép chúng ta chọn một phiên bản rất cụ thể của một thư viện làm submodule, và rồi tất cả những người clone repo của chúng ta sẽ nhận được phiên bản giống nhau _bất kể repo submodule có được thay đổi ở nơi khác hay không_. Người khác có thể di chuyển `main` đến bất cứ đâu họ muốn, nhưng chúng ta vẫn dùng commit mà chúng ta đang ghim vào, ngay cả khi chúng ta fetch commit `main` mới vào submodule.
 
-We effectively pin our submodule to a particular commit. And we probably
-want to do that so that someone else developing the submodule on the
-side doesn't introduce some change that breaks our containing repo's
-build.
+Chúng ta hiệu quả là ghim submodule vào một commit cụ thể. Và chúng ta có thể muốn làm điều đó để người khác đang phát triển submodule không đưa ra thay đổi nào phá vỡ build của repo chứa.
 
-How do we do that? It's pretty easy:
+Làm thế nào? Khá đơn giản:
 
-1. Go to the submodule directory.
-2. Switch to the commit that you want to use. You can refer to this
-   commit by branch name, commit hash, tag, or any other thing that `git
-   switch` takes. Use `--detach` if you're detaching the `HEAD`.
-3. Go back to the containing module directory.
-4. Add the submodule directory.
+1. Vào thư mục submodule.
+2. Chuyển đến commit bạn muốn dùng. Bạn có thể tham chiếu commit này bằng tên nhánh, commit hash, tag, hoặc bất kỳ thứ gì mà `git switch` chấp nhận. Dùng `--detach` nếu bạn đang tách `HEAD`.
+3. Trở về thư mục repo chứa.
+4. Thêm thư mục submodule.
 5. Commit.
 
-If you want to mess around with this using my test repos on GitHub, be
-sure to fork them first so you have write access.
+Nếu bạn muốn mày mò với repo test của tôi trên GitHub, hãy chắc chắn fork chúng trước để bạn có quyền ghi.
 
-Let's do the same thing we did in the last section and create the
-`test_repo` repo.
+Hãy thực hiện điều tương tự chúng ta đã làm trong phần trước và tạo repo `test_repo`.
 
-And then do the `clone` into `test_repo2` just so we have two to mess
-with. (Don't forget the `--recurse-submodules` flag!)
+Và sau đó clone vào `test_repo2` để chúng ta có hai để mày mò. (Đừng quên cờ `--recurse-submodules`!)
 
-> **We're cloning a non-bare repo, which is weird.** It's OK to clone
-> it—the Git Police aren't going to show up. You just won't be able to
-> push to it. And that's perfectly good enough for this demo. But it's
-> something that you wouldn't normally do.
+> **Chúng ta đang clone một repo không phải bare, điều này khá lạ.** Không sao khi clone nó---cảnh sát Git sẽ không xuất hiện. Bạn chỉ không thể push lên đó. Và điều đó hoàn toàn đủ tốt cho demo này. Nhưng đây là điều bạn thường không làm.
 
-> **Also notice the detached `HEAD` in the cloned submodule repo!** If
-> you look in `test_repo2/git-example-repo` and do a `git log`, you'll
-> see this on the first line:
+> **Cũng hãy chú ý `HEAD` bị detach trong repo submodule được clone!** Nếu bạn nhìn vào `test_repo2/git-example-repo` và chạy `git log`, bạn sẽ thấy điều này trên dòng đầu tiên:
 >
 > ``` {.default}
 > (HEAD, origin/main, origin/HEAD, main)
 > ```
 > <!-- ` -->
 >
-> See how `HEAD` is detached from `main`?
+> Thấy `HEAD` bị tách khỏi `main` không?
 >
-> Now, I'd be lying if I said I knew the exact rules for when the `HEAD`
-> in a submodule gets detached, but it's not uncommon. In fact, you
-> should just generally assume it's detached and attach it to a branch
-> if you have to. More on this later.
+> Thành thật mà nói tôi không biết chính xác các quy tắc khi `HEAD` trong submodule bị detach, nhưng không phải hiếm gặp. Thực ra, bạn nên mặc định giả sử nó bị detach và gắn nó vào một nhánh nếu cần. Thêm về điều này sau.
 
-Now in `test_repo`, let's go into the submodule directory and check out
-an earlier version of the submodule repo. In this case, we'll just check
-out the previous commit from `main`.
+Bây giờ trong `test_repo`, hãy vào thư mục submodule và checkout phiên bản cũ hơn của repo submodule. Trong trường hợp này, chúng ta chỉ checkout commit trước đó từ `main`.
 
 ``` {.default}
 $ cd test_repo/git-example-repo
@@ -314,15 +217,14 @@ $ git log
       Added
 ```
 
-Let's move this to the earlier commit.
+Hãy chuyển đến commit cũ hơn.
 
 ``` {.default}
 $ git switch --detach d8481e
   HEAD is now at d8481e1 improve functionality
 ```
 
-So far so good. Now let's `cd` back to the containing repo and have a
-look at where we stand.
+Đến đây ổn rồi. Bây giờ hãy `cd` trở lại repo chứa và xem chúng ta đang đứng ở đâu.
 
 ``` {.default}
 $ cd ..
@@ -337,11 +239,9 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Look at that! The submodule directory is listed as modified. It says
-"new commits", but that's just telling us that "things have changed
-in the submodule from the commit that I was pinned onto before".
+Nhìn kìa! Thư mục submodule được liệt kê là đã modified. Nó nói "new commits", nhưng đó chỉ là cách nói rằng "mọi thứ đã thay đổi trong submodule so với commit mà tôi được ghim trước đó".
 
-So let's add that and commit it.
+Vậy hãy thêm và commit nó.
 
 ``` {.default}
 $ git add git-example-repo
@@ -350,8 +250,7 @@ $ git commit -m "update submodule commit"
    1 file changed, 1 insertion(+), 1 deletion(-)
 ```
 
-And now let's pull those changes in our clone, `test_repo2`—note the
-`--recurse-submodule` option on the pull!
+Và bây giờ hãy pull những thay đổi đó vào clone `test_repo2` của chúng ta---chú ý tùy chọn `--recurse-submodule` khi pull!
 
 ``` {.default}
 $ cd ../test_repo2
@@ -362,8 +261,7 @@ $ git pull --recurse-submodules
                          'd8481e125e6ef49e2fa8041b16b9dd3b8136b550'
 ```
 
-And now on `test_repo2` if we jump into the `git-example-repo`
-submodule, we can check the log:
+Và bây giờ trong `test_repo2` nếu chúng ta nhảy vào submodule `git-example-repo`, chúng ta có thể kiểm tra log:
 
 ``` {.default}
 $ git log
@@ -380,138 +278,107 @@ $ git log
       Added
 ```
 
-And we see `HEAD` is on commit `d8481e`, just like we set it to in
-`test_repo`. (And we also do not see `main`. It's the child commit from
-where `HEAD` is now, so it's not appearing in the log. We could still
-switch to it if we wanted, of course.)
+Và chúng ta thấy `HEAD` đang ở commit `d8481e`, đúng như chúng ta đã đặt trong `test_repo`. (Và chúng ta cũng không thấy `main`. Đó là commit con từ nơi `HEAD` đang ở, vì vậy nó không xuất hiện trong log. Chúng ta vẫn có thể switch đến nó nếu muốn, tất nhiên.)
 
-What have we done? We've changed the commit the submodule is pinned at
-in one repo, and then we've pulled that change into another repo!
+Chúng ta đã làm gì? Chúng ta đã thay đổi commit mà submodule được ghim tại đó trong một repo, và sau đó pull thay đổi đó vào một repo khác!
 
 [i[Submodules-->Setting the commit]>]
 
-## Getting Submodule Latest
+## Lấy Phiên Bản Mới Nhất Của Submodule
 
 [i[Submodules-->Getting latest]<]
 
-Let's say someone else has updated the commit that the submodule is
-pinned at in your repo. And you want to get up to speed.
+Giả sử người khác đã cập nhật commit mà submodule được ghim trong repo của bạn. Và bạn muốn bắt kịp.
 
-Two steps to make that happen:
+Hai bước để thực hiện điều đó:
 
-1. In the containing repo, `git pull`. This will get you the latest
-   version of the containing repo that has the new pinned commit numbers
-   for the submodule.
+1. Trong repo chứa, `git pull`. Điều này sẽ lấy phiên bản mới nhất của repo chứa có các số commit được ghim mới cho submodule.
 
-2. In the containing repo (again), run:
+2. Trong repo chứa (lại), chạy:
 
    ``` {.default}
    git submodule update --init --recursive
    ```
 
-   This will fetch the submodule data and set you up to point at the
-   correct commit. 
+   Điều này sẽ fetch dữ liệu submodule và thiết lập cho bạn trỏ đến commit đúng. 
 
 [i[Submodules-->Getting latest]>]
 
-## Updating the Actual Submodule Itself
+## Cập Nhật Bản Thân Repo Submodule
 
 [i[Submodules-->Updating]<]
 
-What do I mean by this? Let's say the submodule holds some library, and
-you need to make a bug fix in the library. And you need people who use
-this repo as a submodule (or otherwise) to get the changes.
+Ý tôi là gì? Giả sử submodule chứa một thư viện nào đó, và bạn cần sửa bug trong thư viện. Và bạn cần những người dùng repo này làm submodule (hoặc theo cách khác) nhận được các thay đổi.
 
-So how to make this happen?
+Vậy làm thế nào để thực hiện điều này?
 
-Either do it from a standalone repo, or you can also do it _in situ_ in
-the submodule directory.
+Hoặc làm từ một repo độc lập, hoặc bạn cũng có thể làm _tại chỗ_ trong thư mục submodule.
 
-### Modify the Submodule Repo Elsewhere
+### Sửa Đổi Repo Submodule Ở Nơi Khác
 
-The way that's easiest for my tiny human brain is to clone the submodule
-independently of any other repos. That is, clone it like it's not a
-submodule at all.
+Cách dễ nhất cho bộ não nhỏ bé của tôi là clone submodule độc lập với bất kỳ repo nào khác. Tức là, clone nó như thể nó không phải submodule gì cả.
 
-Then you can push, pull, modify, etc. all you want.
+Sau đó bạn có thể push, pull, sửa đổi, v.v. thoải mái.
 
-[i[Fetch]] And then when you have it all fixed, you can go to the
-submodule directory and do a `git fetch` to pull down the new commits.
+[i[Fetch]] Và sau đó khi đã sửa xong, bạn có thể vào thư mục submodule và thực hiện `git fetch` để kéo về các commit mới.
 
-At that point, it might be convenient to run this:
+Lúc đó, có thể tiện khi chạy lệnh này:
 
 ``` {.default}
 $ git log HEAD^..origin/main
 ```
 
-This will show you all the commits between `HEAD` and `origin/main`,
-inclusive so you can see what's been done. (Assuming they're related,
-that is. If they're on divergent branches you'll have to get more
-creative.)
+Lệnh này sẽ hiển thị tất cả commit giữa `HEAD` và `origin/main`, bao gồm cả hai đầu, để bạn có thể thấy những gì đã được làm. (Giả sử chúng có liên quan với nhau. Nếu chúng trên các nhánh phân kỳ bạn sẽ phải sáng tạo hơn.)
 
-Then you choose the commit you want to pin `HEAD` to, switch to that,
-and run an `add`/`commit` from the containing repo, as outlined in
-[Setting the Commit for the Submodule](#set-submodule-commit), above.
+Sau đó bạn chọn commit muốn ghim `HEAD` vào, switch đến đó, và chạy `add`/`commit` từ repo chứa, như đã phác thảo trong [Đặt Commit Cho Submodule](#set-submodule-commit), ở trên.
 
-### Modify the Submodule Repo in the Submodule Directory
+### Sửa Đổi Repo Submodule Trong Thư Mục Submodule
 
-But wait! If the submodule is a full-blown repo itself, can't you just
-edit in the submodule directory?
+Nhưng khoan! Nếu submodule là một repo đầy đủ tính năng, bạn không thể chỉnh sửa ngay trong thư mục submodule sao?
 
-Yes! You totally can.
+Đúng! Hoàn toàn có thể.
 
-The only weird part is that you might have a detached `HEAD` in your
-submodule, so be sure to check out a branch that you can push if you
-want to go this route.
+Phần lạ duy nhất là bạn có thể có `HEAD` bị detach trong submodule, vì vậy hãy chắc chắn checkout một nhánh bạn có thể push nếu bạn muốn đi theo hướng này.
 
-For example:
+Ví dụ:
 
 ``` {.default}
 $ git switch main
 ```
 
-Then make your changes and push them (from the submodule directory).
+Rồi thực hiện thay đổi và push chúng (từ thư mục submodule).
 
-At this point, the containing repo is still pinned to the old commit. So
-you'll want to run an `add`/`commit` from the containing repo, as
-outlined in [Setting the Commit for the
-Submodule](#set-submodule-commit), above.
+Lúc này, repo chứa vẫn đang ghim vào commit cũ. Vậy bạn sẽ muốn chạy `add`/`commit` từ repo chứa, như đã phác thảo trong [Đặt Commit Cho Submodule](#set-submodule-commit), ở trên.
 
 [i[Submodules-->Updating]>]
 
-## Getting the Submodule Status
+## Lấy Trạng Thái Submodule
 
 [i[Submodules-->Status]<]
 
-When it comes to which commit the submodule is pinned to, there are some
-commands that are quite helpful.
+Về việc submodule đang được ghim vào commit nào, có một số lệnh khá hữu ích.
 
-The first is `git submodule status`. This will tell you where the
-submodule `HEAD` is currently.
+Đầu tiên là `git submodule status`. Lệnh này sẽ cho bạn biết `HEAD` của submodule hiện đang ở đâu.
 
-For example, running from the containing repo:
+Ví dụ, chạy từ repo chứa:
 
 ``` {.default}
 $ git submodule status
 898650e74c18cf4b30bdd07297d638de4a6fc7dd mysubmod (heads/main)
 ```
 
-This tells me that `HEAD` in the `mysubmod` directory is at commit
-`89865`.
+Lệnh này cho tôi biết rằng `HEAD` trong thư mục `mysubmod` đang ở commit `89865`.
 
-But what if you see this with a `+` sign in front:
+Nhưng nếu bạn thấy điều này với dấu `+` ở phía trước:
 
 ``` {.default}
 $ git submodule status
 +1c10d608190194b7f9fbb9a442abd5c63c74cdfa mysubmod (heads/main)
 ```
 
-That `+` means that, although `HEAD` in the submodule is at commit
-`1c10d`,  the containing repo has the submodule pinned to a
-different commit! You might see this happen after you pull a submodule
-(thus moving `HEAD`), but haven't updated the containing repo to match.
+Dấu `+` đó có nghĩa là, mặc dù `HEAD` trong submodule đang ở commit `1c10d`, repo chứa đang ghim submodule vào một commit khác! Bạn có thể thấy điều này xảy ra sau khi bạn pull một submodule (di chuyển `HEAD`) nhưng chưa cập nhật repo chứa để khớp.
 
-If you see the `+`, `git status` will also tell you more:
+Nếu bạn thấy dấu `+`, `git status` cũng sẽ cho bạn biết thêm:
 
 ``` {.default}
 $ git status
@@ -525,20 +392,13 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Sure enough—we have changed `HEAD` in the submodule so its directory
-shows as `modified`.
+Đúng vậy---chúng ta đã thay đổi `HEAD` trong submodule nên thư mục của nó hiển thị là `modified`.
 
-You can get rid of the plus by either pinning the repo to a new commit
-as outlined in [Setting the Commit for the
-Submodule](#set-submodule-commit), above, or by moving the submodule
-`HEAD` back to where the containing module expects it.
+Bạn có thể xóa dấu cộng bằng cách ghim repo vào một commit mới như đã phác thảo trong [Đặt Commit Cho Submodule](#set-submodule-commit), ở trên, hoặc bằng cách di chuyển `HEAD` submodule trở về nơi module chứa mong đợi.
 
-> **There can also be a `-` in front of the commit hash.** This means
-> the submodule hasn't been initialized or downloaded. Try a `git
-> submodule update --recursive --init`.
+> **Cũng có thể có dấu `-` phía trước commit hash.** Điều này có nghĩa là submodule chưa được khởi tạo hoặc tải về. Thử chạy `git submodule update --recursive --init`.
 
-How do we figure out where the containing module expects the submodule
-`HEAD` to be? With this handy command:
+Làm thế nào để biết module chứa mong đợi `HEAD` submodule ở đâu? Với lệnh tiện dụng này:
 
 ``` {.default}
 $ git ls-tree HEAD mysubmod
@@ -547,24 +407,20 @@ $ git ls-tree HEAD mysubmod
 
 [i[Submodules-->Status]>]
 
-## Some Behind the Scenes
+## Một Số Điều Bên Trong
 
-Not really behind the scenes, actually, but I wanted to point out the
-historic steps to initialize the submodule that we've shortcutted by
-using some command line switches.
+Thực ra không hẳn là bên trong, nhưng tôi muốn chỉ ra các bước lịch sử để khởi tạo submodule mà chúng ta đã rút gọn bằng cách dùng một số switch dòng lệnh.
 
-For example, when we cloned the repo with the submodule initially, we
-used this:
+Ví dụ, khi chúng ta clone repo với submodule ban đầu, chúng ta đã dùng lệnh này:
 
 ``` {.default}
 $ git clone --recurse-submodules \
         git@github.com:beejjorgensen/git-example-submodule-repo.git
 ```
 
-That `--recurse-submodules` did a lot of work for us, cloning the
-submodule and setting everything up so it was ready to use.
+Cờ `--recurse-submodules` đó đã làm rất nhiều việc cho chúng ta, clone submodule và thiết lập mọi thứ để sẵn sàng dùng.
 
-We also noted that if we forgot that switch, we could still pull it off:
+Chúng ta cũng lưu ý rằng nếu quên switch đó, chúng ta vẫn có thể làm được:
 
 ``` {.default}
 $ git clone \
@@ -573,11 +429,9 @@ $ cd git-example-submodule-repo
 $ git submodule update --recursive --init
 ```
 
-So `--recurse-submodules` was doing that work for us.
+Vậy `--recurse-submodules` đã làm công việc đó cho chúng ta.
 
-But the rabbit hole goes farther! That `--init` does a bunch for us,
-too. Let's break it down into a full by-hand process. Don't worry—it's
-just a couple steps:
+Nhưng hố thỏ còn sâu hơn! Cái `--init` đó cũng làm rất nhiều cho chúng ta. Hãy chia nhỏ thành quy trình thủ công đầy đủ. Đừng lo---chỉ vài bước:
 
 ``` {.default}
 $ git clone \
@@ -587,74 +441,61 @@ $ git submodule init
 $ git submodule update --recursive
 ```
 
-So that `--recurse-submodules` switch to `git clone` was actually
-running a bunch of commands for us behind the scenes.
+Vậy switch `--recurse-submodules` cho `git clone` thực ra đã chạy một loạt lệnh cho chúng ta bên dưới màn hình.
 
-A little breakdown:
+Phân tích nhỏ:
 
-When you first clone the containing repo, there's a `.gitmodules` file
-in there indicating the directory name and the URL of the submodule
-remote. But that's not enough info. You have to do a `git submodule
-init` to cause Git to parse that file and set up some internal
-bookkeeping.
+Khi bạn lần đầu clone repo chứa, có một file `.gitmodules` trong đó chỉ ra tên thư mục và URL của remote submodule. Nhưng vậy chưa đủ. Bạn phải thực hiện `git submodule init` để Git phân tích file đó và thiết lập một số bookkeeping nội bộ.
 
-After that, you can run `git submodule update` to bring in the submodule
-data to use.
+Sau đó, bạn có thể chạy `git submodule update` để kéo về dữ liệu submodule để dùng.
 
-## Deleting a Submodule
+## Xóa một Submodule
 
 [i[Submodules-->Deleting]<]
 
-This is a bit clunky, but not too bad if you follow the steps.
+Cách này hơi rườm rà, nhưng không quá tệ nếu bạn làm theo từng bước.
 
-All this action takes place from the containing repo. Let's say for this
-example we want to delete the module `mysubmod`—substitute the name of
-your module in the following commands.
+Tất cả hành động này diễn ra từ repo chứa. Giả sử trong ví dụ này chúng ta muốn xóa module `mysubmod`---hãy thay thế tên module của bạn trong các lệnh sau.
 
-1. De-initialize the submodule. If the submodule `HEAD` is not where the
-   containing module expects, you can add `-f` to force this.
+1. Hủy khởi tạo submodule. Nếu `HEAD` của submodule không ở nơi module chứa mong đợi, bạn có thể thêm `-f` để ép buộc.
 
    ``` {.default}
    $ git submodule deinit mysubmod
    ```
    
-   This is partially undoing `git submodule init`.
+   Đây là phần đảo ngược `git submodule init`.
 
-2. Remove the bookkeeping information from the Git internals for the
-   containing repo.
+2. Xóa thông tin bookkeeping khỏi Git internals của repo chứa.
 
    ``` {.default}
    $ rm -rf .git/modules/mysubmod
    ```
 
-   This is the rest of undoing `git submodule init`.
+   Đây là phần còn lại của việc đảo ngược `git submodule init`.
 
-3. Fix up `.gitmodules` by removing the section about the submodule. You
-   can either do this by hand in an editor, or you can ask Git to do it
-   like so:
+3. Sửa `.gitmodules` bằng cách xóa phần về submodule. Bạn có thể làm thủ công trong editor, hoặc bạn có thể nhờ Git làm:
 
    ``` {.default}
    $ git config -f .gitmodules --remove-section submodule.mysubmod
    ```
 
-   This is undoing `git submodule add`.
+   Đây là đảo ngược `git submodule add`.
 
-4. Add the `.gitmodules` file to the stage.
+4. Thêm file `.gitmodules` vào stage.
 
    ``` {.default}
    $ git add .gitmodules
    ```
 
-5. Delete the submodule tree from Git. This will also add the deletion
-   to the stage.
+5. Xóa cây submodule khỏi Git. Điều này cũng sẽ thêm việc xóa vào stage.
 
    ``` {.default}
    git rm --cached mysubmod
    ```
 
-   This is sort of like undoing `git submodule update`.
+   Đây là kiểu như đảo ngược `git submodule update`.
 
-6. Do a `git status` to make sure we're set.
+6. Thực hiện `git status` để đảm bảo chúng ta đã sẵn sàng.
 
    ``` {.default}
    $ git status
@@ -665,16 +506,16 @@ your module in the following commands.
 	         deleted:    mysubmod
    ```
 
-   Looks good.
+   Trông ổn.
 
-7. Commit and push (if appropriate).
+7. Commit và push (nếu thích hợp).
 
    ``` {.default}
    $ git commit -m "remove mysubmod submodule"
    $ git push
    ```
 
-And that's the end of the submodule.
+Và thế là kết thúc submodule.
 
 [i[Submodules-->Deleting]>]
 
