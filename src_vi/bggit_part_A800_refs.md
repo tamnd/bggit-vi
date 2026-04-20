@@ -1,42 +1,40 @@
-# Appendix: Other References
+# Phụ lục: Các Tài Liệu Tham Khảo Khác
 
 [i[Reference Material]<]
 
-**"Your book stinks. What other references can I use?"**
+**"Cuốn sách của ông tệ quá. Còn tài liệu tham khảo nào khác không?"**
 
-Here are more! I found these by searching the Internet for Git book
-recommendations. The only ones I've used are the man pages and *Pro
-Git*.
+Có đây! Tôi tìm được những cái này bằng cách tìm kiếm trên Internet các
+gợi ý sách về Git. Những cái tôi đã dùng chỉ là man pages và *Pro Git*.
 
 [i[Reference Material-->`man` pages]]
 
-* **The man pages**
-  * If you have the manual pages (historically known as the "man pages")
-    installed on your system, and you probably do, you can get help for
-    particular Git commands right from the command line.
+* **Man pages** (trang hướng dẫn)
+  * Nếu bạn đã cài manual pages (còn gọi là "man pages") trên hệ thống ---
+    và có lẽ bạn đã có --- bạn có thể tra cứu các lệnh Git cụ thể ngay từ
+    dòng lệnh.
 
-    For example, if you want to know about `git config`, you can type:
+    Ví dụ, nếu muốn biết về `git config`, gõ:
 
     ``` {.default}
     $ man git-config
     ```
 
-    (The minus between "git" and "config" might or might not be required
-    depending on your system, but I've never found a place where it
-    doesn't work.)
+    (Dấu gạch ngang giữa "git" và "config" có thể cần hoặc không tùy hệ
+    thống, nhưng tôi chưa thấy chỗ nào nó không hoạt động.)
 
-    Once you're in there, the arrow keys, space bar, and page up/down
-    probably work to navigate, and hitting `q` or `Escape` probably
-    quits. It depends on the pager your system uses.
+    Khi ở trong đó, các phím mũi tên, space bar, và page up/down thường
+    dùng để điều hướng, nhấn `q` hay `Escape` để thoát. Tùy thuộc vào
+    pager (chương trình phân trang) hệ thống bạn dùng.
 
-    These manual pages are very comprehensive, and don't tend to be easy
-    to read. But all the information is there! They can also be found in
-    _The Git Reference Manual_, below.
+    Các manual page này rất đầy đủ, nhưng thường không dễ đọc. Tuy nhiên
+    toàn bộ thông tin đều ở đó! Chúng cũng có thể tìm thấy trong
+    _The Git Reference Manual_, bên dưới.
 
 [i[Reference Material-->Free]]
 
-* **Free Stuff!**
-  * [fl[_Pro Git_|https://git-scm.com/book/en/v2]]—_The_ Book
+* **Miễn phí!**
+  * [fl[_Pro Git_|https://git-scm.com/book/en/v2]] --- *Cuốn sách* của Git
   * [fl[_The Git Reference Manual_|https://git-scm.com/docs]]
   * [fl[_The Git Community Book_|https://shafiul.github.io/gitbook/index.html]]
   * [fl[_git cheat sheet_|https://wizardzines.com/git-cheat-sheet.pdf]]
@@ -51,7 +49,7 @@ Git*.
 
 [i[Reference Material-->Non-free]]
 
-* **For Money**
+* **Có tính phí**
   * [fl[_How Git Works_|https://wizardzines.com/zines/git/]]
   * [fl[_Oh Shit, Git_|https://wizardzines.com/zines/oh-shit-git/]]
   * [fl[_Learn Git in a Month of Lunches_|https://www.manning.com/books/learn-git-in-a-month-of-lunches]]
@@ -63,6 +61,6 @@ Git*.
   * [fl[_Pragmatic Version Control using Git_|https://pragprog.com/titles/tsgit/pragmatic-version-control-using-git/]]
   * [fl[_Mastering Git_|https://www.amazon.com/Mastering-Git-proficiency-productivity-collaboration/dp/1783553758]]
 
-If you know of more, mail them to [beej@beej.us](mailto:beej@beej.us).
+Nếu bạn biết thêm tài liệu nào, hãy gửi email cho [beej@beej.us](mailto:beej@beej.us).
 
 [i[Reference Material]>]
