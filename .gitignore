@@ -1,0 +1,15 @@
+docs/
+release/
+src_vi/*.html
+src_vi/bggit*.pdf
+src_vi/bggit*.epub
+src_vi/split/
+src_vi/split-wide/
+src_vi/*.toc
+src_vi/*.log
+src_vi/*.aux
+src_vi/*.out
+src_vi/*.fls
+src_vi/*.fdb_latexmk
+src_vi/bggit_temp*
+*.DS_Store
