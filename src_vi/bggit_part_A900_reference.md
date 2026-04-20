@@ -1,79 +1,76 @@
-# Quick Reference
+# Tham Khảo Nhanh
 
-Quickly look up commands based on what you want to do! Caveat: this list
-is grotesquely incomplete! See your man pages for more info!
+Tra nhanh các lệnh dựa trên việc bạn muốn làm gì! Lưu ý: danh sách này
+còn thiếu rất nhiều! Xem man pages để biết thêm!
 
-In this reference section we use the following substitutions:
+Trong phần tham khảo này chúng ta dùng các ký hiệu thay thế sau:
 
-* `URL`: Some URL either SSH, HTTP, or even a local file, usually the
-  URL you cloned from.
-* `FILE`: Path to file, e.g. `foo/bar.txt`, etc.
-* `DIR`: Path to directory, e.g. `foo/`, etc.
-* `PATH`: Path to directory or file
-* `BRANCH`: Some branch name, e.g. `main`, etc.
-* `REMOTE`: A remote name, e.g. `origin`, `upstream`, etc.
-* `HASH`: Some commit hash—you can get a commit hash from `git log` or
-  `git reflog`.
-* `CMMT`: a commit hash, branch, etc. Anything that refers to a commit.
-  Officially this is called a _tree-ish_, but that was more letters than
-  I wanted to repeatedly type.
-* `VARIABLE`: a Git config variable name, usually words separated by
-  periods.
-* `VALUE`: an arbitrary value for Git configs.
-* `TAG`: a tag name
+* `URL`: Một URL nào đó, có thể là SSH, HTTP, hay thậm chí file local, thường
+  là URL bạn đã clone từ đó.
+* `FILE`: Đường dẫn đến file, ví dụ `foo/bar.txt`, v.v.
+* `DIR`: Đường dẫn đến thư mục, ví dụ `foo/`, v.v.
+* `PATH`: Đường dẫn đến thư mục hoặc file
+* `BRANCH`: Tên branch nào đó, ví dụ `main`, v.v.
+* `REMOTE`: Tên remote, ví dụ `origin`, `upstream`, v.v.
+* `HASH`: Commit hash nào đó --- bạn có thể lấy commit hash từ `git log`
+  hoặc `git reflog`.
+* `CMMT`: Một commit hash, branch, v.v. Bất cứ thứ gì tham chiếu đến một
+  commit. Chính thức thì gọi là _tree-ish_, nhưng cái đó nhiều chữ hơn tôi
+  muốn gõ đi gõ lại.
+* `VARIABLE`: Tên biến cấu hình Git, thường là các từ phân cách bằng dấu chấm.
+* `VALUE`: Giá trị tùy ý cho các config Git.
+* `TAG`: Tên tag (nhãn)
 
-Also, don't type the `$`—it's the shell prompt. And everything after a
-`#` is a comment. A backslash `\` at the end of a line indicates that it
-continues on the next line.
+Ngoài ra, đừng gõ dấu `$` --- đó là dấu nhắc shell. Mọi thứ sau `#` là
+comment (ghi chú). Dấu gạch chéo ngược `\` ở cuối dòng cho biết dòng tiếp
+tục sang dòng kế.
 
-## Glossary 
+## Bảng Thuật Ngữ
 
-* **Clone**: a duplicate (or to duplicate) a remote repo, commonly for
-  local use.
-* **Commit**: a snapshot of all the files in the repo at a point in
-  time.
-* **Fork**: a GitHub construct to make a clone of someone else's GitHub
-  repo under your GitHub account.
-* **`HEAD`**: the commit that is currently checked out/switched to.
-* **Index**: another name for the *stage*.
-* **`main`**: a common name for the first branch created.
-* **`master`**: another common name for the first branch created.
-* **`origin`**: the default name for the remote from which this repo was
-  cloned.
-* **Pull request**: a way to get changes you made in your fork of a repo
-  back into the repo you forked from.
-* **Remote**: an alias for a URL to another repo. Usually an HTTP or SSH
-  URL.
-* **Stage**: where you collect files to be bundled into a
-  commit.
-* **`upstream`**: the conventional name of the remote that you forked
-  from. Not set up automatically.
-* **Working Tree**: the collection of files you can see, which might
-  have changes from the commit at `HEAD`.
-* **WT**: shorthand for working tree.
+* **Clone**: bản sao (hoặc hành động sao chép) một repo remote, thường để
+  dùng local.
+* **Commit**: snapshot (ảnh chụp) của tất cả file trong repo tại một thời
+  điểm.
+* **Fork**: tính năng của GitHub để tạo bản clone repo của người khác dưới
+  tài khoản GitHub của bạn.
+* **`HEAD`**: commit hiện đang được checkout/switched to.
+* **Index**: tên khác của *stage* (vùng tổ chức).
+* **`main`**: tên phổ biến cho branch đầu tiên được tạo.
+* **`master`**: tên phổ biến khác cho branch đầu tiên được tạo.
+* **`origin`**: tên mặc định cho remote mà repo này được clone từ đó.
+* **Pull request**: cách để đưa các thay đổi bạn thực hiện trong fork của
+  một repo trở lại repo bạn đã fork từ đó.
+* **Remote**: alias (tên gọi tắt) cho một URL đến repo khác. Thường là URL
+  HTTP hay SSH.
+* **Stage**: nơi bạn tập hợp các file để gói vào một commit.
+* **`upstream`**: tên quy ước cho remote bạn đã fork từ đó. Không được thiết
+  lập tự động.
+* **Working Tree**: tập hợp các file bạn có thể thấy, có thể có thay đổi so
+  với commit tại `HEAD`.
+* **WT**: viết tắt của working tree.
 
-## File States
+## Trạng Thái File
 
-* **Untracked** to:
+* **Untracked** (chưa theo dõi) sang:
   * Unmodified: `git add FILE`
-* **Unmodified** to:
-  * Modified: Edit with your editor and save
+* **Unmodified** (chưa sửa) sang:
+  * Modified: Sửa bằng editor của bạn và lưu
   * Untracked/deleted: `git rm --cached FILE`
-* **Modified** to:
+* **Modified** (đã sửa) sang:
   * Staged: `git add FILE`
-  * Unmodified: `git restore FILE` (discards changes)
+  * Unmodified: `git restore FILE` (hủy thay đổi)
   * Untracked/deleted: `git rm --cached FILE`
-* **Staged**
-  * Unmodified: `git commit FILE` (finalize commit)
+* **Staged** (đã staged)
+  * Unmodified: `git commit FILE` (hoàn tất commit)
   * Modified: `git restore --staged FILE` (unstage)
-  * Both modified: `git checkout --merged FILE` (during merge)
+  * Both modified: `git checkout --merged FILE` (khi merge)
 
-## Configuration
+## Cấu Hình
 
 [i[Configuration]i<]
 
-For all `git config` commands, specify `--global` for a universal
-setting or leave it off to set the value just for this repo.
+Với tất cả lệnh `git config`, chỉ định `--global` để thiết lập toàn cục
+hoặc bỏ qua để đặt giá trị chỉ cho repo này.
 
 ``` {.default}
 $ git config set VARIABLE VALUE
@@ -83,7 +80,7 @@ $ git config unset VARIABLE
 $ git config --edit
 ```
 
-Obsolete commands for older versions:
+Lệnh lỗi thời cho các phiên bản cũ hơn:
 
 ``` {.default}
 git config user.email                     # Get
@@ -93,10 +90,10 @@ git config --list                         # List
 git config --edit                         # Edit
 ```
 
-### Set identity
+### Đặt danh tính
 
 [i[Configuration-->Name and email]i]
-Username and email:
+Tên người dùng và email:
 
 ``` {.default}
 $ git config set --global user.name "Your Name"
@@ -104,27 +101,27 @@ $ git config set --global user.email "your-email@example.com"
 ```
 
 [i[Configuration-->SSH identity]i]
-SSH identity:
+Danh tính SSH:
 
 ``` {.default}
 $ git config set core.sshCommand \
     "ssh -i ~/.ssh/id_alterego_ed25519 -F none"
 ```
 
-### Set default branch
+### Đặt branch mặc định
 
 [i[Configuration-->Default branch]i]
 
-This is the first branch created when you make a new repo.
+Đây là branch đầu tiên được tạo khi bạn tạo repo mới.
 
 ``` {.default}
 $ git config set --global init.defaultBranch BRANCH
 ```
 
-Common names are `main`, `master`, `trunk`, and `development`. This
-guide uses `main`.
+Tên phổ biến là `main`, `master`, `trunk`, và `development`. Hướng dẫn
+này dùng `main`.
 
-### Set default pull behavior to merge or rebase
+### Đặt hành vi pull mặc định là merge hay rebase
 
 [i[Configuration-->Pull rebase behavior]i]
 ``` {.default}
@@ -132,11 +129,10 @@ $ git config set --global pull.rebase false   # Merge
 $ git config set --global pull.rebase true    # Rebase
 ```
 
-### Set default editor, difftool, and mergetool
+### Đặt editor mặc định, difftool, và mergetool
 
-Set the default editor to Vim, and the default mergetool and difftool to
-Vimdiff, turn off prompting for the tools, and turn off mergetool
-backups:
+Đặt editor mặc định là Vim, mergetool và difftool mặc định là Vimdiff,
+tắt prompt cho các tool, và tắt backup của mergetool:
 
 [i[Configuration-->Editor]i]
 [i[Configuration-->Difftool]i]
@@ -152,18 +148,18 @@ $ git config set mergetool.vimdiff.cmd \
 $ git config --global set mergetool.keepBackup false
 ```
 
-### Colorful Git output
+### Output Git có màu sắc
 
 [i[Configuration-->Color output]i]
 ``` {.default}
 $ git config set color.ui true   # Or false
 ```
 
-### Autocorrect
+### Tự động sửa lỗi chính tả
 
 [i[Configuration-->Autocorrect]i]
-Autocorrect will automatically run the command it thinks you meant. For
-example, if you `git poush`, it will assume you meant `git push`.
+Autocorrect (tự động sửa) sẽ tự động chạy lệnh mà nó đoán bạn muốn. Ví dụ,
+nếu bạn gõ `git poush`, nó sẽ giả định bạn muốn `git push`.
 
 ``` {.default}
 $ git config set help.autocorrect 0   # Ask "Did you mean...?"
@@ -174,10 +170,10 @@ $ git config set help.autocorrect prompt     # Prompt then go
 $ git config set help.autocorrect never      # Turn autocorrect off
 ```
 
-### Newline translation
+### Dịch newline
 
-Handle automatic newline translation. Recommend set to true for Windows
-(not WSL) and false everywhere else.
+Xử lý dịch newline tự động. Khuyến nghị đặt true cho Windows (không phải
+WSL) và false ở tất cả chỗ khác.
 
 [i[Configuration-->Newline translation]i]
 ``` {.default}
@@ -185,11 +181,11 @@ $ git config set core.autocrlf true  # Windows (non-WSL)
 $ git config set core.autocrlf false # WSL, Linux, Mac, C64, etc.
 ```
 
-### Aliases
+### Alias
 
 [i[Alias]i<]
 
-Setting aliases, some examples:
+Đặt alias (tên gọi tắt), một vài ví dụ:
 
 ``` {.default}
 $ git config set --global alias.logn 'log --name-only'
@@ -201,7 +197,7 @@ $ git config set alias.lol "log --graph"\
 " %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 ```
 
-Getting aliases:
+Xem alias:
 
 ``` {.default}
 $ git config get alias.logx
@@ -210,7 +206,7 @@ $ git config set alias.aliases \
     "config get --all --show-names --regexp '^alias\.'"
 ```
 
-Tracing an alias run:
+Theo dõi quá trình chạy alias:
 
 ``` {.default}
 $ GIT_TRACE=1 git logx
@@ -219,7 +215,7 @@ $ GIT_TRACE=1 git logx
 [i[Alias]i>]
 [i[Configuration]i>]
 
-## Creating and Cloning Repos
+## Tạo và Clone Repo
 
 [i[Clone]i]
 
@@ -230,7 +226,7 @@ $ git init DIR        # Init repo at directory
 $ git init .          # Init repo in the current directory
 ```
 
-## Adding, Renaming, Deleting, Committing
+## Thêm, Đổi Tên, Xóa, Commit
 
 [i[Add]i]
 [i[Move]i]
@@ -248,8 +244,8 @@ $ git commit               # Commit files on stage
 $ git commit -m "message"  # Commit with a message
 ```
 
-Amending commits—don't amend commits you have pushed unless you know
-what you're getting into!
+Amend (sửa) commit --- đừng amend commit đã push trừ khi bạn biết mình
+đang làm gì!
 
 [i[Commit-->Amending]i]
 ``` {.default}
@@ -259,17 +255,17 @@ $ git commit --amend --no-edit     # Don't change commit message
 ```
 
 [i[Remove-->Unstaging]i]
-To undelete a staged file, run these two commands in sequence:
+Để bỏ xóa một file đã staged, chạy hai lệnh này liên tiếp:
 
 ``` {.default}
 $ git restore --staged FILE
 $ git restore FILE
 ```
 
-To undelete a deleted file, you could manually recover it from an old
-commit, or revert the commit that deleted it.
+Để bỏ xóa một file đã xóa, bạn có thể khôi phục thủ công từ commit cũ,
+hoặc revert commit đã xóa nó.
 
-## Getting Status
+## Xem Trạng Thái
 
 [i[Status]i]
 [i[Log]i]
@@ -286,7 +282,7 @@ $ git log CMMT1...CMMT2  # Show logs from CMMT1 and CMMT2
                          # since they diverged
 ```
 
-## Getting a Diff
+## Xem Diff
 
 [i[Diff]i<]
 ``` {.default}
@@ -312,10 +308,10 @@ $ git difftool          # Diffs using the configured difftool
 ```
 [i[Diff]i>]
 
-## Branches
+## Branch (Nhánh)
 
-A local branch looks like `branchname`. A remote tracking branch looks
-like `remote/branchname`.
+Branch local trông như `branchname`. Remote tracking branch trông như
+`remote/branchname`.
 
 [i[Switch]i<]
 
@@ -356,7 +352,7 @@ $ git branch -D BRANCH   # Force delete unmerged branch
 
 [i[Branch]i>]
 
-Obsolete style (use `switch` if you can):
+Cú pháp lỗi thời (dùng `switch` nếu có thể):
 
 [i[Checkout]i]
 ``` {.default}
@@ -365,7 +361,7 @@ $ git checkout HEAD^     # Detach HEAD to previous commit
 $ git checkout HEAD~2    # Detach HEAD to second previous commit
 ```
 
-## Pulling and Pushing, and Fetching
+## Pull, Push, và Fetch
 
 [i[Pull]i]
 ``` {.default}
@@ -400,7 +396,7 @@ $ git fetch        # Get data from remote but don't merge or rebase
 $ git fetch REMOTE # Same, for a specific remote
 
 ```
-## Merging
+## Merge (Gộp Nhánh)
 
 [i[Merge]i]
 ``` {.default}
@@ -411,13 +407,13 @@ $ git mergetool      # Run mergetool to resolve a conflict
 $ git checkout --merged FILE   # Unstage resolved files
 ```
 
-If a conflict occurs, you can always `--abort`. Otherwise:
+Nếu xảy ra conflict (xung đột), bạn luôn có thể `--abort`. Nếu không:
 
-1. Fix the conflict.
-2. Add the fixed files.
-3. Commit to complete the merge.
+1. Sửa conflict.
+2. Add các file đã sửa.
+3. Commit để hoàn thành merge.
 
-## Remotes
+## Remote
 
 [i[Remote]i]
 ``` {.default}
@@ -428,16 +424,15 @@ $ git remote rename REMOTE1 REMOTE2   # Rename REMOTE1 to REMOTE2
 $ git remote remove REMOTE            # Delete REMOTE
 ```
 
-## Ignoring Files
+## Bỏ Qua File
 
 [i[`.gitignore` file]i<]
 
-Add a `.gitignore` file to your repo. It applies to this directory and
-all non-submodule subdirectories below it. Add descriptions of files to
-ignore to this file. Comments behind `#` are allowed. Blank lines are
-ignored.
+Thêm file `.gitignore` vào repo của bạn. Nó áp dụng cho thư mục này và
+tất cả thư mục con không phải submodule bên dưới. Thêm mô tả các file cần
+bỏ qua vào file này. Comment sau `#` được phép. Dòng trống bị bỏ qua.
 
-Example `.gitignore`:
+Ví dụ `.gitignore`:
 
 ``` {.default}
 foo.aux     # Ignore specific file "foo.aux"
@@ -450,8 +445,8 @@ frotz/bar   # Ignore file "bar" in directory "frotz"
 *           # Ignore everything
 ```
 
-Exceptions to earlier rules, also useful in `.gitignore` files in
-subdirectories to override rules from parent directories:
+Ngoại lệ cho các quy tắc trước, cũng hữu ích trong file `.gitignore` ở
+các thư mục con để ghi đè quy tắc từ thư mục cha:
 
 ``` {.default}
 *.txt       # Ignore all text files
@@ -459,7 +454,7 @@ subdirectories to override rules from parent directories:
 ```
 [i[`.gitignore` file]i>]
 
-## Rebasing
+## Rebase
 
 [i[Rebase]i]
 ``` {.default}
@@ -478,9 +473,9 @@ $ git pull --rebase      # Force a rebase on pull
 $ git pull --no-rebase   # Force a merge on pull
 ```
 
-## Stashing
+## Stash (Cất Tạm)
 
-Stashes are stored on a stack.
+Stash (kho cất tạm) được lưu trên một stack (ngăn xếp).
 
 [i[Stash]i]
 ``` {.default}
@@ -496,7 +491,7 @@ $ git stash drop 'stash@{1}'  # Drop stash at index 1
 $ git stash drop --index 1    # Same thing
 ```
 
-## Reverting
+## Revert (Hoàn Tác)
 
 [i[Revert]i]
 ``` {.default}
@@ -511,11 +506,11 @@ $ git revert --skip      # Skip a conflicting commit
 $ git revert --abort     # Bail out of reverting
 ```
 
-## Resetting
+## Reset
 
 [i[Reset]i]
-All resets move `HEAD` and the current checked out branch to the
-specified commit.
+Tất cả reset đều di chuyển `HEAD` và branch hiện đang checkout sang commit
+được chỉ định.
 
 ``` {.default}
 $ git reset --mixed CMMT  # Set stage to CMMT, don't change WT
@@ -526,20 +521,20 @@ $ git reset --hard CMMT   # Set stage and WT to CMMT
 $ git reset -p CMMT       # Reset file in patch mode
 ```
 
-Obsolete usage:
+Cú pháp lỗi thời:
 
 ``` {.default}
 $ git reset FILE   # Same as "git restore --staged FILE"
 ```
 
-## The Reflog
+## Reflog
 
 [i[Reflog]i]
 ``` {.default}
 $ git reflog      # Look at the reflog
 ```
 
-…I admit this section could use a bit more information.
+...Tôi thừa nhận phần này cần thêm thông tin.
 
 ## Cherry-pick
 
@@ -548,7 +543,7 @@ $ git reflog      # Look at the reflog
 $ git cherry-pick CMMT   # Cherry-pick a particular commit
 ```
 
-## Blame
+## Blame (Truy Vết)
 
 [i[Blame]i]
 ``` {.default}
@@ -556,7 +551,7 @@ $ git blame FILE                # Who is responsible for each line
 $ git blame --date=short FILE   # Same, shorter date format
 ```
 
-## Submodules
+## Submodule (Mô-đun Con)
 
 [i[Submodules]i<]
 ``` {.default}
@@ -575,8 +570,8 @@ $ git submodule update --recursive   # Handle submods of submods
 ```
 
 [i[Submodules-->Deleting]i]
-Deleting a submodule—do these in order. In this example, DIR is the name
-of the submodule directory.
+Xóa submodule --- làm theo thứ tự này. Trong ví dụ này, DIR là tên thư
+mục submodule.
 
 ``` {.default}
 $ git submodule deinit DIR
@@ -588,7 +583,7 @@ $ git commit -m "remove DIR submodule"
 ```
 [i[Submodules]i>]
 
-## Tags
+## Tag (Nhãn)
 
 [i[Tag]i<]
 
@@ -618,7 +613,7 @@ $ git push REMOTE -d tagname  # Delete a tag on a remote
 
 [i[Tag]i>]
 
-## Worktrees
+## Worktree (Cây Làm Việc)
 
 [i[Worktree]i<]
 
