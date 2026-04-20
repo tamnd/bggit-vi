@@ -1,106 +1,99 @@
-# GitHub: Forking and Pull Requests
+# GitHub: Fork và Pull Request
 
 [i[Fork]<]
 [i[Pull requests]<]
 
-For a lot of projects you're on, maybe you have write permission to the
-main repo that everyone is using. That is, you've been added as a
-collaborator and you can just push directly.
+Với nhiều dự án bạn tham gia, có thể bạn đã có quyền ghi (write permission) vào
+repo chính mà cả nhóm đang dùng. Tức là bạn đã được thêm vào làm cộng tác viên
+và có thể push thẳng lên luôn.
 
-If that's the case, you don't need to fork GitHub repos or create pull
-requests. You can just keep committing and pushing as always.
+Nếu vậy, bạn không cần fork (sao chép) repo GitHub hay tạo pull request. Cứ
+commit và push như thường thôi.
 
-But what if you want to make changes to a repo on GitHub but you don't have
-write permission? This might happen if you forked a repo that you want
-to make changes to. You can write to your fork, but not to the repo you
-forked from. How do you get the changes you made to your fork into the
-original repo?
+Nhưng nếu bạn muốn thay đổi một repo trên GitHub mà bạn không có quyền ghi thì
+sao? Điều này xảy ra khi bạn fork một repo và muốn thay đổi nó. Bạn có thể ghi
+lên fork của mình, nhưng không được ghi lên repo gốc mà bạn fork từ đó. Vậy làm
+thế nào để đưa những thay đổi từ fork của bạn vào repo gốc?
 
-Let's check it out.
+Cùng tìm hiểu nào.
 
-A ***fork*** is a clone of someone else's GitHub repo that you've made
-on GitHub using their "Fork" command. It's a regular clone except that
-GitHub is doing some bookkeeping to track which repo you forked from.
+Một ***fork*** (bản sao) là một bản clone của repo GitHub của người khác mà bạn
+đã tạo trên GitHub bằng lệnh "Fork" của họ. Đây là bản clone thông thường, chỉ
+khác là GitHub lưu lại thông tin để biết bạn đã fork từ repo nào.
 
-The ***upstream*** is by convention the name of the remote that you
-forked from. I know this conflicts with some other definitions of
-"upstream". But for this chapter, in the context of forks, let's assume
-it means this.
+***Upstream*** là tên thông lệ của remote (kho từ xa) mà bạn đã fork từ đó. Tôi
+biết điều này mâu thuẫn với một số định nghĩa khác của "upstream". Nhưng trong
+chương này, trong ngữ cảnh fork, hãy giả định nó mang nghĩa này.
 
-A ***pull request*** (or "PR" for short) is a way for you to offer
-changes you've made to your fork to the owner of the original repo.
+Một ***pull request*** (hay viết tắt là "PR") là cách để bạn đề xuất những thay
+đổi bạn đã thực hiện trên fork của mình cho chủ sở hữu repo gốc.
 
-> **Forks and Pull Requests are a GitHub thing, not a Git thing.** It's
-> some additional functionality that GitHub has implemented on their
-> website that you can use.
+> **Fork và Pull Request là tính năng của GitHub, không phải của Git.** Đây là
+> tính năng bổ sung mà GitHub đã triển khai trên trang web của họ để bạn sử dụng.
 
-Let's say, for example, you found an open source project you liked and
-there was a bug in it. You don't have permission to write to the
-project's GitHub repo, so how can you change it?
+Hãy lấy ví dụ: bạn tìm thấy một dự án mã nguồn mở mình thích và phát hiện có
+lỗi trong đó. Bạn không có quyền ghi lên repo GitHub của dự án, vậy làm sao để
+thay đổi nó?
 
 [i[Fork-->Process]]
 
-The process for someone making a pull request is:
+Quy trình để ai đó tạo pull request là:
 
-1. On GitHub, fork the repo. Now you have your own clone of it.
-2. Clone your repo to your local machine. Now you have two clones of it:
-   your fork on GitHub and its clone on your local machine. (And you own
-   them both.)
-3. Make the fix on your local machine and test it.
-4. Push your fix to your GitHub fork.
-5. On GitHub, create a pull request. This informs the upstream owner
-   that you have changes you'd like them to merge.
-6. On GitHub, the upstream owner reviews your PR and decides if they
-   want to merge it. If so, they merge it. Otherwise they comment and
-   ask for changes, or delete it.
-7. At this point, if you're done, you can optionally delete your fork.
+1. Trên GitHub, fork repo đó. Giờ bạn có bản clone của riêng mình.
+2. Clone repo của bạn về máy local. Giờ bạn có hai bản clone: fork của bạn trên
+   GitHub và bản clone trên máy local. (Và bạn sở hữu cả hai.)
+3. Thực hiện sửa lỗi trên máy local và kiểm tra.
+4. Push bản sửa lỗi lên fork GitHub của bạn.
+5. Trên GitHub, tạo pull request. Thao tác này thông báo cho chủ upstream biết
+   rằng bạn có thay đổi muốn họ merge vào.
+6. Trên GitHub, chủ upstream xem xét PR của bạn và quyết định có muốn merge không.
+   Nếu có, họ merge. Nếu không, họ comment và yêu cầu chỉnh sửa, hoặc xóa PR.
+7. Lúc này, nếu đã xong, bạn có thể tùy ý xóa fork của mình.
 
-Let's give it a try! Feel free to issue PRs on my sample repo, used
-below. I'm just going to delete them (they won't be merged); don't take
-it personally—I just don't have time to review them all.
+Thử đi nào! Cứ tự nhiên tạo PR trên repo mẫu của tôi, dùng ở phía dưới. Tôi sẽ
+xóa chúng đi (sẽ không được merge); đừng buồn---tôi chỉ là không có thời gian
+xem xét hết.
 
-## Making a Fork
+## Tạo Fork
 
 [i[Fork-->Creating]<]
 
-Head on over to [fl[my test
-repo|https://github.com/beejjorgensen/git-example-repo]] and let's do
-this:
+Truy cập [fl[repo test của
+tôi|https://github.com/beejjorgensen/git-example-repo]] và làm thế này:
 
-* In the upper right there should be a button labeled "Fork". Click it.
-* Under "Owner", choose your user name.
-* Under "Repository name", choose the default or make a new name.
-* Optionally, if the repo has multiple branches and you wish to have
-  those in your fork, uncheck the "Copy the main branch only" checkbox.
-  You can always get the branches by hand later if you don't do this.
-* Click the "Create fork" button.
+* Ở góc trên bên phải có một nút "Fork". Nhấn vào đó.
+* Dưới mục "Owner", chọn tên người dùng của bạn.
+* Dưới mục "Repository name", giữ tên mặc định hoặc đặt tên mới.
+* Tùy chọn: nếu repo có nhiều nhánh và bạn muốn có chúng trong fork, bỏ chọn
+  ô "Copy the main branch only". Bạn có thể lấy các nhánh đó thủ công sau nếu
+  không làm bước này.
+* Nhấn nút "Create fork".
 
-> **This can be done with impunity.** That is, you've made your own fork
-> but the original owner is unaware that you did. You can delete it with
-> no damage to the original repo. Remember that a fork is a clone on
-> GitHub that you have ownership of, independent of the original repo.
+> **Thao tác này hoàn toàn vô hại.** Nghĩa là bạn đã tạo fork của mình nhưng
+> chủ gốc không hề hay biết. Bạn có thể xóa nó mà không gây hại gì cho repo
+> gốc. Nhớ rằng fork là bản clone trên GitHub mà bạn sở hữu, độc lập với repo
+> gốc.
 
-At this point, you should land on the project page for your fork, and
-the fine print on the page reads: "forked from
-beejjorgensen/git-example-repo".
+Lúc này, bạn sẽ thấy trang dự án của fork, và dòng chú thích nhỏ trên trang
+ghi: "forked from beejjorgensen/git-example-repo".
 
-And now we have our own version of that repo on GitHub to do with as we
-please.
+Và giờ chúng ta có phiên bản repo đó trên GitHub của riêng mình để tùy ý sử
+dụng.
 
-We can clone it as normal, pull, push, delete the repo, etc. The owner
-of the original repo will not know about it—our changes affect our repo
-alone. Later we'll see how to issue a pull request to try to get our
-changes merged into the original upstream repo.
+Chúng ta có thể clone bình thường, pull, push, xóa repo, v.v. Chủ repo gốc sẽ
+không biết---những thay đổi của chúng ta chỉ ảnh hưởng đến repo của mình. Sau
+này chúng ta sẽ xem cách tạo pull request để thử đưa thay đổi vào repo upstream
+gốc.
 
 [i[Fork-->Creating]>]
 
-## Making Your Changes
+## Thực Hiện Thay Đổi
 
-Let's make some changes. First, we have to clone *our* repo (that is,
-clone the fork we made) onto our local machine.
+Hãy thực hiện một số thay đổi. Đầu tiên, chúng ta phải clone *repo của mình*
+(tức là clone fork mà chúng ta đã tạo) về máy local.
 
-So pull down the "Code" button as usual and select the SSH link to clone
-(or use the GitHub CLI variant if you're using that).
+Vậy nhấn vào nút "Code" như thường và chọn đường dẫn SSH để clone (hoặc dùng
+GitHub CLI nếu bạn đang dùng cái đó).
 
 ``` {.default}
 $ git clone git@github.com:user/git-example-repo.git
@@ -112,7 +105,7 @@ $ git clone git@github.com:user/git-example-repo.git
   Receiving objects: 100% (4/4), done.
 ```
 
-And then you can `cd` into that directory and see the files there.
+Sau đó bạn có thể `cd` vào thư mục đó và xem các file trong đó.
 
 ``` {.default}
 $ cd git-example-repo
@@ -120,7 +113,7 @@ $ ls
   hello.py    README.md
 ```
 
-Let's modify `hello.py` to this:
+Hãy sửa `hello.py` thành như sau:
 
 ``` {.py .numberLines}
 #!/usr/bin/env python
@@ -130,7 +123,7 @@ print("This is my program!")
 print("This is my modification")
 ```
 
-And let's add it, make a commit, and push.
+Và hãy add, commit, rồi push.
 
 ``` {.default}
 $ git add hello.py
@@ -148,188 +141,172 @@ $ git push
      4332527..5d3fe49  main -> main
 ```
 
-Again, this just pushed to our fork, not the upstream. You can look at
-your fork's page on GitHub and see the change there.
+Một lần nữa, thao tác này chỉ push lên fork của chúng ta, không phải upstream.
+Bạn có thể xem trang fork của mình trên GitHub và thấy thay đổi ở đó.
 
-## Syncing the Upstream with Your Fork
+## Đồng Bộ Upstream với Fork của Bạn
 
 [i[Fork-->Syncing with Upstream]<]
 
-Are you ready to make a PR? Hold up just a moment!
+Bạn đã sẵn sàng tạo PR chưa? Khoan đã một chút!
 
-What if the upstream owner has made changes to their repo in the
-meantime? Don't you want to make sure your code works with the latest
-version of their code?
+Nếu chủ upstream đã thực hiện thay đổi trên repo của họ trong thời gian đó thì
+sao? Bạn có muốn đảm bảo code của mình hoạt động với phiên bản mới nhất của code
+họ không?
 
-Of course you do.
+Tất nhiên rồi.
 
-On your fork's page, you might have noticed that it has a "Sync fork"
-button that you can pull down.
+Trên trang fork của bạn, bạn có thể thấy nút "Sync fork" có thể kéo xuống.
 
-If you pull it down and it says "This branch is not behind the
-upstream", then congratulations! You're already up to date! Go ahead and
-make a PR, as outlined in the next section.
+Nếu bạn kéo xuống và thấy "This branch is not behind the upstream" (Nhánh này
+không chậm hơn upstream), chúc mừng! Bạn đã cập nhật! Cứ tạo PR, như hướng dẫn
+ở phần tiếp theo.
 
-If you pull it down and it says "This branch is out-of-date" and offers
-you an "Update branch" button, then congratulations! You're out of date,
-but you can be brought up to date without a conflict. Click "Update
-branch" and then go ahead and make a PR, as outlined in the next
-section. (It might also offer you a "Discard" button, but don't press
-that unless you want to discard your changes!)
+Nếu bạn kéo xuống và thấy "This branch is out-of-date" (Nhánh này đã lỗi thời)
+và có nút "Update branch", chúc mừng! Bạn đang chậm hơn nhưng có thể cập nhật
+mà không có xung đột. Nhấn "Update branch" rồi tạo PR như hướng dẫn ở phần tiếp
+theo. (Cũng có thể có nút "Discard", nhưng đừng nhấn trừ khi bạn muốn hủy thay
+đổi của mình!)
 
-If it instead says "This branch has conflicts that must be resolved",
-bad news. You have some changes in your repo that conflict with someone
-else's changes in the upstream. You have some options:
+Nếu thấy "This branch has conflicts that must be resolved" (Nhánh này có xung
+đột cần giải quyết), tin xấu rồi. Bạn có một số thay đổi trong repo mâu thuẫn
+với thay đổi của người khác trên upstream. Bạn có một số lựa chọn:
 
-* The UI says you can open a pull request, which will give you a chance
-  to resolve the conflict in-browser as outlined in the next section.
-* It also says you can just throw away your changes and replace them
-  with the upstream. Bummer.
-* Aside from that, you can actually merge your branch from the upstream
-  on the command line and take care of the conflict there without
-  opening a PR first. See [Syncing on the Command Line](#sync-cl),
-  below.
+* UI cho biết bạn có thể mở pull request, điều đó sẽ cho bạn cơ hội giải quyết
+  xung đột ngay trên trình duyệt như hướng dẫn ở phần tiếp theo.
+* Nó cũng cho biết bạn có thể vứt bỏ thay đổi của mình và thay thế bằng upstream.
+  Tiếc thật.
+* Ngoài ra, bạn thực sự có thể merge nhánh từ upstream trên command line (dòng
+  lệnh) và xử lý xung đột ở đó mà không cần mở PR trước. Xem [Đồng Bộ trên
+  Command Line](#sync-cl), phía dưới.
 
-In general, it's a good idea to keep in sync with the upstream repo.
-This way you can be sure your changes aren't conflicting with any
-upstream changes as you go. It's way better than waiting to resolve them
-all at the end when you're ready to issue a pull request.
+Nói chung, nên giữ đồng bộ với repo upstream là điều tốt. Cách này giúp bạn đảm
+bảo thay đổi của mình không xung đột với bất kỳ thay đổi nào trên upstream khi
+bạn làm việc. Tốt hơn nhiều so với việc chờ đến cuối khi sẵn sàng tạo PR mới
+giải quyết tất cả.
 
 [i[Fork-->Syncing with Upstream]>]
 
-## Making a Pull Request
+## Tạo Pull Request
 
 [i[Pull request-->Creating]<]
 
-Now that we've modified our fork to our satisfaction, we can ask the
-upstream maintainer if they're willing to accept it into the official
-repo.
+Giờ chúng ta đã chỉnh sửa fork của mình xong xuôi, chúng ta có thể hỏi người
+bảo trì upstream xem họ có sẵn sàng chấp nhận nó vào repo chính thức không.
 
-> **Maybe they aren't ready!** Don't take it personally if they don't
-> answer or answer with ways they need your patch improved. Work with
-> the owners to get the job done to both of your satisfactions.
+> **Có thể họ chưa sẵn sàng!** Đừng buồn nếu họ không trả lời hoặc trả lời
+> bằng cách yêu cầu cải tiến patch của bạn. Hãy làm việc với chủ sở hữu để
+> hoàn thành công việc đến sự hài lòng của cả hai.
 
-Let's go!
+Bắt đầu thôi!
 
-* Click the "Contribute" button and then "Open pull request".
-* Look for the text "This branch has conflicts that must be resolved".
-  If you find that text, it means the upstream can't automatically apply
-  your PR and they'll have to do manual work to make it happen. They're
-  far more likely to just reject it. To avoid this, you have some options:
-  * Don't open the PR, go back and sync with the upstream, fix the
-    conflict, and try again.
-  * Or click the "Resolve conflicts" button right there in the UI and
-    use the in-browser editor to manually resolve.
-* Add a nice title.
-* Add a good description. You're asking someone to incorporate your code
-  into their project, so you'll want to describe what the code does here
-  to make their lives easier when they review it. (Since this example
-  goes to my repo, you can just pretend you wrote something nice—I'm
-  just going to close the PR.)
-* Click "Create pull request"!
+* Nhấn vào nút "Contribute" rồi "Open pull request".
+* Tìm dòng chữ "This branch has conflicts that must be resolved". Nếu tìm thấy,
+  điều đó có nghĩa là upstream không thể tự động áp dụng PR của bạn và họ sẽ
+  phải làm thủ công. Họ có nhiều khả năng từ chối hơn. Để tránh điều này, bạn
+  có một số lựa chọn:
+  * Đừng mở PR, quay lại và đồng bộ với upstream, sửa xung đột, rồi thử lại.
+  * Hoặc nhấn nút "Resolve conflicts" ngay trên UI và dùng trình soạn thảo
+    trên trình duyệt để giải quyết thủ công.
+* Thêm tiêu đề đẹp.
+* Thêm mô tả đầy đủ. Bạn đang yêu cầu ai đó tích hợp code của bạn vào dự án
+  của họ, vì vậy hãy mô tả code đó làm gì để giúp cuộc sống của họ dễ dàng hơn
+  khi xem xét. (Vì ví dụ này đi vào repo của tôi, bạn cứ giả vờ đã viết gì đó
+  hay hay---tôi sẽ chỉ đóng PR thôi.)
+* Nhấn "Create pull request"!
 
-This lands us on the PR page. You can add more comments or close the
-request (if you changed your mind about it).
+Thao tác này đưa chúng ta đến trang PR. Bạn có thể thêm bình luận hoặc đóng
+yêu cầu (nếu bạn đổi ý).
 
-The owner of the upstream will see the PR has been issued, and now you
-have to wait for a response.
+Chủ upstream sẽ thấy PR đã được tạo, và giờ bạn phải chờ phản hồi.
 
-Maybe they respond with a comment asking for improvements or other
-questions. Maybe they reject the PR and close it, unmerged. Or maybe
-they accept! Happy days!
+Có thể họ trả lời với bình luận yêu cầu cải tiến hoặc đặt câu hỏi. Có thể họ
+từ chối PR và đóng nó lại mà không merge. Hoặc có thể họ chấp nhận! Tuyệt vời!
 
 [i[Pull request-->Creating]>]
 
-## Flipside: Merging a Pull Request
+## Mặt Kia: Merge Pull Request
 
 [i[Pull request-->Merging]<]
 
-As the upstream owner, if someone issues a PR you'll be notified (unless
-you've turned those notifications off) with an email and in the
-notifications in GitHub in the upper right.
+Là chủ upstream, nếu có người tạo PR bạn sẽ được thông báo (trừ khi bạn đã tắt
+thông báo đó) qua email và trong phần thông báo của GitHub ở góc trên bên phải.
 
-When you do, you can visit your project page on GitHub and decide what
-to do with the PR.
+Khi đó, bạn có thể vào trang dự án trên GitHub và quyết định làm gì với PR.
 
-At the top of the project page, you'll see a "Pull requests" button with
-a number next to it indicating how many PRs are currently outstanding.
+Ở đầu trang dự án, bạn sẽ thấy nút "Pull requests" với một số bên cạnh cho biết
+có bao nhiêu PR đang chờ xử lý.
 
-* Click the button to see the list.
-* Click on a PR title to get to the PR.
+* Nhấn vào nút để xem danh sách.
+* Nhấn vào tiêu đề PR để đến trang PR đó.
 
-Now we're looking at the PR. Read the description to see what it does,
-and then, **very importantly** review the code!
+Giờ chúng ta đang xem PR. Đọc mô tả để biết nó làm gì, rồi **rất quan trọng**
+là xem xét code!
 
-> **You're about to accept code from someone you probably don't know.**
-> On this planet, most people are friendly, but that doesn't mean there
-> aren't some bad actors (the industry term is *a\-\-holes*) out there
-> looking to take advantage of you by introducing some malicious code.
-> Even if you've known the contributor for a year, they might be playing
-> a long game, and if that seems unlikely to you,
-> [flw[read about the XZ utils hack that took place in 2024|XZ_Utils_backdoor]].
+> **Bạn sắp chấp nhận code từ người bạn có thể không quen biết.** Trên hành
+> tinh này, hầu hết mọi người đều thân thiện, nhưng điều đó không có nghĩa là
+> không có những kẻ xấu (thuật ngữ ngành gọi là *a\-\-holes*) đang tìm cách lợi
+> dụng bạn bằng cách đưa vào code độc hại. Dù bạn đã biết người đóng góp này
+> một năm, họ có thể đang chơi chiến lược dài hơi---và nếu điều đó có vẻ khó
+> xảy ra với bạn,
+> [flw[hãy đọc về vụ hack XZ utils xảy ra vào năm 2024|XZ_Utils_backdoor]].
 
-To review the code, look right below the description to the
-contributor's avatar and the commit message. Click on the commit message
-and you'll see a diff, as described in the [_Comparing Files with Diff_
-chapter](#diff). Lines marked with a `+` are added, and lines marked
-with `-` are removed.
+Để xem xét code, hãy nhìn ngay bên dưới mô tả vào avatar của người đóng góp và
+commit message. Nhấn vào commit message và bạn sẽ thấy diff, như mô tả trong
+chương [_So Sánh File với Diff_](#diff). Những dòng có dấu `+` là được thêm, và
+dòng có dấu `-` là bị xóa.
 
-If you just want a straight up view of the file as it was edited by the
-contributor, you can hit the "..." on the right and then "View file".
+Nếu bạn chỉ muốn xem file như nó đã được người đóng góp chỉnh sửa, nhấn "..."
+ở bên phải rồi "View file".
 
-If it's almost right but you need to make a modification, you can also
-hit "Edit file" and add commits directly to the PR.
+Nếu gần đúng nhưng bạn cần sửa thêm, bạn cũng có thể nhấn "Edit file" và thêm
+commit trực tiếp vào PR.
 
-If everything looks good, scroll down and hopefully you'll see some text
-that reads "This branch has no conflicts with the base branch" and
-"Merging can be performed automatically". This is good news.
+Nếu mọi thứ trông ổn, cuộn xuống và hy vọng bạn sẽ thấy dòng "This branch has
+no conflicts with the base branch" và "Merging can be performed automatically".
+Đây là tin tốt.
 
-If it says that, you can just click "Merge pull request", and that will
-add the changes to your repo and close the PR. It's nice to also add a
-comment thanking the contributor—they just gave you work for free, after
-all!
+Nếu vậy, bạn có thể nhấn "Merge pull request", và thao tác đó sẽ thêm những
+thay đổi vào repo của bạn và đóng PR. Cũng nên thêm bình luận cảm ơn người đóng
+góp---họ vừa làm việc cho bạn miễn phí đấy!
 
-> **Closing a PR doesn't delete the PR.** You can still reopen it.
+> **Đóng PR không xóa PR.** Bạn vẫn có thể mở lại nó.
 
-But let's say the PR does conflict and can't be automatically merged.
-GitHub complains that "This branch has conflicts that must be resolved"
-and gives you some options.
+Nhưng giả sử PR có xung đột và không thể tự động merge. GitHub phàn nàn rằng
+"This branch has conflicts that must be resolved" và đưa ra một số lựa chọn.
 
-As the upstream owner, you can click the "Resolve conflicts" button and
-fix the issue if possible.
+Là chủ upstream, bạn có thể nhấn nút "Resolve conflicts" và sửa vấn đề nếu có
+thể.
 
-Or you can just reject the PR and ask the person who opened it to
-resolve the conflict so that your life might be made easier with an
-automatic merge.
+Hoặc bạn có thể từ chối PR và yêu cầu người mở nó giải quyết xung đột để cuộc
+sống của bạn dễ dàng hơn với việc merge tự động.
 
 [i[Pull request-->Merging]>]
 
-## Making Many Pull Requests with Branches
+## Tạo Nhiều Pull Request với Nhánh
 
 [i[Pull request-->With branches]<]
 
-Here's the thing about pull requests: when you make one, it takes all
-the changes you have on your branch and bundles them together in one.
-Doesn't matter if the changes are doing radically different things; they
-all get rolled into the same PR.
+Đây là điều về pull request: khi bạn tạo một PR, nó lấy tất cả những thay đổi
+bạn có trên nhánh và gói chúng lại thành một. Không quan trọng các thay đổi đó
+đang làm những việc hoàn toàn khác nhau; tất cả đều được đưa vào cùng một PR.
 
-This is sometimes not so great from an administrative perspective. Maybe
-I want a PR for issue #1 and a different PR for issue #2!
+Điều này đôi khi không hay lắm từ góc độ quản lý. Có thể tôi muốn một PR cho
+issue #1 và một PR khác cho issue #2!
 
-The way to make this happen is to make a local branch on the clone of
-your fork for each individual PR, and push those branches to your fork.
-Then when you create the PR, you choose the branch to use. Even if your
-branch is named something like `feature1`, you can still merge it into
-the `main` branch on the upstream.
+Cách để làm điều đó là tạo nhánh local trên bản clone fork của bạn cho từng PR
+riêng lẻ, rồi push những nhánh đó lên fork của bạn. Sau đó khi tạo PR, bạn
+chọn nhánh muốn dùng. Dù nhánh của bạn có tên kiểu `feature1`, bạn vẫn có thể
+merge nó vào nhánh `main` trên upstream.
 
-So make a new branch for the feature:
+Vậy hãy tạo nhánh mới cho tính năng:
 
 ``` {.default}
 $ git switch -c feature1
   Switched to a new branch 'feature1'
 ```
 
-Then make your changes, add, and commit.
+Sau đó thực hiện thay đổi, add, và commit.
 
 ``` {.default}
 $ vim readme.txt
@@ -339,7 +316,8 @@ $ git commit -m "feature 1"
    1 file changed, 1 insertion(+)
 ```
 
-Then push them to your repo, setting up a remote-tracking branch:
+Rồi push chúng lên repo của bạn, thiết lập remote-tracking branch (nhánh theo
+dõi từ xa):
 
 ``` {.default}
 $ git push -u origin feature1
@@ -361,105 +339,98 @@ $ git push -u origin feature1
   branch 'feature1' set up to track 'origin/feature1'.
 ```
 
-Now you can jump back to GitHub and issue a PR. (And look at the
-response from the remote helpfully telling you the GitHub URL to visit
-to issue the PR!)
+Giờ bạn có thể quay lại GitHub và tạo PR. (Và hãy xem phản hồi từ remote hữu
+ích gợi ý cho bạn URL GitHub để truy cập nhằm tạo PR!)
 
-In the GitHub UI, there might be a handy little popup there saying
-"feature1 had recent pushes 4 minutes ago" and a button "Compare and
-pull request" you can click to make the PR.
+Trong giao diện GitHub, có thể có một popup tiện lợi hiện ra như "feature1 had
+recent pushes 4 minutes ago" và nút "Compare and pull request" để bạn nhấn tạo
+PR.
 
-But if it's been too long and the popup is gone, not to worry. See the
-branch selector button on the upper left that probably says "main" right
-now? Pull it down and select the branch "feature1" that you want to
-create the PR for. Then click "Contribute" and open the PR.
+Nhưng nếu đã quá lâu và popup biến mất thì không sao. Xem nút chọn nhánh ở góc
+trên bên trái hiện đang ghi là "main" không? Kéo xuống và chọn nhánh "feature1"
+mà bạn muốn tạo PR. Sau đó nhấn "Contribute" và mở PR.
 
-There's a line at the top of the PR that indicates the repo and branch
-that will be merged into, and, on the right, your repo and branch name
-that you'll be merging from.
+Có một dòng ở đầu PR cho biết repo và nhánh mà sẽ được merge vào, và ở bên
+phải, repo và tên nhánh của bạn mà bạn sẽ merge từ đó.
 
-The rest of the PR proceeds as normal.
+Phần còn lại của PR tiến hành như bình thường.
 
-**Don't delete your branch until after the merge!** Once it has been
-safely merged, GitHub will pop up a "Delete branch" button for you on
-the PR page. This will delete the branch on GitHub, but you'll still
-have to delete `feature1` and `origin/feature1` on the command line.
+**Đừng xóa nhánh cho đến sau khi merge!** Khi đã được merge an toàn, GitHub sẽ
+hiển thị nút "Delete branch" trên trang PR. Thao tác này sẽ xóa nhánh trên
+GitHub, nhưng bạn vẫn phải xóa `feature1` và `origin/feature1` trên command
+line.
 
 [i[Pull request-->With branches]>]
 
-## Deleting a Pull Request
+## Xóa Pull Request
 
 [i[Pull request-->Deleting]<]
 
-Short answer: you can't.
+Câu trả lời ngắn: không thể.
 
-Long answer: you can.
+Câu trả lời dài: có thể.
 
-The irony is that the short answer is longer. I don't make the rules.
+Trớ trêu là câu trả lời ngắn lại dài hơn. Tôi không đặt ra luật lệ này đâu.
 
-Proper long answer: you can if you are the upstream owner and the PR
-contains sensitive information.
+Câu trả lời dài chính xác: có thể nếu bạn là chủ upstream và PR có chứa thông
+tin nhạy cảm.
 
-There's no way in the UI to delete PRs, whether you're the forker or
-forkee. And this can be a bummer especially if you've accidentally
-included some sensitive information like [flw[social security number
+Không có cách nào trên UI để xóa PR, dù bạn là người fork hay chủ repo được
+fork. Và điều này có thể gây khó chịu đặc biệt khi bạn vô tình đưa vào thông
+tin nhạy cảm như [flw[số an sinh xã hội
 078-05-1120|Social_Security_number#SSNs_used_in_advertising]].
 
-But hope is not all lost! The upstream owner can visit the virtual
-assistant at GitHub and [fl[ask for a pull request
-removal|https://support.github.com/request?q=pull+request+removals]]
-which apparently works. I haven't tried it.
+Nhưng vẫn còn hy vọng! Chủ upstream có thể truy cập trợ lý ảo của GitHub và
+[fl[yêu cầu xóa pull
+request|https://support.github.com/request?q=pull+request+removals]] và hình như
+cũng được. Tôi chưa thử.
 
-If there's a way as the forker to delete the PR they created, I haven't
-seen it. You'll have to plead your case with the upstream owner and get
-them to do it.
+Nếu người tạo fork có cách xóa PR họ đã tạo, tôi chưa thấy. Bạn sẽ phải thuyết
+phục chủ upstream để họ làm điều đó.
 
-In any case, you most definitely should change your leaked credentials
-right now and let that be a lesson to you.
+Trong mọi trường hợp, bạn chắc chắn phải thay đổi thông tin xác thực bị lộ ngay
+lập tức và lấy đó làm bài học.
 
 [i[Pull request-->Deleting]>]
 
-## Syncing on the Command Line {#sync-cl}
+## Đồng Bộ trên Command Line {#sync-cl}
 
 [i[Fork-->Syncing with Upstream]<]
 
-GitHub has that nice Sync button to bring the upstream changes into your
-fork, and this was a welcome addition. It used to be you had to do it
-the hard way.
+GitHub có nút Sync tiện lợi để đưa các thay đổi upstream vào fork của bạn, và
+đây là bổ sung đáng hoan nghênh. Trước đây bạn phải làm theo cách khó.
 
-But the hard way has an additional benefit: if the upstream conflicts
-with your changes, you can merge them locally before creating the PR.
-The GitHub UI requires you create a PR to resolve the conflict.
+Nhưng cách khó có thêm một lợi ích: nếu upstream xung đột với thay đổi của bạn,
+bạn có thể merge chúng local trước khi tạo PR. Giao diện GitHub yêu cầu bạn tạo
+PR để giải quyết xung đột.
 
-Additionally, if you just like the command line and want to quickly sync
-the upstream to your branch, this can do it.
+Ngoài ra, nếu bạn thích command line và muốn nhanh chóng đồng bộ upstream vào
+nhánh của mình, cách này cũng được.
 
-The plan is this:
+Kế hoạch như sau:
 
-1. Add an `upstream` remote that points to the upstream repo.
-2. Fetch the data from `upstream`.
-3. Merge the upstream branch into your branch.
-4. Resolve conflicts.
-5. Push your branch.
-6. Go issue a now-hopefully-non-conflicting PR.
+1. Thêm remote `upstream` trỏ đến repo upstream.
+2. Fetch (tải về) dữ liệu từ `upstream`.
+3. Merge nhánh upstream vào nhánh của bạn.
+4. Giải quyết xung đột.
+5. Push nhánh của bạn.
+6. Tạo PR giờ hy vọng không còn xung đột.
 
-Let's try. I'll be on my `main` branch, and try to sync it with the
-upstream's `main` branch. I'll show what it's like when there's a
-conflict. (If there were no conflict, the merge would succeed
-automatically.)
+Hãy thử. Tôi sẽ ở nhánh `main` của mình và cố đồng bộ nó với nhánh `main` của
+upstream. Tôi sẽ cho bạn thấy trông như thế nào khi có xung đột. (Nếu không có
+xung đột, merge sẽ thành công tự động.)
 
-First things first: if you haven't already, set up the `upstream` remote
-to point to the original owner's repo. This is the repo that you forked
-from. Since you won't be pushing to it, you can use the SSH or HTTP
-methods to access it. (And this remote can be named anything, but
-`upstream` is a common convention.)
+Trước tiên: nếu bạn chưa làm, hãy thiết lập remote `upstream` trỏ đến repo của
+chủ gốc. Đây là repo mà bạn đã fork từ đó. Vì bạn sẽ không push lên đó, bạn có
+thể dùng phương thức SSH hoặc HTTP để truy cập. (Và remote này có thể đặt tên
+bất kỳ, nhưng `upstream` là quy ước phổ biến.)
 
 ``` {.default}
 $ git remote add upstream https://github.com/other/orig-repo.git
 ```
 
-And then we need to get the new commits from the upstream repo and merge
-them into our stuff.
+Và sau đó chúng ta cần lấy các commit mới từ repo upstream và merge chúng vào
+của mình.
 
 [i[Fetch]]
 
@@ -481,12 +452,12 @@ $ git merge upstream/main
   Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-(You could also rebase if you wanted.)
+(Bạn cũng có thể rebase nếu muốn.)
 
-At this point, we should edit the file and resolve the conflict, and
-complete the resolution as per usual.
+Lúc này, chúng ta nên chỉnh sửa file và giải quyết xung đột, rồi hoàn thành
+như thường.
 
-And then we push back to our fork on GitHub!
+Và sau đó chúng ta push lại lên fork trên GitHub!
 
 ``` {.default}
 $ git push
@@ -502,13 +473,12 @@ $ git push
    8b2476c..c8a7e0a  main -> main
 ```
 
-If we jump back to the GitHub UI at this point and open a PR, it should
-tell us "These branches can be automatically merged" which is music to
-everyone's ears.
+Nếu chúng ta quay lại giao diện GitHub lúc này và mở PR, nó sẽ nói "These
+branches can be automatically merged" (Các nhánh này có thể tự động merge) ---
+đó là điều ai cũng muốn nghe.
 
-Once you have the `upstream` remote set up, all you have to do to sync
-in the future is do the [i[Fetch]] `git fetch upstream` and then merge
-or rebase your stuff with it.
+Khi đã thiết lập remote `upstream`, tất cả những gì bạn cần làm để đồng bộ trong
+tương lai là chạy [i[Fetch]] `git fetch upstream` rồi merge hoặc rebase với nó.
 
 [i[Fork-->Syncing with Upstream]>]
 
