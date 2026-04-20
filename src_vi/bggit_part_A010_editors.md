@@ -1,31 +1,29 @@
-# Appendix: Getting Out of Editors {#editor-get-out}
+# Phụ lục: Thoát Khỏi Editor {#editor-get-out}
 
 [i[Exiting editors]<]
 
-If you try to `git commit` and don't specify `-m` for a message, or if
-you `git pull` and there's a non-fast-forward merge, or if you `git
-merge` and there's a non-fast-forward merge and you don't specify `-m`,
-or what I'm sure are a host of other reasons, you might get popped into
-an editor.
+Nếu bạn thử `git commit` mà không chỉ định `-m` để nhập message, hoặc
+`git pull` gặp merge không fast-forward, hoặc `git merge` gặp merge không
+fast-forward mà không dùng `-m`, hay vì một lý do nào đó khác, bạn có thể
+bị hất vào trong một editor (trình soạn thảo).
 
-And you might not be familiar with that editor.
+Và bạn có thể không quen với editor đó.
 
-So here's how to get out of it.
+Vậy đây là cách thoát ra.
 
-* **Nano**: If the editor says "Nano" or "Pico" in the upper left, then
-  edit the commit message (if you want), then then hit `CTRL-X`, and
-  then hit `Y` to save, then `ENTER` to accept the given filename.
+* **Nano**: Nếu editor hiện chữ "Nano" hay "Pico" ở góc trên bên trái,
+  hãy chỉnh sửa commit message (nếu muốn), rồi nhấn `CTRL-X`, tiếp theo
+  nhấn `Y` để lưu, rồi `ENTER` để chấp nhận tên file được gợi ý.
 
-* **Vim**: If the screen has a bunch of `~` characters down the left and
-  a crazy-looking file name at the bottom maybe with the word `All`,
-  you're in Vim or some other vi ("vee eye") variant. Press `i`, then
-  type a message (if you want), then hit the `ESC` key in the upper
-  left, then type two capital `Z`s in a row. `ZZ`. That should save and
-  exit.
+* **Vim**: Nếu màn hình có một đống ký tự `~` dọc bên trái và tên file
+  trông kỳ cục ở phía dưới cùng, có thể kèm chữ `All`, bạn đang ở trong
+  Vim hoặc một biến thể vi ("vee eye") nào đó. Nhấn `i`, gõ message (nếu
+  muốn), rồi nhấn phím `ESC` ở góc trên bên trái, sau đó gõ hai chữ `Z`
+  hoa liên tiếp. `ZZ`. Vậy là lưu và thoát.
 
-  I love Vim. But it took a while. If you want to learn more, see the
-  [Appendix on Using Vim](#vim-tutorial), that has the briefest of
-  tutorials. I guess the previous paragraph was really the briefest, so
-  we'll call it the second-briefest.
+  Tôi rất thích Vim. Nhưng phải mất một thời gian mới quen. Nếu muốn tìm
+  hiểu thêm, xem [Phụ lục về Dùng Vim](#vim-tutorial), có hướng dẫn ngắn
+  gọn nhất có thể. À, đoạn trên mới là ngắn gọn nhất, nên cái kia sẽ là
+  ngắn gọn thứ hai.
 
 [i[Exiting editors]>]
