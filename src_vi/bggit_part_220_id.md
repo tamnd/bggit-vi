@@ -1,131 +1,87 @@
-# Changing Identity {#changing-identity}
+# Thay Đổi Identity (Danh Tính) {#changing-identity}
 
 [i[Identity]<]
 
-There are a few ways you're identified when you do work with Git.
+Có một vài cách bạn được nhận dạng khi làm việc với Git.
 
-They are held in:
+Chúng được lưu trong:
 
-* the `user.name` and `user.email` configuration variables
-* the SSH key you use to authenticate with a remote server like GitHub
-* the GPG key you use for signing commits (rare)
+* biến cấu hình `user.name` và `user.email`
+* SSH key bạn dùng để xác thực với remote server như GitHub
+* GPG key bạn dùng để ký commit (hiếm gặp)
 
-It's all well-and-good if you only ever use a single identity, but
-sometimes you might want to use different ones. For example, maybe for
-your personal fun work, you use one identity and SSH key, but then you
-got a contract job and you want to use your professional email and have
-to connect to a different server with a different SSH key.
+Mọi thứ đều ổn nếu bạn chỉ dùng một identity duy nhất, nhưng đôi khi bạn có thể muốn dùng các identity khác nhau. Ví dụ, có thể với những dự án vui vẻ cá nhân bạn dùng một identity và SSH key, nhưng rồi bạn nhận một hợp đồng và muốn dùng email chuyên nghiệp, đồng thời phải kết nối đến một server khác với SSH key khác.
 
-Let's check out what the defaults are for all these, as well as how to
-change them on a per repo basis.
+Hãy cùng xem các mặc định cho tất cả những thứ này, cũng như cách thay đổi chúng theo từng repo.
 
-## Changing the User Configuration Variables
+## Thay Đổi Biến Cấu Hình User
 
 [i[Configuration-->Name and email]]
 
-You'll want to do this if you have, say, some repos for work and some for
-play, or if you have multiple work or play emails you want to use
-on a per-repo basis.
+Bạn sẽ muốn làm điều này nếu, chẳng hạn, bạn có một số repo cho công việc và một số để vui chơi, hoặc nếu bạn có nhiều email công việc hoặc cá nhân muốn dùng trên từng repo riêng.
 
-> **Everyone, including me, will tell you that you shouldn't use your
-> work-assigned laptop for play**, and you double-especially shouldn't
-> do that if your "play" is other work-for-hire. That said, contractors
-> often have multiple things going on at once (and they own their
-> hardware), and sometimes people doing their own for-fun work might
-> want to use different emails on different projects.
+> **Mọi người, kể cả tôi, sẽ nói với bạn rằng bạn không nên dùng laptop công ty để làm việc cá nhân**, đặc biệt là khi "cá nhân" đó là làm thuê cho người khác. Dù vậy, các freelancer thường có nhiều việc cùng lúc (và họ sở hữu phần cứng của mình), và đôi khi người làm dự án cá nhân vì đam mê muốn dùng email khác nhau cho từng dự án.
 
-We've already covered this in the configuration chapter, but it's easy
-enough to change your local identify that's attached to each commit.
-Just change `user.name` and `user.email` to whatever you want.
+Chúng ta đã đề cập điều này trong chương cấu hình, nhưng việc thay đổi identity cục bộ gắn với từng commit là khá đơn giản. Chỉ cần thay đổi `user.name` và `user.email` thành bất kỳ thứ gì bạn muốn.
 
-In the repo in question, set the local configuration to override your
-global config:
+Trong repo cần thay đổi, đặt cấu hình cục bộ để ghi đè cấu hình toàn cục của bạn:
 
 ``` {.default}
 $ git config set user.name "My Alter Ego User Name"
 $ git config set user.email "alterego@example.com"
 ```
 
-And then when you make commits in this repo, that's the identity that
-will be attached to them. Commits in other repos will still obey your
-global username and email (unless you've overridden them, as well).
+Và sau đó khi bạn tạo commit trong repo này, identity đó sẽ được gắn vào chúng. Commit trong các repo khác vẫn tuân theo tên và email toàn cục của bạn (trừ khi bạn cũng đã ghi đè chúng).
 
-## Changing the SSH Authentication Key
+## Thay Đổi SSH Authentication Key (Khóa Xác Thực SSH)
 
 [i[Configuration-->SSH identity]<]
 
-You'll want to do this if you're connecting to someone's private remote
-(e.g. they're running a Gitea site of their own or something), and you
-need to set up a different SSH key just to access that site. But you
-want to keep using your same SSH key for your personal GitHub. How can
-we use the GitHub one for all my repos, and the alternate SSH key just
-for this one repo?
+Bạn sẽ muốn làm điều này nếu bạn đang kết nối đến remote riêng tư của ai đó (ví dụ họ đang chạy site Gitea riêng), và bạn cần thiết lập SSH key khác chỉ để truy cập site đó. Nhưng bạn vẫn muốn dùng SSH key hiện tại cho GitHub cá nhân. Làm thế nào để dùng SSH key GitHub cho tất cả repo, và SSH key thay thế chỉ cho repo này?
 
-This is slightly more involved, and [fl[there are a few ways to do
-this|https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use]],
-but I'll share my favorite here.
+Cách này phức tạp hơn một chút, và [fl[có một vài cách để làm điều này|https://superuser.com/questions/232373/how-to-tell-git-which-private-key-to-use]], nhưng tôi sẽ chia sẻ cách yêu thích của mình ở đây.
 
-First some background. When the `ssh` command runs, it needs to know
-which identity it is running as. It uses a default identity (which is
-in a file called `~/.ssh/id_something`, like `id_ed25519`) unless you
-specify another one.
+Trước tiên một chút nền tảng. Khi lệnh `ssh` chạy, nó cần biết đang chạy với identity nào. Nó dùng identity mặc định (trong file có tên `~/.ssh/id_something`, như `id_ed25519`) trừ khi bạn chỉ định cái khác.
 
-You can do this on the command line with the `-i` switch to `ssh`.
+Bạn có thể làm điều này trên dòng lệnh với switch `-i` của `ssh`.
 
-Let's say you have two private keys in your `.ssh` direcrtory,
-`id_ed25519` and `id_alterego_ed25519`. The first one is the default key
-SSH uses. But if we want to use the other one, we can specify it:
+Giả sử bạn có hai private key trong thư mục `.ssh`, `id_ed25519` và `id_alterego_ed25519`. Cái đầu là key mặc định SSH dùng. Nhưng nếu muốn dùng cái kia, chúng ta có thể chỉ định:
 
 ``` {.default}
 $ ssh -i ~/.ssh/id_alterego_ed25519 example.com
 ```
 
-Admittedly, that's a pain in the butt to type, so some people set up
-their SSH config to use a particular key with a particular host name.
-But we're not going down that route.
+Thừa nhận rằng gõ như vậy khá phiền, nên một số người thiết lập SSH config để dùng key cụ thể với hostname cụ thể. Nhưng chúng ta không đi theo hướng đó.
 
-Instead, let's tell Git to use a particular identity by setting the
-`core.sshCommand` variable locally for this repo. This variable just
-holds the SSH command that Git uses to connect, which would normally be
-`ssh`. Let's override:
+Thay vào đó, hãy bảo Git dùng một identity cụ thể bằng cách đặt biến `core.sshCommand` cục bộ cho repo này. Biến này chỉ chứa lệnh SSH mà Git dùng để kết nối, thường là `ssh`. Hãy ghi đè nó:
 
 ``` {.default}
 $ git config set core.sshCommand \
     "ssh -i ~/.ssh/id_alterego_ed25519 -F none"
 ```
 
-(The command above is split into two lines to fit in the margins—it is
-normally a single line and the `\` is Bash's line continuation.)
+(Lệnh trên được chia thành hai dòng cho vừa lề trang---thực ra là một dòng và `\` là ký hiệu tiếp dòng của Bash.)
 
-And—wait a second—what's that `-F none` on there? That's just a safety
-that's telling SSH to ignore its default configuration file. Remember
-how above I said people sometimes set an identity by domain in their SSH
-config? This would override that since overriding is what we're trying
-to do here.
+Và---khoan một chút---`-F none` kia là gì? Đó chỉ là một biện pháp an toàn bảo SSH bỏ qua file cấu hình mặc định của nó. Nhớ lại ở trên tôi đã nói người ta đôi khi đặt identity theo domain trong SSH config? Cái này sẽ ghi đè điều đó vì ghi đè chính là mục tiêu của chúng ta ở đây.
 
-The reason I like this approach is that you can easily do it on a
-per-repo basis, and the config is stored with the repo (instead of in an
-environment variable or in SSH's somewhat-unrelated configuration).
+Lý do tôi thích cách này là bạn có thể dễ dàng làm trên từng repo, và cấu hình được lưu cùng repo (thay vì trong biến môi trường hay cấu hình SSH vốn không liên quan đến việc này).
 
 [i[Configuration-->SSH identity]>]
 
-## Changing your GPG Signing Key {#gpg-signing}
+## Thay Đổi GPG Signing Key (Khóa Ký GPG) {#gpg-signing}
 
 [i[Configuration-->GPG signing key]<]
 
-If you use your [fl[GPG key|https://www.gnupg.org/]] for signing you can
-specify which key is used if you get its fingerprint (or probably email
-or any other unique identifier recognized by GPG).
+Nếu bạn dùng [fl[GPG key|https://www.gnupg.org/]] để ký, bạn có thể chỉ định key nào được dùng bằng cách lấy fingerprint của nó (hoặc email hay bất kỳ định danh duy nhất nào được GPG nhận ra).
 
-With apologies, setting up your GPG keypair is outside the scope of this
-book. But the Git-side one-time setup looks like this:
+Xin lỗi, việc thiết lập GPG keypair nằm ngoài phạm vi cuốn sách này. Nhưng thiết lập một lần từ phía Git trông như thế này:
 
 ``` {.default}
 $ git config gpg.format gpg
 $ git config commit.gpgsign true
 ```
 
-First find the secret key you're interested in:
+Trước tiên hãy tìm secret key bạn muốn dùng:
 
 ``` {.default}
 $ gpg --list-secret-keys --keyid-format LONG
@@ -141,76 +97,60 @@ $ gpg --list-secret-keys --keyid-format LONG
   ssb   rsa4096/FFFDEF0123456789 2022-12-06 [E] [expires: 2024-12-0
 ```
 
-(Output has been cropped on the right to fit in the book.)
+(Output đã bị cắt bên phải để vừa trang sách.)
 
-Look for the identity you want to use. In this case, let's say we want
-to use "Professional User Name". We look for the `sec` line that's
-associated with it (above it), and we copy that part of the secret line
-after the type of encryption (usually `rsa4096` or `ed25519`). Here
-that's `ABCDEF0123456789` in this fabricated example.
+Hãy tìm identity bạn muốn dùng. Trong trường hợp này, giả sử chúng ta muốn dùng "Professional User Name". Chúng ta tìm dòng `sec` liên quan đến nó (ở trên), và sao chép phần sau kiểu mã hóa (thường là `rsa4096` hoặc `ed25519`). Ở đây là `ABCDEF0123456789` trong ví dụ tưởng tượng này.
 
-And then we locally configure this repo to use that key in particular.
+Sau đó chúng ta cấu hình cục bộ cho repo này để dùng key đó.
 
 ``` {.default}
 git config set user.signingkey ABCDEF0123456789
 ```
 
-Then when you sign the commits, that key will be used.
+Sau đó khi bạn ký commit, key đó sẽ được dùng.
 
 [i[Configuration-->GPG signing key]>]
 
-## Changing your SSH Signing Key
+## Thay Đổi SSH Signing Key (Khóa Ký SSH)
 
 [i[Configuration-->SSH signing key]<]
 
-In addition to GPG, you can also sign commits with SSH keys. You can
-create a signing key with `ssh-keygen`:
+Ngoài GPG, bạn cũng có thể ký commit bằng SSH key. Bạn có thể tạo signing key bằng `ssh-keygen`:
 
 ``` {.default}
 $ ssh-keygen -t ed25519
 ```
 
-And then you have to do some one-time config if you haven't done so
-already. Use `--global` if you want to set this up across all your
-repos. This tells Git to use SSH keys and always sign commits:
+Và sau đó bạn phải thực hiện một số cấu hình một lần nếu chưa làm. Dùng `--global` nếu bạn muốn thiết lập cho tất cả repo. Cái này bảo Git dùng SSH key và luôn ký commit:
 
 ``` {.default}
 $ git config gpg.format ssh
 $ git config commit.gpgsign true
 ``` 
 
-Then we can set the key we use for signing. Change the path, below, to
-point to the public key:
+Rồi chúng ta có thể đặt key dùng để ký. Thay đổi đường dẫn dưới đây để trỏ đến public key:
 
 ``` {.default}
 $ git config user.signingkey ~/.ssh/id_ed25519_signing.pub
 ``` 
 
-Lastly, we have to add your information to the `allowed_signers` file.
-This file can go anywhere; in this example, we'll put it in `~/.ssh/`,
-but you could do one-offs per repo if you wanted.
+Cuối cùng, chúng ta phải thêm thông tin của bạn vào file `allowed_signers`. File này có thể đặt ở bất kỳ đâu; trong ví dụ này, chúng ta sẽ đặt nó trong `~/.ssh/`, nhưng bạn có thể đặt riêng từng repo nếu muốn.
 
-Firstly in this lastly step is to tell Git where your `allowed_signers`
-file is.
+Bước đầu tiên trong bước cuối cùng này là bảo Git biết `allowed_signers` của bạn ở đâu.
 
 ``` {.default}
 $ git config gpg.ssh.allowedSignersFile "~/.ssh/allowed_signers"
 ```
 
-The contents of that file should have at least two fields. First the
-email address found in your `user.email` config variable that you'll use
-for the commits. Second, a copy of the public key from your
-`user.signingkey` variable. Note that you want the *contents* of that
-file, not the file name.
+Nội dung của file đó phải có ít nhất hai trường. Đầu tiên là địa chỉ email trong biến cấu hình `user.email` của bạn mà bạn sẽ dùng cho commit. Thứ hai là bản sao của public key từ biến `user.signingkey` của bạn. Lưu ý rằng bạn muốn *nội dung* của file đó, không phải tên file.
 
-An example line in the `allowed_signers` file looks like this (line
-truncated for formatting):
+Ví dụ một dòng trong file `allowed_signers` trông như thế này (dòng đã bị cắt vì định dạng):
 
 ``` {.default}
 user@example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmaTS47vRmsKy
 ```
 
-You can have multiple lines in that file for multiple identities.
+Bạn có thể có nhiều dòng trong file đó cho nhiều identity.
 
 [i[Configuration-->SSH signing key]>]
 
