@@ -1,29 +1,30 @@
-# Ignoring Files with `.gitignore`
+# Bỏ Qua Files với `.gitignore`
 
 [i[`.gitignore` file]<]
 
-What if you have files in your subdirectory you don't want Git to pay
-any attention to? Like maybe you have some temporary files you don't
-want to see in the repo. Or maybe you have an executable you built from
-a C project and you don't want that checked in because your incredibly
-strict instructor won't grade your project if the repo contains any
-build products? For example.
+Nếu bạn có các file trong subdirectory của mình mà bạn không muốn Git
+để ý đến thì sao? Ví dụ có thể bạn có một số file tạm thời mà bạn không
+muốn thấy trong repo. Hoặc có thể bạn có một executable (file thực thi)
+mà bạn đã build từ một dự án C và bạn không muốn cái đó được checked in
+vì instructor (giảng viên) cực kỳ nghiêm khắc của bạn sẽ không chấm
+điểm dự án nếu repo chứa bất kỳ build product nào? Chẳng hạn.
 
-That's what this part of the guide is all about.
+Đó là những gì phần này của tài liệu nói về.
 
-## Adding a `.gitignore` File
+## Thêm File `.gitignore`
 
-In any directory of a Git repository, you can add a `.gitignore` ("dot
-gitignore") file.
+Trong bất kỳ thư mục nào của một Git repository, bạn có thể thêm file
+`.gitignore` ("dot gitignore").
 
-This is a simple textfile that contains a list of file names to ignore.
+Đây là một textfile (file văn bản) đơn giản chứa danh sách các tên file
+cần bỏ qua.
 
-Let's say I have a C project that builds an executable called "doom". I
-wouldn't want to check that into my source repo because it's not source,
-and it's just a big binary that takes a bunch of disk.
+Giả sử mình có một dự án C build ra một executable gọi là "doom". Mình
+không muốn check cái đó vào repo nguồn vì nó không phải là source (mã
+nguồn), và nó chỉ là một binary (nhị phân) lớn chiếm nhiều dung lượng.
 
-But when I get the status, it's annoying to see Git complaining about
-it:
+Nhưng khi mình lấy trạng thái, thật khó chịu khi thấy Git phàn nàn về
+nó:
 
 ``` {.default}
 $ git status
@@ -36,14 +37,14 @@ $ git status
   add" to track)
 ```
 
-So I edit a `.gitignore` file in that directory and add this one line to
-it:
+Vì vậy mình chỉnh sửa file `.gitignore` trong thư mục đó và thêm dòng
+này vào nó:
 
 ``` {.default}
 doom
 ```
 
-Now I run status again:
+Bây giờ mình chạy status lại:
 
 ``` {.default}
 $ git status
@@ -56,17 +57,18 @@ $ git status
   add" to track)
 ```
 
-What? Same thing? Not quite! Read the fine print!
+Ủa? Vẫn như vậy? Không hẳn! Đọc kỹ phần nhỏ!
 
-It used to be complaining that `doom` was untracked, but now it's not
-complaining. So the `.gitignore` worked. Woo hoo!
+Trước đây nó phàn nàn rằng `doom` chưa được tracked (theo dõi), nhưng
+bây giờ nó không phàn nàn nữa. Vì vậy `.gitignore` đã hoạt động. Hoan
+hô!
 
-But Git has found another untracked file in the brand new `.gitignore`.
-So we should add that to the repo.
+Nhưng Git đã tìm thấy một file chưa được tracked khác trong file
+`.gitignore` mới tạo. Vì vậy chúng ta nên thêm cái đó vào repo.
 
-Always put your `.gitignore` files in the repo unless you have a
-compelling reason not to. This way they'll exist in all your clones,
-which is handy.
+Luôn đặt các file `.gitignore` của bạn vào repo trừ khi bạn có lý do
+thuyết phục để không làm vậy. Bằng cách này chúng sẽ tồn tại trong tất
+cả các clone của bạn, điều này tiện lợi.
 
 ``` {.default}
 $ git add .gitignore
@@ -76,7 +78,7 @@ $ git commit -m Added
    create mode 100644 .gitignore
 ```
 
-Now we get the status:
+Bây giờ chúng ta lấy trạng thái:
 
 ``` {.default}
 $ git status
@@ -84,94 +86,94 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-and we're all clear. That `doom` file is still there in the working
-tree, but Git pays it no heed since it's in the `.gitignore`.
+và chúng ta đã clear (trong sáng). File `doom` đó vẫn ở đó trong working
+tree, nhưng Git không quan tâm đến nó vì nó ở trong `.gitignore`.
 
-## Can I Specify Subdirectories in `.gitignore`?
+## Tôi Có Thể Chỉ Định Subdirectories trong `.gitignore` Không?
 
 [i[`.gitignore` file-->With subdirectories]]
 
-Yes!
+Được!
 
-You can be as specific or as non-specific as you like with file matches.
+Bạn có thể cụ thể hoặc không cụ thể tùy thích với các file match (khớp).
 
-Here's a `.gitignore` looking for a very specific file:
+Đây là `.gitignore` tìm kiếm một file rất cụ thể:
 
 ``` {.default}
 subdir/subdir2/foo.txt
 ```
 
-That will match anywhere in the repo. If you want to only match a
-specific file from the repo root, you can prepend a slash:
+Điều đó sẽ khớp ở bất kỳ đâu trong repo. Nếu bạn muốn chỉ khớp một
+file cụ thể từ repo root, bạn có thể thêm một slash ở đầu:
 
 ``` {.default}
 /subdir/subdir2/foo.txt
 ```
 
-Note that means `subdir` in the root of the _repo_, not the root
-directory of your entire filesystem.
+Lưu ý rằng điều đó có nghĩa là `subdir` trong root (gốc) của _repo_,
+không phải thư mục root của toàn bộ filesystem của bạn.
 
-If you put this in your `.gitignore`:
+Nếu bạn đặt điều này vào `.gitignore` của mình:
 
 ``` {.default}
 foo.txt
 ```
 
-it will ignore `foo.txt` in all subdirectories of the repo.
+nó sẽ bỏ qua `foo.txt` trong tất cả các subdirectory của repo.
 
 
-## Where do I Put the `.gitignore`?
+## Tôi Đặt `.gitignore` Ở Đâu?
 
 [i[`.gitignore` file-->Location]]
 
-You can add `.gitignore` files to any subdirectories of your repo.
-But how they behave depends on where they are.
+Bạn có thể thêm file `.gitignore` vào bất kỳ subdirectory nào của repo.
+Nhưng cách chúng hoạt động phụ thuộc vào nơi chúng ở.
 
-The rule is this: *each `.gitignore` file applies to its containing
-directory **and** all the subdirectories below it*.
+Quy tắc là: *mỗi file `.gitignore` áp dụng cho thư mục chứa nó **và**
+tất cả các subdirectory bên dưới nó*.
 
-So if you put a `.gitignore` in your repo's root directory that has
-`foo.txt` in it, every single `foo.txt` in every subdirectory of your
-repo will be ignored.
+Vì vậy nếu bạn đặt một `.gitignore` trong thư mục gốc của repo có
+`foo.txt` trong đó, mọi `foo.txt` duy nhất trong mọi subdirectory của
+repo của bạn sẽ bị bỏ qua.
 
-Use the highest-level `.gitignore` file to block things you know you
-don't want **anywhere** in your repo.
+Dùng file `.gitignore` ở cấp cao nhất để chặn những thứ bạn biết bạn
+không muốn **ở bất kỳ đâu** trong repo.
 
-If you add additional `.gitignore` files to subdirectories, those only
-apply to that subdirectory and below.
+Nếu bạn thêm các file `.gitignore` bổ sung vào các subdirectory, chúng
+chỉ áp dụng cho subdirectory đó và bên dưới.
 
-The idea is that you start with the most broadly applicable set of
-ignored files in your repo root, and then get more specific in the
-subdirectories.
+Ý tưởng là bạn bắt đầu với bộ file bị bỏ qua áp dụng rộng rãi nhất
+trong repo root, rồi ngày càng cụ thể hơn trong các subdirectory.
 
-For simple repos, you're fine just having one `.gitignore` in the
-repo root directory.
+Đối với các repo đơn giản, bạn ổn chỉ với một `.gitignore` trong thư
+mục gốc của repo.
 
-And we'll also talk about overriding `.gitignore` entries soon.
+Và chúng ta cũng sẽ nói về việc ghi đè các mục `.gitignore` sớm thôi.
 
 ## Wildcards
 
 [i[`.gitignore` file-->Wildcards]]
 
-Do I have to individually list all the files I don't want in the
-`.gitignore`? What a pain!
+Tôi có phải liệt kê riêng lẻ tất cả các file tôi không muốn trong
+`.gitignore` không? Thật phiền phức!
 
-Luckily Git supports _wildcards_ in ignored file naming.
+May mắn thay Git hỗ trợ _wildcards_ (ký tự đại diện) trong việc đặt
+tên file bị bỏ qua.
 
-For example, if we wanted to block all the files that ended with a
-`.tmp` or `.swp` (Vim's temp file name) extension, we could use the `*`
-("splat") wildcard for that. Let's make a `.gitignore` that blocks
-those:
+Ví dụ, nếu chúng ta muốn chặn tất cả các file kết thúc bằng extension
+`.tmp` hoặc `.swp` (tên file temp của Vim), chúng ta có thể dùng wildcard
+`*` ("splat") cho điều đó. Hãy tạo một `.gitignore` chặn những cái đó:
 
 ``` {.default}
 *.tmp
 *.swp
 ```
 
-And now any files ending with `.tmp` or `.swp` will be ignored.
+Và bây giờ bất kỳ file nào kết thúc bằng `.tmp` hoặc `.swp` sẽ bị bỏ
+qua.
 
-Turns out that Vim has two kinds of swap files, `.swp` and `.swo`. So
-could we add them like this?
+Hóa ra Vim có hai loại swap file, `.swp` và `.swo`. Vì vậy chúng ta có
+thể thêm chúng như thế này?
 
 ``` {.default}
 *.tmp
@@ -179,61 +181,60 @@ could we add them like this?
 *.swp
 ```
 
-Sure! That works, but there's a shorter way where you can tell Git to
-match any character in a bracketed set. This is equivalent to the
-above:
+Tất nhiên! Điều đó hoạt động, nhưng có một cách ngắn hơn nơi bạn có
+thể nói với Git để khớp bất kỳ ký tự nào trong một tập được đặt trong
+ngoặc vuông. Điều này tương đương với trên:
 
 ``` {.default}
 *.tmp
 *.sw[op]
 ```
 
-You can read that last line as, "Match file names that begins with any
-sequence of characters, followed by `.sw`, followed by either `o` or
-`p`."
+Bạn có thể đọc dòng cuối đó là, "Khớp các tên file bắt đầu bằng bất
+kỳ chuỗi ký tự nào, theo sau là `.sw`, theo sau là `o` hoặc `p`."
 
-## Negated `.gitignore` Rules
+## Negated (Phủ Định) Quy Tắc `.gitignore`
 
 [i[`.gitignore` file-->Negated rules]]
 
-What if your root `.gitignore` is ignoring `*.tmp` files for the entire
-repo. No problem.
+Nếu `.gitignore` root của bạn đang bỏ qua các file `*.tmp` cho toàn bộ
+repo thì sao? Không vấn đề.
 
-But then later in development you have some deeply nested subdirectory
-that has a file `needed.tmp` that you really need to get into Git.
+Nhưng sau đó trong quá trình phát triển bạn có một subdirectory lồng sâu
+có file `needed.tmp` mà bạn thực sự cần đưa vào Git.
 
-Bad news, though, since `*.tmp` is ignored at the root level across all
-subdirectories in the repo! Can we fix it?
+Tin xấu, vì `*.tmp` bị bỏ qua ở cấp root trên tất cả các subdirectory
+trong repo! Chúng ta có thể sửa không?
 
-Yes! You can add a new `.gitignore` to the subdirectory with
-`needed.tmp` in it, with these contents:
+Được! Bạn có thể thêm một `.gitignore` mới vào subdirectory với
+`needed.tmp` trong đó, với nội dung này:
 
 ``` {.default}
 !needed.tmp
 ```
 
-This tells Git, "Hey, if you were ignoring `needed.tmp` because of some
-higher-up ignore rule, please stop ignoring it."
+Điều này nói với Git, "Này, nếu bạn đang bỏ qua `needed.tmp` vì quy
+tắc bỏ qua nào đó ở cấp cao hơn, xin hãy ngừng bỏ qua nó."
 
-So while `needed.tmp` was being ignored because of the root level ignore
-file, this more-specific file overrides that.
+Vì vậy trong khi `needed.tmp` đang bị bỏ qua vì file bỏ qua ở root,
+file cụ thể hơn này ghi đè điều đó.
 
-If you needed to allow all `.tmp` files in this subdirectory, you could
-use wildcards:
+Nếu bạn cần cho phép tất cả các file `.tmp` trong subdirectory này, bạn
+có thể dùng wildcards:
 
 ``` {.default}
 !*.tmp
 ```
 
-And that would make it so all `.tmp` files in this subdirectory were not
-ignored.
+Và điều đó sẽ làm cho tất cả các file `.tmp` trong subdirectory này
+không bị bỏ qua.
 
-## How To Ignore All Files Except a Few?
+## Làm Thế Nào để Bỏ Qua Tất Cả Các File Ngoại Trừ Một Số?
 
-You can use the negated rules for that.
+Bạn có thể dùng negated rules cho điều đó.
 
-Here's a `.gitignore` that ignores everything except files called `*.c`
-or `Makefile`:
+Đây là một `.gitignore` bỏ qua mọi thứ ngoại trừ các file gọi là `*.c`
+hoặc `Makefile`:
 
 ``` {.default}
 *
@@ -241,24 +242,23 @@ or `Makefile`:
 !Makefile
 ```
 
-The first line ignores everything. The next two lines negate that rule
-for those specific files.
+Dòng đầu tiên bỏ qua mọi thứ. Hai dòng tiếp theo phủ định quy tắc đó
+cho các file cụ thể đó.
 
 
-## Getting Premade `.gitignore` Files
+## Lấy Các File `.gitignore` Có Sẵn
 
 [i[`.gitignore` file-->Boilerplate]]
 
-[fl[Here's a repo|https://github.com/github/gitignore]] with a whole
-bunch.
+[fl[Đây là một repo|https://github.com/github/gitignore]] với rất nhiều
+cái.
 
-But you can also roll your own as needed. Use `git status` often to see
-if any files are there you want to ignore.
+Nhưng bạn cũng có thể tự tạo theo nhu cầu. Dùng `git status` thường
+xuyên để xem có file nào ở đó bạn muốn bỏ qua không.
 
-When you create a new repo on GitHub, it also gives you the option to
-choose a prepopulated `.gitignore`. **Warning!** Only do this if you're
-not planning to push an already-existing repo into this newly-made
-GitHub repo. If you plan to do this, GitHub's `.gitignore` will get in
-the way.
+Khi bạn tạo repo mới trên GitHub, nó cũng cho bạn tùy chọn chọn một
+`.gitignore` đã được điền trước. **Cảnh báo!** Chỉ làm điều này nếu bạn
+không có kế hoạch push một repo đã tồn tại vào repo GitHub mới tạo này.
+Nếu bạn định làm vậy, `.gitignore` của GitHub sẽ cản trở.
 
 [i[`.gitignore` file]>]
