@@ -1,87 +1,70 @@
-# Git Aliases
+# Git Alias (Bí danh Git)
 
 [i[Alias]<]
 
-Some of these Git commands might be painstaking to type. So far, we
-haven't had to do anything _too_ complicated, but we might eventually.
+Một số lệnh Git có thể rất phiền khi gõ. Cho đến giờ chúng ta chưa phải làm gì _quá_ phức tạp, nhưng biết đâu rồi sẽ cần đến.
 
-For example, let's say you want to see the names of the files that were
-modified with `git log`. It's no problem; you can tell it to do that.
+Ví dụ, giả sử bạn muốn xem tên các file được chỉnh sửa kèm theo `git log`. Không vấn đề gì---bạn có thể ra lệnh cho nó làm điều đó.
 
 ``` {.default}
 $ git log --name-only
 ```
 
-And that'll work.
+Và nó sẽ hoạt động.
 
-But let's say for the sake of example that you find yourself doing that
-a *lot*. It would get irksome.
+Nhưng giả sử vì một lý do nào đó bạn thấy mình làm việc đó *rất thường xuyên*. Lâu dần sẽ thấy phiền.
 
-Wouldn't it be easier if you could just make up a new command, like `git
-logn` that would do the same thing?
+Chẳng phải sẽ tiện hơn nếu bạn có thể tự đặt một lệnh mới, kiểu như `git logn`, để làm y chang việc đó sao?
 
-That's what aliases are for.
+Đó chính là mục đích của alias (bí danh).
 
-This chapter assumes you've read the [Configuration
-chapter](#configuration). In particular, if these commands don't work,
-you should look at [configuration of Older Git Versions](#config-old).
+Chương này giả định bạn đã đọc [chương Configuration (cấu hình)](#configuration). Nếu các lệnh dưới đây không hoạt động, hãy xem mục [configuration of Older Git Versions (cấu hình cho phiên bản Git cũ)](#config-old).
 
-## Creating an Alias
+## Tạo một Alias
 
 [i[Alias-->Creating]<]
 
-You do this through the configuration interface. Basically what you want
-to set is the variable `alias.myname` where `myname` is the name of the
-new command.
+Bạn làm việc này qua giao diện cấu hình. Về cơ bản, biến bạn cần đặt là `alias.myname`, trong đó `myname` là tên lệnh mới.
 
-Let's say you want to make `git logn` an alias for `git log
---name-only`. You can do it like this:
+Giả sử bạn muốn đặt `git logn` là alias cho `git log --name-only`. Bạn có thể làm như sau:
 
 ``` {.default}
 $ git config set --global alias.logn 'log --name-only'
 ```
 
-And at this point, you can run:
+Và từ đây, bạn có thể chạy:
 
 ``` {.default}
 $ git logn
 ```
 
-and it will be an alias for `git log --name-only`, effectively running
-that command.
+và nó sẽ là alias cho `git log --name-only`, tức là thực thi lệnh đó.
 
-I speculate that Git has a number of built-in commands (like `log` and
-`push`) and if you try to have it run something that is not a built-in,
-it tries to find it as an `alias` variable. And if it does, it
-substitutes that instead. 99% sure that's what's happening under the
-hood.
+Tôi đoán rằng Git có một số lệnh tích hợp sẵn (như `log` hay `push`) và nếu bạn thử chạy thứ gì đó không phải lệnh tích hợp, nó sẽ thử tìm trong biến `alias`. Nếu tìm thấy, nó sẽ thay thế lệnh đó vào. Tôi 99% chắc đó là những gì đang diễn ra bên dưới mui xe.
 
-Since aliases are just regular configuration variables, getting,
-setting, and deleting them happens as described in the [config
-chapter](#configuration).
+Vì alias chỉ là các biến cấu hình thông thường, việc lấy, đặt và xóa chúng được thực hiện như mô tả trong [chương config (cấu hình)](#configuration).
 
 [i[Alias-->Creating]>]
 
-## Displaying Aliases
+## Hiển thị các Alias
 
 [i[Alias-->Displaying]<]
 
-Since aliases are just config variables, you can just get them in order
-to see what they are.
+Vì alias chỉ là biến cấu hình, bạn có thể đơn giản là lấy chúng ra để xem.
 
 ``` {.default}
 $ git config get alias.logx
 ```
 
-If you want to see all of them, you can run this command:
+Nếu muốn xem tất cả alias, bạn có thể chạy lệnh này:
 
 ``` {.default}
 $ git config get --all --show-names --regexp '^alias\.'
 ```
 
-which is super annoying. I suggest you alias it. Wheee!
+lệnh này khá khó chịu khi phải gõ. Tôi đề nghị bạn nên đặt alias cho nó luôn. Wheee!
 
-> **Older versions of Git use this command instead:**
+> **Phiên bản Git cũ hơn dùng lệnh này thay thế:**
 > ``` {.display}
 > $ git config --get-regexp ^alias\.
 > ```
@@ -89,44 +72,40 @@ which is super annoying. I suggest you alias it. Wheee!
 
 [i[Alias-->Displaying]>]
 
-## Some Neat Sample Aliases
+## Một Số Alias Mẫu Hay Ho
 
 [i[Alias-->Examples]<]
 
-Some of the following are split into multiple lines so they fit in the
-book. You can put them on a single line, or type them as-is with the `\`
-escape that tells the shell to continue the command on the next line.
+Một số lệnh dưới đây được chia thành nhiều dòng cho vừa trang sách. Bạn có thể viết chúng trên một dòng, hoặc nhập như vậy với ký tự `\` là dấu thoát báo cho shell biết tiếp tục lệnh ở dòng sau.
 
-**Add all changed files** with `git adda`. Do this carefully since you
-might add more than you wanted!
+**Thêm tất cả file đã thay đổi** với `git adda`. Làm cẩn thận vì có thể bạn sẽ thêm nhiều hơn mức muốn!
 
 ``` {.default}
 $ git config set alias.adda "add --all"
 ```
 
-**More compact log showing the commit graph** with `git logc`.
+**Log gọn hơn có hiển thị commit graph (đồ thị commit)** với `git logc`.
 
 ``` {.default}
 $ git config set alias.logc "log --oneline --graph --decorate"
 ```
 
-**Diff the stage with the repo** with `git diffs`.
+**So sánh stage với repo** với `git diffs`.
 
 ``` {.default}
 $ git config set alias.diffs "diff --staged"
 ```
 
-**Make `git aliases` show all aliases** with `git aliases`.
+**Hiển thị tất cả alias** với `git aliases`.
 
 ``` {.default}
 $ git config set alias.aliases \
     "config get --all --show-names --regexp '^alias\.'"
 ```
 
-**Make a very colorful and customized log** with `git lol`.
+**Tạo một log đầy màu sắc và tùy biến cao** với `git lol`.
 
-(Make sure to get the spacing exactly as-is on this copy-paste or the
-shell and/or Git will be unhappy.)
+(Hãy đảm bảo khoảng trắng chính xác khi copy-paste, nếu không shell và/hoặc Git sẽ không vui.)
 
 ``` {.default}
 $ git config set alias.lol "log --graph"\
@@ -134,33 +113,26 @@ $ git config set alias.lol "log --graph"\
 " %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 ```
 
-For that last one, we're making heavy use of `--pretty` formatting which
-gives tons of control over the output. [fl[See the "Pretty Formats"
-section of the `git log` manual page for more
-info|https://git-scm.com/docs/git-log#_pretty_formats]].
+Với cái cuối đó, chúng ta đang dùng nhiều tùy chọn `--pretty` để kiểm soát đầu ra. [fl[Xem mục "Pretty Formats" trong trang hướng dẫn `git log` để biết thêm|https://git-scm.com/docs/git-log#_pretty_formats]].
 
 [i[Alias-->Examples]>]
 
-## Seeing Git's Alias Expansion
+## Xem Git Mở Rộng Alias Như Thế Nào
 
 [i[Alias-->Debugging]<]
 
-Let's say you've added an alias, but it's not working. When you run it,
-it just gives some error and it's not super clear what's going on.
+Giả sử bạn đã thêm một alias nhưng nó không hoạt động. Khi chạy, nó chỉ trả về lỗi mà không rõ chuyện gì đang xảy ra.
 
 ``` {.default}
 $ git logx
 fatal: unrecognized argument: --foobar
 ```
 
-You can ask Git to give you more information by adding `GIT_TRACE=1` to
-the beginning of the command line.
+Bạn có thể yêu cầu Git cung cấp thêm thông tin bằng cách thêm `GIT_TRACE=1` vào đầu dòng lệnh.
 
-> **This sets the environment variable `GIT_TRACE` to `1`,** but it only
-> does it for this one command. It's not persistent. Git knows to look
-> for `GIT_TRACE` and that it should alter its behavior if it finds it.
+> **Cách này đặt biến môi trường (environment variable) `GIT_TRACE` thành `1`,** nhưng chỉ cho lệnh này mà thôi. Không phải cố định. Git biết cách tìm `GIT_TRACE` và sẽ thay đổi hành vi nếu thấy nó.
 
-Here's some example output:
+Đây là một ví dụ về output:
 
 ``` {.default}
 $ GIT_TRACE=1 git logx
@@ -174,16 +146,11 @@ $ GIT_TRACE=1 git logx
   fatal: unrecognized argument: --foobar
 ```
 
-Unfortunately I had to truncate the lines on the right so they fit in
-the print version of the book, and that's what we really want to look
-at. We'll get there in a moment.
+Tiếc là tôi phải cắt bớt các dòng bên phải để vừa với trang in, và đó mới chính xác là thứ chúng ta muốn nhìn. Sẽ đến phần đó trong giây lát.
 
-For now, let's look on the left. What we see there is a timestamp and
-some information about which part of the Git code is sending the trace
-out. And then it ends with our error.
+Trước tiên, hãy nhìn vào bên trái. Chúng ta thấy timestamp (dấu thời gian) và thông tin về phần nào trong mã nguồn Git đang gửi trace ra. Rồi kết thúc bằng lỗi của chúng ta.
 
-Let's scroll to the right and just look at the lines following the
-`trace:`.
+Hãy cuộn sang phải và chỉ nhìn vào các dòng sau `trace:`.
 
 ``` {.default}
 trace: exec: git-logx
@@ -195,8 +162,7 @@ trace: start_command: /usr/lib/git-core/git log --foobar
 trace: built-in: git log --foobar
 ```
 
-It might take some sifting through, but let's look just at the lines
-with `run_command` and `alias expansion` in them:
+Có thể cần lọc một chút, nhưng hãy chỉ nhìn vào các dòng có `run_command` và `alias expansion`:
 
 ``` {.default}
 trace: run_command: git-logx
@@ -204,14 +170,10 @@ trace: alias expansion: logx => log --foobar
 trace: run_command: git log --foobar
 ```
 
-And there we can see exactly what's being expanded into what. And that
-might be useful for debugging it.
+Và ở đó chúng ta có thể thấy chính xác cái gì được mở rộng thành cái gì. Điều đó có thể hữu ích để debug.
 
-It's probably a bit of overkill for this simple example, but there are
-some aliases of extraordinary complexity for which this technique might
-help.
+Với ví dụ đơn giản này thì hơi quá đà, nhưng có những alias cực kỳ phức tạp mà kỹ thuật này có thể giúp ích.
 
 [i[Alias-->Debugging]>]
 
 [i[Alias]>]
-
