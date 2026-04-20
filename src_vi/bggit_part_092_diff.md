@@ -1,26 +1,18 @@
-# Comparing Files with Diff {#diff}
+# So Sánh File với Diff {#diff}
 
 [i[Diff]<]
 
-The powerful `git diff` command can give you differences between two
-files or commits. We mentioned it briefly at the beginning, but here
-we're going to delve more deeply into all the things you can do with it.
+Lệnh `git diff` mạnh mẽ có thể cho bạn thấy sự khác biệt giữa hai file hay hai commit. Ta đã đề cập đến nó thoáng qua ở đầu, nhưng ở đây ta sẽ đi sâu hơn vào tất cả những gì bạn có thể làm với nó.
 
-It's not the easiest thing to read at first, but you do get used to it
-after a while. My most common use case is to quickly scan to remember
-what I've changed in the working tree so I know what to add to the stage
-and what commit message to use.
+Đầu ra không phải là thứ dễ đọc lúc đầu, nhưng bạn sẽ quen dần sau một thời gian. Trường hợp dùng phổ biến nhất của tôi là nhanh chóng xem lại để nhớ mình đã thay đổi gì trong working tree để biết cần add gì vào stage và dùng commit message gì.
 
-## Basic Usage
+## Cách Dùng Cơ Bản
 
 [i[Diff-->Understanding the output]<]
 
-The most basic use case is that you've modified some files in your
-working tree and you want to see what the differences are between what
-was there and what you added.
+Trường hợp cơ bản nhất là bạn đã sửa đổi một số file trong working tree và muốn xem sự khác biệt giữa trạng thái trước và những gì bạn đã thêm vào.
 
-For example, let's say I've modified my `hello.py` file (but haven't
-staged it yet). I can check out what I've changed like so:
+Ví dụ, giả sử tôi đã sửa đổi file `hello.py` (nhưng chưa stage). Tôi có thể kiểm tra những gì đã thay đổi như sau:
 
 ``` {.default}
 $ git diff
@@ -40,34 +32,23 @@ $ git diff
   +goodbye()
 ```
 
-What do we have there? Why, it's an impenetrable mess, of course!
+Chúng ta có gì ở đó? Ồ, một mớ ký hiệu khó hiểu, dĩ nhiên rồi!
 
-_The End_
+_Hết_
 
-All right, take a deep breath and let's figure it out.
+Thôi được, hít thở sâu vào rồi ta sẽ tìm hiểu nhé.
 
-Since the output is plastered over with `hello.py`, we can safely
-assume this is the file we're talking about. If the diff is reporting on
-multiple files (e.g. you're comparing two commits), each file will have
-its own section in the output.
+Vì đầu ra trải đầy `hello.py`, ta có thể tự tin cho rằng đây là file ta đang nói đến. Nếu diff báo cáo trên nhiều file (ví dụ bạn đang so sánh hai commit), mỗi file sẽ có phần riêng trong đầu ra.
 
-> **The `index` line has the blob hashes and file permissions.** A blob
-> hash is the hash of the specific file in the states being compared.
-> This isn't something you need to worry about, typically. Or maybe not
-> even ever.
+> **Dòng `index` chứa blob hash và quyền của file.** Blob hash là hash
+> của file cụ thể ở các trạng thái đang được so sánh. Đây thường không
+> phải thứ bạn cần lo lắng. Hay thậm chí không bao giờ cần.
 
-After that we have a couple lines indicating that the old version of the
-file `a/hello.py` is the one marked with minus signs, and the new
-version (that you haven't staged yet) is `b/hello.py` and is marked with
-plus signs.
+Sau đó ta có một vài dòng cho biết phiên bản cũ của file `a/hello.py` được đánh dấu bằng dấu trừ, còn phiên bản mới (chưa stage) là `b/hello.py` và được đánh dấu bằng dấu cộng.
 
-Then we have `@@ -1,4 +1,8 @@`. This means that lines 1-4 in the old
-version are shown, and lines 1-8 in the new version are shown. (So
-clearly we've at least added some lines here.)
+Rồi ta có `@@ -1,4 +1,8 @@`. Điều này có nghĩa là dòng 1-4 trong phiên bản cũ được hiển thị, và dòng 1-8 trong phiên bản mới được hiển thị. (Vậy rõ ràng ta đã thêm ít nhất một số dòng ở đây.)
 
-Finally, we get to the steak and potatoes of the whole thing—what has
-actually changed? Remembering that the old version is minus and the new
-version is plus, let's look at just that part of the diff again:
+Cuối cùng, ta đến với phần thịt và khoai của cả câu chuyện --- thực sự đã thay đổi gì? Nhớ rằng phiên bản cũ là dấu trừ và phiên bản mới là dấu cộng, hãy nhìn vào phần đó của diff một lần nữa:
 
 ``` {.default}
    def hello():
@@ -81,176 +62,141 @@ version is plus, let's look at just that part of the diff again:
   +goodbye()
 ```
 
-Rules:
+Quy tắc:
 
-* If a line is prefixed with `-`, it means this is how the line was in
-  the old version.
+* Nếu một dòng có tiền tố `-`, nghĩa là dòng đó trong phiên bản cũ là như vậy.
 
-* If a line is prefixed with `+`, it means this is how the line is in
-  the new, modified version.
+* Nếu một dòng có tiền tố `+`, nghĩa là dòng đó trong phiên bản mới, đã sửa đổi, là như vậy.
 
-* If a line is not prefixed with anything, it means it is unchanged
-  between the versions.
+* Nếu một dòng không có tiền tố gì, nghĩa là nó không thay đổi giữa các phiên bản.
 
-> **The diff won't show you all the lines of the file!** It only shows
-> you what's changed and some of the surrounding lines. If there are
-> changes in different parts of the file, the unchanged parts of the
-> file will be skipped over in the diff.
+> **Diff sẽ không hiển thị cho bạn tất cả các dòng của file!** Nó chỉ
+> hiển thị những gì đã thay đổi và một số dòng xung quanh. Nếu có thay
+> đổi ở các phần khác nhau của file, các phần không thay đổi sẽ bị bỏ
+> qua trong diff.
 
-Another way to read the diff is that lines with a `-` have been removed
-and lines with a `+` have been added.
+Một cách khác để đọc diff là các dòng có `-` đã bị xóa và các dòng có `+` đã được thêm vào.
 
 [i[Diff-->Understanding the output]>]
 
-## Diffing the Stage
+## Diff Trên Stage
 
 [i[Diff-->The stage]<]
 
-What if you've added some stuff to the stage and you want to diff it
-against the previous commit?
+Nếu bạn đã add một số thứ vào stage và muốn diff nó với commit trước?
 
-Just typing `git diff` shows nothing!
+Chỉ gõ `git diff` sẽ không hiện gì cả!
 
-Why? It's because diff, by default, is showing *the difference between
-your working tree and the stage*. You just staged that file, copying it
-from the working tree to the stage, so the two are identical. So a diff
-shows no differences.
+Tại sao? Vì diff, theo mặc định, hiển thị *sự khác biệt giữa working tree và stage*. Bạn vừa stage file đó, sao chép nó từ working tree lên stage, vì vậy hai cái giống hệt nhau. Nên diff không thấy sự khác biệt nào.
 
-How do we diff the stage with the previous commit?
+Làm thế nào để diff stage với commit trước?
 
-The answer is really easy: `git diff --staged`[^91c6]. Done.
+Câu trả lời thực sự đơn giản: `git diff --staged`[^91c6]. Xong.
 
-[^91c6]: The `--staged` flag is more modern. Older versions of Git used
+[^91c6]: Flag `--staged` hiện đại hơn. Các phiên bản Git cũ dùng
     `git diff --cached`.
 
-But I want to use this subsection to dig a little deeper into what's
-happening so you can improve your understanding of how this works.
+Nhưng tôi muốn dùng phần này để đào sâu hơn một chút về những gì đang xảy ra để bạn hiểu rõ hơn cách hoạt động của nó.
 
-Mental model time!
+Đến giờ dùng mô hình tư duy!
 
-Let's say that these two things are true. Now, whether or not they're
-true doesn't really matter.
+Giả sử hai điều sau đây là đúng. Thực ra đúng hay không không quan trọng lắm.
 
-> _"It's only a model."_\
-> \ \ \ \ \ \ \ \ \ \ \ \ —Patsy, _Monty Python and the Holy Grail_
+> _"Đó chỉ là một mô hình thôi."_\
+> \ \ \ \ \ \ \ \ \ \ \ \ ---Patsy, _Monty Python and the Holy Grail_
 
-1. The stage contains a _copy_ of **all** unmodified files at your
-   current commit.
+1. Stage chứa một _bản sao_ của **tất cả** file chưa sửa đổi tại commit hiện tại của bạn.
 
-2. A `git status` or `git diff` only shows files that differ between
-   your working tree and the stage.
+2. `git status` hay `git diff` chỉ hiển thị file khác nhau giữa working tree và stage.
 
-So if you don't have any modifications, `git diff` won't show any
-differences. Because the stage and working tree are the same.
+Vậy nếu bạn không có sửa đổi nào, `git diff` sẽ không hiện sự khác biệt nào. Vì stage và working tree giống nhau.
 
-Now if you modify a file in your working tree and then `git diff`, you
-*will* see some changes, because the working tree differs from the
-stage.
+Bây giờ nếu bạn sửa đổi một file trong working tree rồi `git diff`, bạn *sẽ* thấy một số thay đổi, vì working tree khác với stage.
 
-But then if you add the modified file to the stage, then the stage and
-working tree become the same again. And `git diff` will show no
-differences.
+Nhưng sau đó nếu bạn add file đã sửa đổi vào stage, thì stage và working tree lại giống nhau. Và `git diff` sẽ không hiện sự khác biệt.
 
-*`git diff` **always** compares the working tree to the stage.* (Unless
-you're diffing specific commits—see below.) And in this case, after
-you've added your modified file to the stage, it's the same as the
-working tree. So no diffs.
+*`git diff` **luôn luôn** so sánh working tree với stage.* (Trừ khi bạn đang diff các commit cụ thể --- xem bên dưới.) Và trong trường hợp này, sau khi bạn đã add file đã sửa đổi vào stage, nó giống với working tree. Vậy không có diff nào.
 
-Contrast this to where you've modified the working tree but *haven't*
-added the file to the stage. In this case, the file on the stage is just
-like the last commit, which is different than your working tree. So `git
-diff` shows the differences.
+So sánh điều này với trường hợp bạn đã sửa đổi working tree nhưng *chưa* add file vào stage. Trong trường hợp này, file trên stage giống như commit cuối, khác với working tree. Vì vậy `git diff` hiển thị sự khác biệt.
 
-Well, okay, then... what if you *want* to diff what's on the stage with
-the last commit?  That is, instead of diffing the working tree with the
-stage, you want to diff the stage with the `HEAD`?
+Được rồi... vậy nếu bạn *muốn* diff những gì trên stage với commit cuối? Nghĩa là thay vì diff working tree với stage, bạn muốn diff stage với `HEAD`?
 
-Back to the punchline:
+Trở lại câu kết luận:
 
 ``` {.default}
 $ git diff --staged
 ```
 
-And that'll do it. This will run a diff between what's on the stage and
-the last commit, showing you the changes you've staged.
+Và xong. Lệnh này sẽ chạy diff giữa những gì trên stage và commit cuối, hiển thị cho bạn những thay đổi bạn đã stage.
 
 [i[Diff-->The stage]>]
 
-## More Diff Fun
+## Thêm Các Trò Hay Với Diff
 
-Let's speed through some examples of things you can do with diff.
+Hãy nhanh chóng xem qua một số ví dụ về những gì bạn có thể làm với diff.
 
-### Diff Any Commits or Branches
+### Diff Bất Kỳ Commit hay Branch
 
 [i[Diff-->Other commits]]
 [i[Diff-->Other branches]]
-You have more at your disposal than just diffing the working tree or
-stage. You can actually diff any two commits. This will show you all the
-differences between them.
+Bạn có nhiều lựa chọn hơn là chỉ diff working tree hay stage. Bạn thực sự có thể diff bất kỳ hai commit nào. Điều này sẽ hiển thị tất cả sự khác biệt giữa chúng.
 
-For example, if you know the commit hashes, you can diff them directly:
+Ví dụ, nếu bạn biết commit hash, bạn có thể diff trực tiếp:
 
 ``` {.default}
 $ git diff d977 27a3
 ```
 
-Or if you have two branch names:
+Hoặc nếu bạn có tên hai branch:
 
 ``` {.default}
 $ git diff main topic
 ```
 
-Or mix and match:
+Hay kết hợp:
 
 ``` {.default}
 $ git diff main 27a3
 ```
 
-Or use `HEAD`:
+Hay dùng `HEAD`:
 
 ``` {.default}
 $ git diff HEAD 27a3
 ```
 
-Or relative `HEAD`... This one diffs the previous-to-`HEAD` commit with
-the `HEAD`:
+Hay `HEAD` tương đối... Cái này diff commit trước-`HEAD` với `HEAD`:
 
 ``` {.default}
 $ git diff HEAD^ HEAD
 ```
 
-And this one diffs four commits before `HEAD` with three commits before
-`HEAD`:
+Và cái này diff bốn commit trước `HEAD` với ba commit trước `HEAD`:
 
 ``` {.default}
 $ git diff HEAD~4 HEAD~3
 ```
 
-### Diffing Order
+### Thứ Tự Khi Diff
 
-These are both valid ways to diff, but they give different (inverted)
-results:
+Đây là hai cách hợp lệ để diff, nhưng cho kết quả khác nhau (ngược nhau):
 
 ``` {.default}
 $ git diff main topic
 $ git diff topic main
 ```
 
-One way to think about this is that it's like:
+Một cách nghĩ về điều này là:
 
 ``` {.default}
 $ git diff FROM TO
 ```
 
-That is, "Hey, Git, tell me the changes I need to make to get from
-commit `FROM` to commit `TO`."
+Nghĩa là, "Này Git, hãy cho tôi biết những thay đổi tôi cần thực hiện để đi từ commit `FROM` đến commit `TO`."
 
-Let's say I made a file `foo.md` and committed it with a single line
-`First` in it. And then I overwrote it with `Second` and committed it
-again.
+Giả sử tôi đã tạo file `foo.md` và commit nó với một dòng duy nhất `First` trong đó. Và sau đó tôi ghi đè nó bằng `Second` và commit lại.
 
-In this example, I can ask, "What do I have to change from the
-previous-to-`HEAD` commit to the `HEAD` commit?"
+Trong ví dụ này, tôi có thể hỏi, "Tôi phải thay đổi gì từ commit trước-`HEAD` để đến commit `HEAD`?"
 
 ``` {.default}
 $ git diff HEAD^ HEAD
@@ -263,11 +209,9 @@ $ git diff HEAD^ HEAD
   +Second
 ```
 
-It's telling me to get from previous-to-`HEAD` to `HEAD`, I would need
-to delete `First` and add `Second`.
+Nó nói với tôi rằng để đi từ trước-`HEAD` đến `HEAD`, tôi cần xóa `First` và thêm `Second`.
 
-But if I reverse it and ask, "What do I have to change from `HEAD` to
-get back to the previous-to-`HEAD` commit?" I'll get the opposite:
+Nhưng nếu tôi đảo ngược và hỏi, "Tôi phải thay đổi gì từ `HEAD` để quay về commit trước-`HEAD`?" Tôi sẽ nhận được điều ngược lại:
 
 ``` {.default}
 $ git diff HEAD HEAD^
@@ -280,32 +224,27 @@ $ git diff HEAD HEAD^
   +First
 ```
 
-There it's telling me to get back to the previous-to-`HEAD` I'd need to
-delete `Second` and add `First`.
+Ở đó nó nói với tôi rằng để quay về trước-`HEAD` tôi cần xóa `Second` và thêm `First`.
 
-So remember, `git diff FROM TO` is telling you the changes you have to
-make to get from the `FROM` commit to the `TO` commit.
+Vậy nhớ nhé, `git diff FROM TO` nói với bạn những thay đổi cần thực hiện để đi từ commit `FROM` đến commit `TO`.
 
-### Diffing with Parent Commit
+### Diff Với Commit Cha
 
 [i[Diff-->Parent commit]]
-We just showed this example:
+Ta vừa thấy ví dụ này:
 
 ``` {.default}
 $ git diff HEAD~4 HEAD~3
 ```
 
-But since `HEAD~4` is the parent of `HEAD~3`, is there some shorthand we
-can use here? Yes!
+Nhưng vì `HEAD~4` là cha của `HEAD~3`, có cách viết tắt nào không? Có!
 
 ``` {.default}
 $ git diff HEAD~4 HEAD~3
 $ git diff HEAD~3^!          # Same thing!
 ```
 
-You can use it anywhere you want to compare a commit with its parent,
-which is really showing just what changes were in that one particular
-commit.
+Bạn có thể dùng ký hiệu này bất cứ khi nào muốn so sánh một commit với cha của nó, thực chất là hiển thị chỉ những thay đổi trong một commit cụ thể đó.
 
 ``` {.default}
 $ git diff HEAD^!
@@ -314,118 +253,100 @@ $ git diff main^!
 $ git diff 27a3^!
 ```
 
-### More Context
+### Thêm Ngữ Cảnh
 
 [i[Diff-->Additional context]]
-By default, `git diff` shows 3 lines of context around the changes. If
-you want to see more, like 5 lines, use the `-U` switch.
+Theo mặc định, `git diff` hiển thị 3 dòng ngữ cảnh xung quanh các thay đổi. Nếu bạn muốn thêm, ví dụ 5 dòng, hãy dùng tùy chọn `-U`.
 
 ``` {.default}
 $ git diff -U5
 ```
 
-### Just the File Names
+### Chỉ Tên File
 
 [i[Diff-->File names only]]
-If you just want a list of files that have changed, you can use the
-`--name-only` option.
+Nếu bạn chỉ muốn danh sách các file đã thay đổi, bạn có thể dùng tùy chọn `--name-only`.
 
 ``` {.default}
 $ git diff --name-only
 ```
 
-### Ignoring Whitespace
+### Bỏ Qua Khoảng Trắng
 
 [i[Diff-->Ignore whitespace]]
-There might be a time when you get some tabs/spaces confusion in your
-source code, which is always painful. Protip: stick to one and force
-everyone else on the team to do the same under penalty of paying for
-lunch.
+Đôi khi bạn gặp sự nhầm lẫn tab/spaces trong mã nguồn, thứ luôn gây đau đầu. Lời khuyên chuyên nghiệp: chọn một loại và bắt mọi người trong team phải tuân theo dưới hình phạt là phải trả tiền bữa ăn trưa.
 
-But you can commit `git diff` to ignore whitespace in the comparison:
+Nhưng bạn có thể bảo `git diff` bỏ qua khoảng trắng trong so sánh:
 
 ``` {.default}
 $ git diff -w
 $ git diff --ignore-all-space    # Same thing
 ```
-### Just Certain Files
+### Chỉ Các File Nhất Định
 
 [i[Diff-->Specific files]]
-You can just diff certain files.
+Bạn có thể chỉ diff một số file nhất định.
 
-One way is to just put the file names after a `--`:
+Một cách là đặt tên file sau `--`:
 
 ``` {.default}
 $ git diff -- hello.py
 $ git diff -- hello.py another_file.py
 ```
 
-You can also specify commits or branches before the `--`:
+Bạn cũng có thể chỉ định commit hay branch trước `--`:
 
 ``` {.default}
 $ git diff somebranch -- hello.py
 ```
 
-That'll compare `hello.py` in the working tree with the version on
-`somebranch`.
+Lệnh đó sẽ so sánh `hello.py` trong working tree với phiên bản trên `somebranch`.
 
-Or you could give two commits or branches to compare the file there:
+Hoặc bạn có thể đưa ra hai commit hay branch để so sánh file ở đó:
 
 ``` {.default}
 $ git diff main somebranch -- hello.py
 ```
 
-Finally, you can restrict to a file extension using a glob and single
-quotes:
+Cuối cùng, bạn có thể giới hạn bằng phần mở rộng file dùng glob và dấu nháy đơn:
 
 ``` {.default}
 $ git diff '*.py'
 ```
 
-That will just diff the Python files.
+Lệnh đó chỉ diff các file Python.
 
-### Inter-branch Diffs
+### Diff Giữa Các Branch
 
 [i[Diff-->Between branches]]
-This is an interesting version of comparing two branches.
+Đây là một phiên bản thú vị để so sánh hai branch.
 
-We already showed the following example for comparing the commits at two
-branches:
+Ta đã thấy ví dụ sau để so sánh các commit tại hai branch:
 
 ``` {.default}
 $ git diff branch1 branch2
 ```
 
-But sometimes you want to know what changed in a branch *since the
-branches diverged*.
+Nhưng đôi khi bạn muốn biết những gì đã thay đổi trong một branch *kể từ khi hai branch phân kỳ*.
 
-That is, you don't want to know what's different *now* between `branch1`
-and `branch2`, which is what the above would give you.
+Nghĩa là bạn không muốn biết hiện tại `branch1` và `branch2` khác nhau thế nào, đó là điều lệnh trên sẽ cho bạn.
 
-You want to know what `branch2` added or deleted that `branch1` did not.
+Bạn muốn biết `branch2` đã thêm hay xóa gì mà `branch1` không có.
 
-In order to see this, you can use this notation:
+Để thấy điều này, bạn có thể dùng ký hiệu:
 
 ``` {.default}
 $ git diff branch1...branch2
 ```
 
-This means "diff the common ancestor of `branch1` and `branch2` with
-`branch2`."
+Điều này có nghĩa là "diff tổ tiên chung của `branch1` và `branch2` với `branch2`."
 
-In other words, tell me all the changes that were made in `branch2` that
-`branch1` is unaware of. Don't show me anything that `branch1` has
-changed since they diverged.
+Nói cách khác, hãy cho tôi biết tất cả các thay đổi được thực hiện trong `branch2` mà `branch1` chưa biết đến. Đừng hiển thị bất cứ thứ gì mà `branch1` đã thay đổi kể từ khi chúng phân kỳ.
 
 ## Difftool
 
-I know the diff output is tough to read. I recommend practice and offer
-myself as living proof that with enough practice, the output becomes
-penetrable. And eventually it even becomes easy to read, which might be
-difficult to imagine. But it does!
+Tôi biết đầu ra diff khó đọc. Tôi khuyến nghị thực hành và tự đề xuất bản thân làm bằng chứng sống rằng với đủ thực hành, đầu ra sẽ trở nên xuyên thủng được. Và cuối cùng thậm chí sẽ dễ đọc, điều này có thể khó tưởng tượng. Nhưng quả thật vậy!
 
-That said, there are third-party tools that exist to make diffs more
-manageable, and Git supports these tools. You can read more about it in
-the [diff tool](#difftool) chapter.
+Nói vậy, có các công cụ bên thứ ba giúp diff dễ quản lý hơn, và Git hỗ trợ những công cụ này. Bạn có thể đọc thêm trong chương [diff tool](#difftool).
 
 [i[Diff]>]
