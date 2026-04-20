@@ -1,52 +1,42 @@
-# Remotes: Repos in Other Places
+# Remote: Repo ở Những Nơi Khác
 
 [i[Remote]<]
 
-A _remote_ is just a name for a remote server you can clone, push, and
-pull from.
+Một _remote_ (máy chủ từ xa) chỉ đơn giản là một cái tên cho một máy chủ từ xa mà bạn có thể clone, push, và pull từ đó.
 
-We identify these by a URL. With GitHub, this is a URL we copied when we
-went to clone the repo initially.
+Ta xác định những máy chủ này bằng URL. Với GitHub, đây là URL ta đã sao chép khi lần đầu clone repo.
 
-It's possible to use this URL to identify the server in our everyday Git
-usage, but it's unwieldy to type. So we give the remote server URLs
-nicknames that we just tend to call "remotes".
+Dùng URL trực tiếp để chỉ định máy chủ trong công việc Git hàng ngày là được, nhưng gõ cả cái URL dài đó thật phiền não. Vì vậy ta đặt biệt danh cho các URL máy chủ từ xa và thường gọi là "remote".
 
-A remote we've already seen a bunch of is [i[Remote-->`origin`]]
-`origin`. This is the nickname for the remote repo you cloned from, and
-it gets set automatically by Git when you clone.
+Một remote mà ta đã thấy nhiều rồi là [i[Remote-->`origin`]] `origin`. Đây là biệt danh của repo từ xa mà bạn đã clone về, và Git tự động đặt tên này khi bạn clone.
 
-## Remote and Branch Notation
+## Ký Hiệu Remote và Branch
 
 [i[Remote-->Remote branches]<]
 
-Before we begin, note that Git uses slash notation to refer to a
-specific branch on a specific remote: `remotename/branchname`.
+Trước khi bắt đầu, lưu ý rằng Git dùng ký hiệu gạch chéo để chỉ một branch cụ thể trên một remote cụ thể: `remotename/branchname`.
 
-For example, this refers to the `main` branch on the remote named
-`origin`:
+Ví dụ, cái này chỉ branch `main` trên remote tên là `origin`:
 
 ``` {.default}
 origin/main
 ```
 
-And this refers to the branch named `feature3490` on a remote named
-`nitfol`:
+Còn cái này chỉ branch tên `feature3490` trên remote tên `nitfol`:
 
 ``` {.default}
 nitfol/feature3490
 ```
 
-We'll talk more about this in the Remote Tracking Branches chapter.
+Ta sẽ nói thêm về điều này trong chương Remote Tracking Branches.
 
 [i[Remote-->Remote branches]>]
 
-## Getting a List of Remotes
+## Xem Danh Sách Remote
 
 [i[Remote-->Listing]<]
 
-You can run `git remote` with the `-v` option in any repo directory to
-see what remotes you have for that repo:
+Bạn có thể chạy `git remote` với tùy chọn `-v` trong bất kỳ thư mục repo nào để xem những remote mà repo đó có:
 
 ``` {.default}
 $ git remote -v
@@ -54,25 +44,19 @@ $ git remote -v
   origin    https://github.com/example-repo.git (push)
 ```
 
-We see that we're using the same URL for the remote named `origin` for
-both pull (part of which is `fetch`) and push. Having the same URL for
-both is super common.
+Ta thấy rằng ta đang dùng cùng một URL cho remote tên `origin` cho cả pull (trong đó có phần `fetch`) và push. Dùng cùng URL cho cả hai là rất phổ biến.
 
-And that URL is the exact same one we copied from GitHub when cloning
-the repo in the first place.
+Và URL đó chính xác là cái ta đã sao chép từ GitHub khi clone repo ban đầu.
 
 [i[Remote-->Listing]>]
 
-## Changing a Remote's URL
+## Thay Đổi URL của Remote
 
 [i[Remote-->Setting the URL]<]
 
-Remember that a remote name is just an alias for some URL that you
-cloned the repo from.
+Nhớ rằng tên remote chỉ là một bí danh cho URL nào đó mà bạn đã clone repo về.
 
-Let's say that you are all set up with your SSH keys to use GitHub for
-both push and pull, but you accidentally cloned the repo using the HTTPS
-URL. In that case, you'll see the following remote:
+Giả sử bạn đã thiết lập xong SSH key để dùng GitHub cho cả push lẫn pull, nhưng bạn vô tình clone repo bằng URL HTTPS. Trong trường hợp đó, bạn sẽ thấy remote như sau:
 
 ``` {.default}
 $ git remote -v
@@ -80,28 +64,24 @@ origin    https://github.com/example-repo.git (fetch)
 origin    https://github.com/example-repo.git (push)
 ```
 
-And then you try to push, and GitHub tells you that you can't push to an
-HTTPS remote... dang it!
+Và rồi bạn thử push, GitHub báo rằng bạn không thể push lên remote HTTPS... bực quá!
 
-You meant to copy the SSH URL when you cloned, which for me looks like:
+Bạn đáng lẽ phải sao chép URL SSH khi clone, trông giống như thế này với tôi:
 
 ``` {.default}
 git@github.com:beejjorgensen/git-example-repo.git
 ```
 
-Luckily it's not the end of the world. We can just change what the alias
-points to.
+May mắn thay, đây chưa phải là tận thế. Ta chỉ cần thay đổi URL mà bí danh đó trỏ tới.
 
-(The example below is split into two lines so that it's not too wide for
-the book, but it can be on a single line. The backslash lets Bash know
-that the line continues.)
+(Ví dụ bên dưới được chia thành hai dòng cho khỏi quá rộng so với trang sách, nhưng bạn có thể viết trên một dòng. Dấu gạch chéo ngược cho Bash biết rằng lệnh còn tiếp tục.)
 
 ``` {.default}
 $ git remote set-url origin \
              git@github.com:beejjorgensen/git-example-repo.git
 ```
 
-And now when we look at our remotes, we see:
+Và bây giờ khi xem lại remote, ta thấy:
 
 ``` {.default}
 $ git remote -v
@@ -109,44 +89,36 @@ origin    git@github.com:beejjorgensen/git-example-repo.git (fetch)
 origin    git@github.com:beejjorgensen/git-example-repo.git (push)
 ```
 
-And now we can push! (Assuming we have our SSH keys set up.)
+Và giờ ta có thể push rồi! (Giả sử SSH key đã được thiết lập.)
 
 [i[Remote-->Setting the URL]>]
 
-## Adding a Remote
+## Thêm Remote
 
 [i[Remote-->Adding]<]
 
-There's nothing stopping you from adding another remote.
+Không có gì ngăn bạn thêm một remote khác.
 
-A common example is if you _forked_ a GitHub Project (more on that
-later). A fork is a GitHub construct that enables you to easily clone
-someone else's public repo into your own account, and gives you a handy
-way to share changes you make with the original repo.
+Một ví dụ phổ biến là khi bạn _fork_ một dự án GitHub (sẽ nói thêm sau). Fork là một tính năng của GitHub cho phép bạn dễ dàng clone repo công khai của người khác vào tài khoản của mình, và cung cấp cách tiện lợi để chia sẻ những thay đổi bạn làm với repo gốc.
 
-Let's say I forked the Linux source repo. When I clone my fork, I'll
-see these remotes:
+Giả sử tôi đã fork repo mã nguồn Linux. Khi tôi clone fork đó, tôi sẽ thấy các remote này:
 
 ``` {.default}
 origin    git@github.com:beejjorgensen/linux.git (fetch)
 origin    git@github.com:beejjorgensen/linux.git (push)
 ```
 
-I don't have access to the real Linux source code, but I can fork it and
-get my own copy of the repo.
+Tôi không có quyền truy cập vào mã nguồn Linux thật sự, nhưng tôi có thể fork nó và lấy bản sao repo của riêng mình.
 
-Now, if Linus Torvalds makes changes to his repo, I won't automatically
-see them. So I'd like some way to get his changes and merge them in with
-my repo.
+Bây giờ, nếu Linus Torvalds thực hiện thay đổi trong repo của ông, tôi sẽ không tự động thấy chúng. Vì vậy tôi muốn có cách nào đó để lấy các thay đổi của ông về và merge vào repo của mình.
 
-I need some way to refer to his repo, so I'm going to add a remote
-called `reallinux` that points to it:
+Tôi cần một cách để tham chiếu đến repo của ông, vì vậy tôi sẽ thêm một remote tên `reallinux` trỏ đến nó:
 
 ``` {.default}
 $ git remote add reallinux https://github.com/torvalds/linux.git
 ```
 
-Now my remotes look like this:
+Bây giờ danh sách remote của tôi trông như thế này:
 
 ``` {.default}
 origin    git@github.com:beejjorgensen/linux.git (fetch)
@@ -156,43 +128,37 @@ reallinux    https://github.com/torvalds/linux.git (push)
 ```
 
 > [i[Remote-->`upstream` convention]]
-> Normally when setting up a remote that refers to the source of a forked
-> repo on GitHub, people tend to call that remote `upstream`, whereas
-> I've clearly called it `reallinux`.
+> Thông thường khi thiết lập remote trỏ đến repo nguồn của một fork trên
+> GitHub, người ta hay gọi remote đó là `upstream`, trong khi tôi đã đặt
+> tên là `reallinux`.
 >
-> I did this because when we subsequently talk about [remote tracking
-> branches](#remote-tracking-branch), we're going to use "upstream" to
-> mean something else, and I don't want the two to be confusing.
+> Tôi làm vậy vì khi ta sẽ nói về [remote tracking
+> branches](#remote-tracking-branch), ta sẽ dùng "upstream" với nghĩa
+> khác, và tôi không muốn hai khái niệm này gây nhầm lẫn.
 >
-> Just remember IRL when you set up a remote to point to the forked-from
-> repo, it's relatively customary to call that remote `upstream`.
+> Chỉ cần nhớ rằng trong thực tế khi bạn thiết lập remote trỏ đến repo
+> gốc mà bạn đã fork, thường thì người ta đặt tên remote đó là `upstream`.
 
 [i[Remote-->Sync with `upstream`]]
 
-Now I can run this to get all the changes from Linus's repo:
+Bây giờ tôi có thể chạy lệnh này để lấy tất cả thay đổi từ repo của Linus:
 
 ``` {.default}
 $ git fetch reallinux
 ```
 
-And I can merge it into my branch (the Linux repo uses `master`
-instead of `main` for the main branch):
+Và tôi có thể merge nó vào branch của mình (repo Linux dùng `master` thay vì `main` cho branch chính):
 
 ``` {.default}
 $ git switch master            # My local master
 $ git merge reallinux/master   # Note the slash notation!
 ```
 
-That will merge the `master` branch from the `reallinux` into my local
-`master`, once we've dealt with any conflicts.
+Lệnh đó sẽ merge branch `master` từ `reallinux` vào branch `master` cục bộ của tôi, sau khi ta đã xử lý xong mọi conflict.
 
-If I make another commit, this will move my local `HEAD` and `master` to
-that new commit, and will leave `origin/master` (my fork on GitHub) and
-`reallinux/master` (Linus's repo) farther behind.
+Nếu tôi thực hiện thêm một commit, `HEAD` và `master` cục bộ của tôi sẽ chuyển đến commit đó, còn `origin/master` (fork của tôi trên GitHub) và `reallinux/master` (repo của Linus) sẽ ở lại phía sau.
 
-Let's say for fun I made two commits that I didn't have on my `origin`
-remote at GitHub. In that case, a chopped up and
-fabricated-for-demonstration-purposes log might look like this:
+Giả sử cho vui tôi đã tạo hai commit mà tôi chưa có trên remote `origin` ở GitHub. Trong trường hợp đó, một log đã cắt bớt và dựng lên cho mục đích minh họa có thể trông như thế này:
 
 ``` {.default}
 commit 2d7d5d (HEAD -> master)
@@ -201,9 +167,7 @@ commit 311eb3 (origin/master)
 commit d5d2cc (reallinux/master)
 ```
 
-At this point I'd do a `git push` to send my local `master` changes to
-GitHub and catch up my `origin/master` there. So the top commit would
-show:
+Lúc này tôi sẽ `git push` để gửi các thay đổi `master` cục bộ lên GitHub và đưa `origin/master` lên ngang. Vậy commit trên cùng sẽ hiện:
 
 ``` {.default}
 commit 2d7d5d (HEAD -> master, origin/master)
@@ -212,14 +176,11 @@ commit 311eb3
 commit d5d2cc (reallinux/master)
 ```
 
-And `reallinux/master` would still be behind somewhere. (And there it
-would remain until Linus deigned to merge my changes.)
+Và `reallinux/master` sẽ vẫn ở lại phía sau đó. (Và nó sẽ ở đó mãi cho đến khi Linus nhã ý merge các thay đổi của tôi.)
 
-It's interesting that my local `master` can be out of sync from the
-`master` on `origin`, right?
+Thú vị phải không, khi `master` cục bộ của tôi có thể không đồng bộ với `master` trên `origin`?
 
-We'll look at this in the [Remote Tracking Branches
-chapter](#remote-tracking-branch).
+Ta sẽ xem xét điều này trong [chương Remote Tracking Branches](#remote-tracking-branch).
 
 [i[Remote-->Adding]>]
 
