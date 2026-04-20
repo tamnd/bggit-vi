@@ -1,103 +1,105 @@
-# GitHub: How To Use It
+# GitHub: Cách Sử Dụng
 
 [i[GitHub]<]
 
-Now, we've said that GitHub (which is a proprietary web front-end to Git
-run and owned by Microsoft) is not Git, and it's true. It's also true
-that you never even need to touch GitHub in order to use Git.
+Chúng ta đã nói rằng GitHub (đó là một web frontend (giao diện web) độc
+quyền cho Git do Microsoft điều hành và sở hữu) không phải là Git, và
+điều đó đúng. Cũng đúng là bạn không cần phải chạm đến GitHub để dùng
+Git.
 
-That said, it's *really* common for people to use GitHub, so we'll get
-it set up in this chapter.
+Tuy nhiên, *thực sự* phổ biến là mọi người dùng GitHub, vì vậy chúng
+ta sẽ thiết lập nó trong chương này.
 
-Here we'll make a new GitHub account and see how authentication works.
-This involves some one-time setup.
+Ở đây chúng ta sẽ tạo tài khoản GitHub mới và xem cách authentication
+(xác thực) hoạt động. Điều này bao gồm một số thiết lập một lần.
 
-If you already have a GitHub account, you can skip that section.
+Nếu bạn đã có tài khoản GitHub, bạn có thể bỏ qua phần đó.
 
-If you already have authentication set up with GitHub CLI or with SSH
-keys, you can skip that section, as well.
+Nếu bạn đã thiết lập xác thực với GitHub CLI hoặc với SSH keys, bạn
+cũng có thể bỏ qua phần đó.
 
-If you don't need to use GitHub, you can skip the entire chapter!
+Nếu bạn không cần dùng GitHub, bạn có thể bỏ qua toàn bộ chương này!
 
-## Making a GitHub Account
+## Tạo Tài Khoản GitHub
 
 [i[GitHub-->Account creation]]
 
-Head on over to [fl[GitHub|https://github.com/]] and click `Sign Up`.
-Follow those instructions.
+Hãy đến [fl[GitHub|https://github.com/]] và nhấp `Sign Up`. Làm theo
+những hướng dẫn đó.
 
-Eventually you'll end up on your home screen dashboard.
+Cuối cùng bạn sẽ đến trang dashboard (bảng điều khiển) chính của mình.
 
-## Creating a New Repo on GitHub
+## Tạo Repo Mới trên GitHub
 
 [i[GitHub-->Repo creation]]
 
-This will make a repository on GitHub that you own. It does not make a
-local repository—you'll have to clone the repo for that, something we'll
-do later.
+Điều này sẽ tạo một repository trên GitHub mà bạn sở hữu. Nó không tạo
+repository local --- bạn sẽ phải clone repo cho điều đó, điều chúng ta
+sẽ làm sau.
 
-In GitHub, there's a green `New` button on the left of the dashboard.
+Trong GitHub, có nút `New` màu xanh lá ở bên trái của dashboard.
 
-Also, there's a `+` pulldown on the upper right center that has a "New
-Repository" option. Click one of those.
+Ngoài ra, có một pulldown `+` ở góc phải trên cùng có tùy chọn "New
+Repository". Nhấp vào một trong số đó.
 
-On the subsequent page:
+Trên trang tiếp theo:
 
-1. Enter a "Repository name", which can be anything as long as you don't
-   already have a repo by that name. Let's use `test-repo` for this
-   example.
+1. Nhập "Repository name" (Tên repository), có thể là bất cứ thứ gì
+   miễn là bạn chưa có repo với tên đó. Hãy dùng `test-repo` cho ví
+   dụ này.
 
-2. Check the "Add a README file" checkbox.
+2. Đánh dấu vào ô "Add a README file".
 
-   (In the future, you might already have a local repo you're going to
-   push to this new repo. If that's the case, do **not** check this box
-   or it'll prevent the push from happening.)
+   (Trong tương lai, bạn có thể đã có một repo local mà bạn sẽ push
+   lên repo mới này. Nếu vậy, **đừng** đánh dấu ô này vì nó sẽ ngăn
+   việc push xảy ra.)
 
-3. Click `Create repository` at the bottom.
+3. Nhấp `Create repository` ở cuối trang.
 
-And there you have it.
+Và đó là xong.
 
-## Authentication
+## Xác Thực
 
 [i[GitHub-->Authentication]]
 
-Before we get to cloning, let's talk authentication. In the previous
-part of the intro, we saw that username/password logins were disabled,
-so we have to do something different.
+Trước khi đến phần clone, hãy nói về authentication. Trong phần trước
+của phần giới thiệu, chúng ta thấy rằng đăng nhập bằng username/password
+đã bị vô hiệu hóa, vì vậy chúng ta phải làm điều gì đó khác.
 
-There are a few options:
+Có một vài tùy chọn:
 
-* Use a tool called GitHub CLI
-* Use SSH keys
-* Use Personal Authentication Tokens
+* Dùng công cụ gọi là GitHub CLI
+* Dùng SSH keys (khóa SSH)
+* Dùng Personal Authentication Tokens (Token xác thực cá nhân)
 
-GitHub CLI is likely easier. SSH keys are geektacular. I only recently
-learned that you could authenticate with personal access tokens, so I
-can't really speak to them much.
+GitHub CLI có lẽ dễ hơn. SSH keys thì "geektacular" (cực kỳ geek).
+Mình chỉ gần đây mới biết bạn có thể xác thực với personal access
+tokens, vì vậy mình không thể nói nhiều về chúng.
 
-Personally, I use SSH keys. But other people... don't. It's up to you.
+Cá nhân, mình dùng SSH keys. Nhưng những người khác... thì không. Tùy
+bạn.
 
-If you already have authentication working with GitHub, skip these
-sections.
+Nếu bạn đã thiết lập xác thực hoạt động với GitHub, hãy bỏ qua các
+phần này.
 
-Otherwise, choose one of them (like SSH) and use it.
+Nếu không, hãy chọn một trong số chúng (như SSH) và dùng nó.
 
 ### GitHub CLI
 
 [i[GitHub-->GitHub CLI setup]]
 
-This is a command line interface to GitHub. It does a number of things,
-but one of them is providing an authentication helper so you can do
-things like actually push to a remote repo.
+Đây là command line interface (giao diện dòng lệnh) cho GitHub. Nó làm
+nhiều thứ, nhưng một trong số đó là cung cấp authentication helper (trợ
+giúp xác thực) để bạn có thể thực hiện những việc như thực sự push lên
+remote repo.
 
-[fl[Visit the GitHub CLI page|https://cli.github.com/]] and follow the
-installation instructions. If you're using WSL, Linux, or another Unix
-variant, see their [fl[installation
-instructions|https://github.com/cli/cli#installation]] for other
-platforms.
+[fl[Truy cập trang GitHub CLI|https://cli.github.com/]] và làm theo
+hướng dẫn cài đặt. Nếu bạn đang dùng WSL, Linux, hoặc một Unix variant
+khác, hãy xem [fl[hướng dẫn cài đặt|https://github.com/cli/cli#installation]]
+của họ cho các nền tảng khác.
 
-Once you have it installed, you should be able to run 'gh --version' and
-see some version information, e.g.:
+Sau khi cài đặt, bạn sẽ có thể chạy `gh --version` và thấy một số
+thông tin phiên bản, ví dụ:
 
 ``` {.default}
 $ gh --version
@@ -105,74 +107,73 @@ $ gh --version
   https://github.com/cli/cli/releases/tag/v2.42.1
 ```
 
-Then you'll want to run the following two commands:
+Sau đó bạn sẽ muốn chạy hai lệnh sau:
 
 ``` {.default}
 $ gh auth login
 $ gh auth setup-git
 ```
 
-The first command (`login`) will take you through the login process.
-You'll have to do this again if you log out.
+Lệnh đầu tiên (`login`) sẽ dẫn bạn qua quá trình đăng nhập. Bạn sẽ
+phải làm lại điều này nếu bạn đăng xuất.
 
-It's going to ask you if you want to use SSH or HTTP. If you have SSH
-keys set up, I recommend using that. If you don't,
-choose "HTTP" when it asks. The main difference is that with HTTP, the
-login credentials are stored unencrypted, whereas with SSH, you can
-protect them with a passphrase. See below for setting up SSH keys.
+Nó sẽ hỏi bạn có muốn dùng SSH hay HTTP. Nếu bạn đã thiết lập SSH keys,
+mình khuyến nghị dùng cái đó. Nếu bạn chưa có, chọn "HTTP" khi được
+hỏi. Sự khác biệt chính là với HTTP, thông tin đăng nhập được lưu không
+được mã hóa, trong khi với SSH, bạn có thể bảo vệ chúng bằng passphrase.
+Xem bên dưới để thiết lập SSH keys.
 
-And logging in with a web browser is easiest, when it asks.
+Và đăng nhập bằng web browser là dễ nhất, khi được hỏi.
 
-The second command (`setup-git`) is one-time only. This just adds to
-your global config some stuff to help with authentication.
+Lệnh thứ hai (`setup-git`) chỉ dùng một lần. Lệnh này chỉ thêm vào
+global config (cấu hình toàn cục) của bạn một số thứ để giúp xác thực.
 
 ### SSH Keys
 
 [i[GitHub-->SSH setup]]
 
-If you don't want to install and use GitHub CLI, you can take this
-approach instead. This is more involved, but has more geek cred. This is
-what I use.
+Nếu bạn không muốn cài đặt và dùng GitHub CLI, bạn có thể thay thế bằng
+cách tiếp cận này. Đây là cách phức tạp hơn, nhưng có nhiều geek cred
+(uy tín geek) hơn. Đây là cách mình dùng.
 
-If you already have an SSH keypair, you can skip the key generation
-step. You'd know you had one if you ran `ls ~/.ssh` and you saw a file
-like `id_rsa.pub` or `id_ed25519.pub`.
+Nếu bạn đã có một SSH keypair (cặp khóa SSH), bạn có thể bỏ qua bước
+tạo khóa. Bạn biết mình có một cái nếu bạn chạy `ls ~/.ssh` và thấy
+một file như `id_rsa.pub` hoặc `id_ed25519.pub`.
 
-To make a new keypair, run the following command:
+Để tạo một keypair mới, chạy lệnh sau:
 
 ``` {.default}
 $ ssh-keygen -t ed25519 -C youremail@example.com
 ```
 
-(The `-C` sets a "comment" in the key. It can be anything, but an email
-address is common.)
+(Flag `-C` đặt "comment" (bình luận) trong khóa. Có thể là bất cứ thứ
+gì, nhưng địa chỉ email là phổ biến.)
 
-This results in a lot of prompts, but you can just hit ENTER for all of
-them.
+Điều này tạo ra rất nhiều prompt, nhưng bạn có thể chỉ nhấn ENTER cho
+tất cả chúng.
 
-> **Best practice is to use a password to access this key**, otherwise
-> anyone with access to the private key can impersonate you and access
-> your GitHub account, and any other account you have set up to use that
-> key. But it's a pain to type the password every time you want to use
-> the key (which is any time you do anything with GitHub from the
-> command line), so people use a _key agent_ which remembers the
-> password for a while.
+> **Thực hành tốt nhất là dùng mật khẩu để truy cập khóa này**, nếu
+> không bất kỳ ai có quyền truy cập vào private key có thể mạo danh bạn
+> và truy cập tài khoản GitHub của bạn, và bất kỳ tài khoản nào khác
+> bạn đã thiết lập để dùng khóa đó. Nhưng gõ mật khẩu mỗi lần bạn muốn
+> dùng khóa (là mỗi khi bạn làm bất cứ điều gì với GitHub từ command
+> line) thật phiền, vì vậy mọi người dùng _key agent_ (đại lý khóa) ghi
+> nhớ mật khẩu trong một thời gian.
 >
-> If you don't have a password on your key, you're relying on the fact
-> that no one can get a copy of the private portion of your key that's
-> stored on your computer. If you're confident that your computer is
-> secure, then you don't need a password on the key. Do you feel lucky?
+> Nếu bạn không có mật khẩu trên khóa của mình, bạn đang dựa vào thực
+> tế là không ai có thể lấy một bản sao của phần private key được lưu
+> trên máy tính của bạn. Nếu bạn tin rằng máy tính của mình an toàn,
+> thì bạn không cần mật khẩu trên khóa. Bạn có tự tin không?
 >
-> Setting up the key agent is outside the scope of this document, and
-> the author is unsure of how it even works in WSL. [fl[GitHub has
-> documentation on the
-> matter|https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent]].
+> Thiết lập key agent nằm ngoài phạm vi của tài liệu này, và tác giả
+> không chắc nó hoạt động như thế nào trong WSL. [fl[GitHub có tài liệu
+> về vấn đề này|https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent]].
 >
-> For this demo, we'll just leave the password blank. All of this can be
-> redone with a new key with a password if you choose to do that later.
+> Cho demo này, chúng ta sẽ để trống mật khẩu. Tất cả điều này có thể
+> được làm lại với khóa mới có mật khẩu nếu bạn chọn làm vậy sau.
 
-Anyway, just hitting ENTER for all the prompts gets you something like
-this:
+Dù sao, chỉ nhấn ENTER cho tất cả các prompt cho bạn thứ gì đó như
+thế này:
 
 ``` {.default}
 Generating public/private ed25519 key pair.
@@ -197,33 +198,33 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-> **If you chose any file name other than the default for your key**,
-> you'll have to do some [fl[additional configuration to get it to work
-> with
+> **Nếu bạn chọn tên file khác với tên mặc định cho khóa của mình**,
+> bạn sẽ phải thực hiện một số [fl[cấu hình bổ sung để làm cho nó hoạt
+> động với
 > GitHub|https://www.baeldung.com/linux/ssh-private-key-git-command]].
 
-> **What's that randomart thing with all the weird characters?** It's a
-> visual representation of that key. There are ways to configure SSH so
-> that you see the randomart every time you log in. And the idea is
-> that if one day you see it looks different, something could be amiss
-> security-wise. I doubt most people every look at it again once it's
-> been generated, though.
+> **Cái randomart với tất cả những ký tự kỳ lạ là gì vậy?** Đó là một
+> biểu diễn trực quan của khóa đó. Có cách cấu hình SSH để bạn thấy
+> randomart mỗi lần đăng nhập. Và ý tưởng là nếu một ngày nào đó bạn
+> thấy nó trông khác, có thể có điều gì đó không ổn về mặt bảo mật.
+> Mình nghi ngờ hầu hết mọi người không bao giờ nhìn vào nó nữa sau khi
+> nó được tạo ra.
 
-Now if you type `ls ~/.ssh` you should see something like this:
+Bây giờ nếu bạn gõ `ls ~/.ssh` bạn sẽ thấy thứ gì đó như thế này:
 
 ``` {.default}
 id_ed25519    id_ed25519.pub
 ```
 
-The first file is your _private key_. This is never to be shared with
-anyone. You have no reason to even copy it.
+File đầu tiên là _private key_ (khóa riêng tư) của bạn. Không bao giờ
+chia sẻ với bất kỳ ai. Bạn không có lý do để sao chép nó.
 
-The second file is your _public key_. This can be freely shared with
-anyone, and we're going to share it with GitHub in a second so that you
-can log in with it.
+File thứ hai là _public key_ (khóa công khai) của bạn. Có thể chia sẻ
+tự do với bất kỳ ai, và chúng ta sẽ chia sẻ nó với GitHub trong một
+giây để bạn có thể đăng nhập với nó.
 
-> **If you have trouble in the following subsections**, try running
-> these two commands:
+> **Nếu bạn gặp sự cố trong các phần con sau**, hãy thử chạy hai lệnh
+> này:
 >
 > ``` {.default}
 > $ chmod 700 ~/.ssh
@@ -231,204 +232,203 @@ can log in with it.
 > ```
 > <!-- ` -->
 >
-> You only have to do that once, but SSH can be a bit picky if the file
-> permissions on those files aren't locked down.
+> Bạn chỉ cần làm điều đó một lần, nhưng SSH có thể khó tính nếu
+> permissions (quyền) trên các file đó không bị khóa.
 
-Now in order to make this work, you have to tell GitHub what your public
-key is.
+Bây giờ để làm cho điều này hoạt động, bạn phải cho GitHub biết public
+key của bạn là gì.
 
-First, get a copy of your public key in the clipboard. ***Be sure you're
-getting the file with the `.pub` extension!***
+Trước tiên, lấy một bản sao public key của bạn vào clipboard. ***Hãy
+chắc chắn bạn đang lấy file có extension `.pub`!***
 
 ``` {.default}
 $ cat ~/.ssh/id_ed25519.pub
 ```
 
-You should see something like this:
+Bạn sẽ thấy thứ gì đó như thế này:
 
 ``` {.default}
 ssh-ed25519 AAAC3N[a bunch of letters]V+znpoO youremail@example.com
 ```
 
-Copy the entire thing into the clipboard so you can paste it later.
+Sao chép toàn bộ vào clipboard để bạn có thể paste sau.
 
-Now go to GitHub, and click on your avatar icon in the upper right.
+Bây giờ hãy vào GitHub, và nhấp vào biểu tượng avatar ở góc trên bên
+phải.
 
-Choose "Settings".
+Chọn "Settings".
 
-Then on the left, choose "SSH and GPG keys".
+Sau đó ở bên trái, chọn "SSH and GPG keys".
 
-Click "New SSH Key".
+Nhấp "New SSH Key".
 
-For the title, enter something identifying, like, "My laptop key".
+Cho tiêu đề, nhập thứ gì đó có thể nhận dạng được, như "My laptop key".
 
-Key type is "Authentication Key".
+Loại khóa là "Authentication Key".
 
-Then paste your key into the "Key" field.
+Sau đó paste khóa của bạn vào trường "Key".
 
-And click "Add SSH key".
+Và nhấp "Add SSH key".
 
-We'll be using SSH to clone URLs later. Remember that.
+Chúng ta sẽ dùng SSH để clone các URL sau. Hãy nhớ điều đó.
 
-### Using Personal Access Tokens
+### Dùng Personal Access Tokens
 
-Remember last chapter when we tried to clone an HTTPS repo URL on the
-command line and it prompted for a username and password that didn't
-work?
+Nhớ lại chương trước khi chúng ta cố clone một URL repo HTTPS trên
+command line và nó nhắc nhập username và password không hoạt động không?
 
-Well, we get to actually make new passwords that *will* work in that case.
-They're called *personal access tokens*.
+Vâng, chúng ta thực sự có thể tạo mật khẩu mới *sẽ* hoạt động trong
+trường hợp đó. Chúng được gọi là *personal access tokens* (token truy
+cập cá nhân).
 
-[fl[GitHub has a lot of documentation on
-this|https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens]]
-but the gist of it is that you're going to create a _token_ that
-represents some kind of access, e.g. "ability to read and write my
-repos", and you're going to use that in lieu of the password on the
-command line.
+[fl[GitHub có nhiều tài liệu về điều
+này|https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens]]
+nhưng ý chính là bạn sẽ tạo một _token_ đại diện cho một loại truy cập
+nào đó, ví dụ "khả năng đọc và ghi repo của tôi", và bạn sẽ dùng nó
+thay cho mật khẩu trên command line.
 
-So that last failed example would look like this:
+Vì vậy ví dụ thất bại cuối cùng đó sẽ trông như thế này:
 
 ``` {.default}
 Username for 'https://github.com': [MY USERNAME]
 Password for 'https://beejjorgensen@github.com': [MY TOKEN]
 ```
 
-In other words:
+Nói cách khác:
 
-1. Generate a token.
-2. Use that token as your password.
+1. Tạo một token.
+2. Dùng token đó làm mật khẩu.
 
-Your computer might automatically save those credentials so you don't
-have to enter them every time. Or it might not.
+Máy tính của bạn có thể tự động lưu những thông tin đăng nhập đó để bạn
+không phải nhập chúng mỗi lần. Hoặc có thể không.
 
-One of the main things personal access tokens can give you is
-fine-grained control over access. You can limit access to read-only, or
-just to certain repos, and so on.
+Một trong những điều chính mà personal access tokens có thể cung cấp
+cho bạn là kiểm soát truy cập chi tiết. Bạn có thể giới hạn truy cập
+chỉ đọc, hoặc chỉ cho một số repo nhất định, v.v.
 
-Additionally, you can use GitHub CLI authentication with a token as
-well. You just have to feed it in there on standard input. Let's say you
-have your token in a file called `mytoken.txt`. You can authenticate
-with GitHub CLI like so:
+Ngoài ra, bạn cũng có thể dùng GitHub CLI authentication với token. Bạn
+chỉ cần đưa nó vào standard input. Giả sử bạn có token trong file gọi
+là `mytoken.txt`. Bạn có thể xác thực với GitHub CLI như sau:
 
 ``` {.default}
 $ gh auth login --with-token < mytoken.txt
 ```
 
-Like with SSH keys, if you lose a laptop that uses a particular access
-token, you can simply invalidate that token through GitHub's UI so that
-mean people can't use it.
+Giống như với SSH keys, nếu bạn mất laptop dùng một access token cụ
+thể, bạn có thể đơn giản vô hiệu hóa token đó thông qua UI của GitHub
+để những kẻ xấu không thể dùng nó.
 
-## Make a Local Clone of the Repo
+## Tạo Clone Local của Repo
 
 [i[GitHub-->Cloning]]
 
-We need to figure out the URL to the repo so we can clone it.
+Chúng ta cần tìm ra URL của repo để có thể clone nó.
 
-If you click on your icon in the upper right, then "My Repositories", you
-should see a page with all your repos. At this point, it might just be
-your `test-repo` repo. Click on the name.
+Nếu bạn nhấp vào biểu tượng của bạn ở góc trên bên phải, sau đó "My
+Repositories", bạn sẽ thấy một trang với tất cả repo của bạn. Lúc này,
+nó có thể chỉ là repo `test-repo` của bạn. Nhấp vào tên.
 
-And you should then be on the repo page. You can browse the files here,
-among other things, but really we want to get the clone URL.
+Và bạn sẽ ở trên trang repo. Bạn có thể duyệt các file ở đây, trong số
+những thứ khác, nhưng thực sự chúng ta muốn lấy clone URL.
 
-Click the big blue "Code" button.
+Nhấp nút "Code" màu xanh lớn.
 
-What you do next depends on if you're using GitHub CLI or SSH keys.
+Những gì bạn làm tiếp theo phụ thuộc vào việc bạn đang dùng GitHub CLI
+hay SSH keys.
 
-### Cloning from GitHub with GitHub CLI
+### Clone từ GitHub với GitHub CLI
 
 [i[GitHub-->Cloning with GitHub CLI]]
 
-You have two options.
+Bạn có hai tùy chọn.
 
-* **Option 1**: Earlier when we authenticated with `gh auth login` I
-  said to remember if you chose HTTPS or SSH. Depending on which you
-  chose, you should choose that tab on this window.
+* **Tùy chọn 1**: Trước đó khi chúng ta xác thực với `gh auth login`
+  mình đã nói hãy nhớ xem bạn đã chọn HTTPS hay SSH. Tùy thuộc vào cái
+  bạn đã chọn, bạn nên chọn tab đó trên cửa sổ này.
 
-  Copy the URL.
+  Sao chép URL.
 
-  Go to the command line and run `git clone [URL]` where `[URL]` is what
-  you copied. So it'll be this for HTTPS:
+  Vào command line và chạy `git clone [URL]` trong đó `[URL]` là những
+  gì bạn đã sao chép. Vì vậy nó sẽ như thế này cho HTTPS:
 
   ``` {.default}
   $ git clone https://github.com/user/test-repo.git
   ```
 
-  or this for SSH:
+  hoặc như thế này cho SSH:
 
   ``` {.default}
   $ git clone git@github.com:user/test-repo.git
   ```
 
-* **Option 2**: Choose the "GitHub CLI" tab. Run the command as they
-  have it, which will be something like:
+* **Tùy chọn 2**: Chọn tab "GitHub CLI". Chạy lệnh họ có, sẽ là thứ
+  gì đó như:
 
   ``` {.default}
   $ gh repo clone user/test-repo
   ```
 
-### Cloning from GitHub with SSH Keys
+### Clone từ GitHub với SSH Keys
 
 [i[GitHub-->Cloning with SSH]]
 
-If you set up an SSH key earlier, you can use this method.
+Nếu bạn đã thiết lập SSH key trước đó, bạn có thể dùng phương pháp này.
 
-After hitting the green "Code" button, make sure the "SSH" tab is
-selected.
+Sau khi nhấn nút "Code" màu xanh, hãy đảm bảo tab "SSH" được chọn.
 
-Copy that URL.
+Sao chép URL đó.
 
-Go to the command line and run `git clone [URL]` where `[URL]` is what
-you copied. So it'll be something like this:
+Vào command line và chạy `git clone [URL]` trong đó `[URL]` là những gì
+bạn đã sao chép. Vì vậy nó sẽ là thứ gì đó như thế này:
 
 ``` {.default}
 $ git clone git@github.com:user/test-repo.git
 ```
 
-## Make Changes and Push!
+## Thực Hiện Thay Đổi và Push!
 
 [i[Push]]
 
-Now that you've cloned the repo, you should be able to `cd` into that
-directory, edit a file, `git add` it to the stage, then `git commit -m
-message` to make a commit...
+Bây giờ bạn đã clone repo, bạn sẽ có thể `cd` vào thư mục đó, chỉnh
+sửa file, `git add` nó lên stage, rồi `git commit -m message` để tạo
+commit...
 
-And then `git push` to push it back to the clone on GitHub!
+Và sau đó `git push` để push nó trở lại clone trên GitHub!
 
-And after that if you go to the repo page on GitHub and hit reload, you
-should be able to see your changes there!
+Và sau đó nếu bạn vào trang repo trên GitHub và nhấn reload, bạn sẽ
+thấy các thay đổi của mình ở đó!
 
-And now we're back to that standard common flow:
+Và bây giờ chúng ta trở lại với luồng phổ biến chuẩn đó:
 
-1. _Clone_ a _remote_ repo.
-2. Make some local changes.
-3. Add those changes to the _stage_.
-4. _Commit_ those changes.
-5. _Push_ your changes back to the remote repo.
-6. Go back to Step 2.
+1. _Clone_ một _remote_ repo.
+2. Thực hiện một số thay đổi local.
+3. Thêm những thay đổi đó vào _stage_.
+4. _Commit_ những thay đổi đó.
+5. _Push_ những thay đổi của bạn trở lại remote repo.
+6. Quay lại Bước 2.
 
-## Collaboration on GitHub
+## Cộng Tác trên GitHub
 
-There are two main techniques for this:
+Có hai kỹ thuật chính cho điều này:
 
 1. Fork/pull request
-2. Add a collaborator
+2. Thêm collaborator (cộng tác viên)
 
-We'll talk about the first one in the future.
+Chúng ta sẽ nói về cái đầu tiên trong tương lai.
 
 [i[GitHub-->Adding collaborators]]
-For now, the easiest way to add collaborators is to just add them to
-your repo.
+Bây giờ, cách dễ nhất để thêm collaborators là chỉ cần thêm họ vào
+repo của bạn.
 
-On the repo page on GitHub, choose "Settings", then "Collaborators" on
-the left.
+Trên trang repo trên GitHub, chọn "Settings", sau đó "Collaborators"
+ở bên trái.
 
-After authenticating, you can click "Add people". Enter the username of
-the person you want to collaborate with.
+Sau khi xác thực, bạn có thể nhấp "Add people". Nhập username của người
+bạn muốn cộng tác.
 
-They'll have to accept the invitation from their GitHub inbox, but then
-they'll have access to the repo.
+Họ sẽ phải chấp nhận lời mời từ GitHub inbox của họ, nhưng sau đó họ
+sẽ có quyền truy cập repo.
 
-Be sure to only do this with people you trust!
+Hãy chắc chắn chỉ làm điều này với những người bạn tin tưởng!
 
 [i[GitHub]>]
