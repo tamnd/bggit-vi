@@ -1,74 +1,70 @@
-# The Reference Log, "reflog"
+# Reference Log (Nhật Ký Tham Chiếu), "reflog"
 
 [i[Reflog]<]
 
-All this time you've been committing things, branching, doing whatever.
-And Git's been watching you, listening like Big Brother, recording
-everything you do.
+Suốt thời gian qua bạn đã commit, tạo nhánh, làm đủ thứ. Và Git đã theo dõi
+bạn, lắng nghe như Anh Cả, ghi lại mọi thứ bạn làm.
 
-And you can use this to your benefit.
+Và bạn có thể dùng điều này để có lợi cho mình.
 
-Let's say you've done something like a hard reset because you wanted to
-abandon the branch you were on.
+Giả sử bạn đã làm gì đó như hard reset vì bạn muốn từ bỏ nhánh mình đang làm.
 
-But then, wait! You actually needed something from one of those commits
-you just reset past! Is there any way to get back to it? There's no
-branch there, and you can't remember the commit ID. And since it's not
-an ancestor to anything, `git log` won't help you.
+Nhưng sau đó, khoan! Bạn thực sự cần thứ gì đó từ một trong những commit bạn
+vừa reset qua! Có cách nào lấy lại không? Không có nhánh nào ở đó, và bạn không
+nhớ commit ID. Và vì nó không phải là tổ tiên của bất cứ thứ gì, `git log` cũng
+không giúp được.
 
-How can you get it back?
+Làm thế nào để lấy lại?
 
-`git reflog` to the rescue!
+`git reflog` đến giải cứu!
 
-The reflog contains a record of all manner of things you've done along
-with commit IDs, and it keeps them for 90 days[^9721]. After that time,
-orphan commits (that is commits with no branch above them) will be
-garbage collected.
+Reflog (reference log---nhật ký tham chiếu) chứa bản ghi về tất cả mọi thứ bạn
+đã làm cùng với commit ID, và nó giữ chúng trong 90 ngày[^9721]. Sau thời gian
+đó, các orphan commit (commit mồ côi---tức là commit không có nhánh nào ở phía
+trên) sẽ bị garbage collected (thu hồi).
 
-[^9721]: By default it's 90 days. You can configure this with the
-    `gc.reflogExpire` config option.
+[^9721]: Mặc định là 90 ngày. Bạn có thể cấu hình điều này bằng tùy chọn cấu
+    hình `gc.reflogExpire`.
 
-## What Can We Use It For?
+## Dùng Để Làm Gì?
 
 [i[Reflog-->Uses]]
 
-You can use it for all kinds of things.
+Bạn có thể dùng nó cho đủ loại việc.
 
-* Looking at orphan commits
-* Recreating deleted branches
-* Recovering from a bad reset
-* Exploring the order of operations on the repo, even if they're on
-  other branches
-* And more!
+* Xem các orphan commit
+* Tạo lại các nhánh đã bị xóa
+* Phục hồi từ một reset tệ hại
+* Khám phá thứ tự các thao tác trên repo, ngay cả khi chúng ở trên nhánh khác
+* Và nhiều hơn nữa!
 
-Basically it gives you a way to look back on the linear history of the
-repo, and tells you the commit hashes along the way.
+Về cơ bản nó cung cấp cho bạn cách nhìn lại lịch sử tuyến tính của repo, và cho
+bạn biết các commit hash trên đường đi.
 
-This means if you want to, say, hard reset the repo to some earlier
-state, you could look up that earlier commit in the reflog[^ab30].
+Điều đó có nghĩa là nếu bạn muốn, chẳng hạn, hard reset repo về một trạng thái
+cũ hơn, bạn có thể tra cứu commit cũ hơn đó trong reflog[^ab30].
 
-[^ab30]: Keeping in mind to never rewrite history on anything you've
-    pushed, of course.
+[^ab30]: Nhớ rằng đừng bao giờ viết lại lịch sử trên bất cứ thứ gì bạn đã push,
+    tất nhiên.
 
-## Looking Back at an Orphan Commit
+## Nhìn Lại Orphan Commit
 
 [i[Reflog-->Finding an orphan commit]<]
 
-Let's run an example where we do the following:
+Hãy chạy ví dụ trong đó chúng ta thực hiện như sau:
 
-1. Commit a file, `foo.txt`,  on the `main` branch.
-2. Make a new branch, `topic1`.
-3. In this new branch, add another file, `bar.txt`, and commit it.
-4. Modify `bar.txt` and commit the modification.
-5. Decide, at this point, you're giving up on `topic1`. Switch
-   back to the `main` branch and force delete `topic1`.
-6. Decide, at this point, that actually you need to look back at that
-   commit in `topic1` for some reason. But you deleted the branch.
-   Whoops.
-7. Look in the reflog for the commit on `topic1` that you want.
-8. Switch to that commit (detaching the `HEAD`).
+1. Commit file `foo.txt` trên nhánh `main`.
+2. Tạo nhánh mới `topic1`.
+3. Trong nhánh mới này, thêm file khác `bar.txt` và commit.
+4. Chỉnh sửa `bar.txt` và commit chỉnh sửa.
+5. Quyết định, tại thời điểm này, từ bỏ `topic1`. Chuyển về nhánh `main` và
+   force delete (xóa mạnh) `topic1`.
+6. Quyết định, tại thời điểm này, rằng thực ra bạn cần xem lại commit đó trong
+   `topic1` vì lý do nào đó. Nhưng bạn đã xóa nhánh. Ôi thôi.
+7. Tìm trong reflog commit trên `topic1` mà bạn muốn.
+8. Chuyển đến commit đó (detaching---tách `HEAD`).
 
-And here that is in Git, at least the first five steps:
+Và đây là trong Git, ít nhất là năm bước đầu tiên:
 
 ``` {.default}
 $ echo 'Line 1' > foo.txt                  # Create foo.txt
@@ -96,8 +92,8 @@ $ git branch -D topic1                     # Delete topic1
   Deleted branch topic1 (was bf8b8cf).
 ```
 
-At this point let's say we want to look back at the commits we made on
-`bar.txt`. Good luck with `git log`!
+Lúc này giả sử chúng ta muốn xem lại các commit chúng ta đã thực hiện trên
+`bar.txt`. Chúc may mắn với `git log`!
 
 ``` {.default}
 $ git log
@@ -108,13 +104,11 @@ Date:   Fri Oct 4 16:24:56 2024 -0700
     added foo.txt
 ```
 
-That's it? Where's all the `bar.txt` stuff? Well, it was on the
-`topic1` commits, which were descendants from this commit `90bd7`.
-Because `git log` only shows ancestors, we're not seeing any of the
-`bar.txt` changes.
+Chỉ vậy thôi? Tất cả thứ về `bar.txt` đâu rồi? À, nó ở trên các commit `topic1`,
+là con cháu từ commit `90bd7` này. Vì `git log` chỉ hiển thị tổ tiên, chúng ta
+không thấy bất kỳ thay đổi `bar.txt` nào.
 
-So, finally, we arrive at the entire topic of this chapter: the reflog.
-Let's take a peek.
+Vậy cuối cùng, chúng ta đến chủ đề chính của chương này: reflog. Hãy xem thử.
 
 ``` {.default}
 $ git reflog
@@ -127,9 +121,9 @@ $ git reflog
   90bd7cc (HEAD -> main) HEAD@{4}: commit (initial): added foo.txt
 ```
 
-Hey, that's more like it! I see the changes I made to `bar.txt` in
-there! And I see the commit hash on the left! This means I can switch to
-that commit!
+Ồ, ngon hơn rồi! Tôi thấy các thay đổi tôi đã thực hiện trên `bar.txt` trong
+đó! Và tôi thấy commit hash ở bên trái! Điều đó có nghĩa là tôi có thể chuyển
+đến commit đó!
 
 ``` {.default}
 $ git switch --detach bf8b8cf
@@ -154,7 +148,7 @@ $ git log
       added foo.txt
 ```
 
-There's the log... and we have the file contents?
+Đây rồi log... và chúng ta có nội dung file?
 
 ``` {.default}
 $ cat bar.txt
@@ -162,9 +156,9 @@ $ cat bar.txt
   Line 2
 ```
   
-Yup!
+Đúng vậy!
 
-Let's switch back to `main` and see what happens.
+Hãy chuyển lại về `main` và xem điều gì xảy ra.
 
 ``` {.default}
 $ git switch -
@@ -182,14 +176,13 @@ $ git switch -
   Switched to branch 'main'
 ```
 
-This is Git telling us, "Hey, I'm going to garbage collect these two
-commits after the 90 days are up. If you want to keep them, attach a
-branch to them."
+Đây là Git đang nói với chúng ta, "Này, tôi sẽ garbage collect hai commit này
+sau 90 ngày. Nếu bạn muốn giữ chúng, hãy gắn nhánh vào chúng."
 
-And it's helpfully telling us how to do that.
+Và nó đang hữu ích cho biết cách làm điều đó.
 
-So even though we force deleted `topic1` earlier, we could now simply
-recreate it if we didn't mean to do that. Let's do that.
+Vậy dù chúng ta đã force delete `topic1` trước đó, giờ chúng ta có thể đơn giản
+tạo lại nó nếu chúng ta không có ý đó. Hãy làm vậy.
 
 ``` {.default}
 $ git branch topic1 bf8b8cf
@@ -200,16 +193,16 @@ $ cat bar.txt
   Line 2
 ```
 
-As you can see, the reflog can get you out of all kinds of trouble when
-you thought you'd lost commits for good.
+Như bạn thấy, reflog có thể giúp bạn thoát khỏi đủ loại rắc rối khi bạn nghĩ
+mình đã mất commit mãi mãi.
 
 [i[Reflog-->Finding an orphan commit]>]
 
-## Reflog Selectors
+## Selector trong Reflog
 
 [i[Reflog-->Selectors]<]
 
-Let's take a look at that example reflog output again:
+Hãy nhìn lại output reflog ví dụ đó:
 
 ``` {.default}
 $ git reflog
@@ -222,18 +215,18 @@ $ git reflog
   598c84e (HEAD -> main) HEAD@{4}: commit (initial): added foo.txt
 ```
 
-See that `HEAD@{3}`-type stuff in there? You can use those to check out
-specific commits (instead of using the commit hash, for example).
+Thấy kiểu `HEAD@{3}` trong đó không? Bạn có thể dùng những cái đó để checkout
+các commit cụ thể (thay vì dùng commit hash chẳng hạn).
 
-Now, `HEAD@{3}` **doesn't** mean "3 commits before `HEAD`". But it is an
-identifier you can use to switch to a particular commit.
+Bây giờ, `HEAD@{3}` **không có nghĩa là** "3 commit trước `HEAD`". Nhưng đó là
+định danh bạn có thể dùng để chuyển đến commit cụ thể.
 
 ``` {.default}
 $ git switch --detach HEAD@{1}
   HEAD is now at dc3d6a3 appended to bar.txt
 ```
 
-Just like that.
+Đơn giản vậy thôi.
 
 [i[Reflog-->Selectors]>]
 
