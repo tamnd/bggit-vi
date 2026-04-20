@@ -2,105 +2,71 @@
 
 [i[Mergetool]<]
 
-Do you hate all those `>>>>>`, `=====`, and `<<<<<` things that Git puts
-in your files during a merge conflict?
+Bạn có ghét tất cả những dấu `>>>>>`, `=====`, và `<<<<<` mà Git nhét vào file của bạn khi có xung đột merge không?
 
-If so, using a _merge tool_ might be what you're after. A merge tool
-will give you a graphical display showing your changes, the conflicting
-changes, and the desired result of the merge. And it shows it in an
-easy-to-digest form.
+Nếu có, dùng _merge tool_ (công cụ merge) có thể là thứ bạn đang cần. Merge tool sẽ cho bạn một màn hình đồ họa hiển thị các thay đổi của bạn, các thay đổi xung đột, và kết quả mong muốn của merge. Và nó hiển thị theo dạng dễ hiểu.
 
-> **Personally, I dislike merge tools.** That seems nuts, but let me
-> explain a moment. When you're in a merge conflict, the only thing you
-> have to do is edit those files with the `=====` delimiters and make
-> them _Right_, remember? You have to modify the file until it is
-> correct, ripping out those delimiters as you go.
+> **Cá nhân tôi không thích merge tool.** Nghe có vẻ điên, nhưng để tôi giải thích. Khi bạn đang trong tình trạng xung đột merge, thứ duy nhất bạn phải làm là chỉnh sửa các file có dấu phân cách `=====` và làm cho chúng _Đúng_, nhớ không? Bạn phải chỉnh sửa file cho đến khi nó chính xác, gỡ bỏ những dấu phân cách đó khi đi.
 >
-> It's just you and the file, that's it. No intermediaries messing with
-> the contents. And when you're done, what you have is your final
-> answer.
+> Chỉ có bạn và file, vậy thôi. Không có trung gian nào can thiệp vào nội dung. Và khi xong, thứ bạn có là câu trả lời cuối cùng.
 >
-> But merge tools are intermediaries by their very nature. And we must
-> trust that we're using them correctly to get the job done. And, for
-> me, even after I've used them probably correctly, I still feel like I
-> have to manually inspect the result to make sure it's _Right_.
+> Nhưng merge tool bản chất là trung gian. Và chúng ta phải tin tưởng rằng chúng ta đang dùng chúng đúng cách để hoàn thành công việc. Và với tôi, dù đã dùng chúng có lẽ đúng cách, tôi vẫn cảm thấy phải kiểm tra thủ công kết quả để chắc chắn nó _Đúng_.
 >
-> The benefit I do see is that with a merge tool you typically get a
-> side-by-side view of the changes, as opposed to the up-and-down view
-> you effectively get when editing the conflicting file. This can make
-> the merge tool easier to use when you have a number of big conflicting
-> hunks in a file.
+> Lợi ích tôi thấy là với merge tool bạn thường có chế độ xem side-by-side (hai bên cạnh nhau), thay vì chế độ xem trên-dưới bạn thực sự có khi chỉnh sửa file xung đột. Điều này có thể giúp merge tool dễ dùng hơn khi bạn có nhiều đoạn xung đột lớn trong một file.
 >
-> But in real life, I never use one. Also in real life, *lots* of people
-> use them.
+> Nhưng trong thực tế, tôi không bao giờ dùng chúng. Cũng trong thực tế, *rất nhiều* người dùng chúng.
 
-## Merge Tool Operations
+## Cách Hoạt Động Của Merge Tool
 
-Merge tools operate on a file-by-file basis. So when you're using one,
-you're using it on a particular conflicting file.
+Merge tool hoạt động trên cơ sở từng file. Vì vậy khi bạn dùng nó, bạn đang dùng trên một file xung đột cụ thể.
 
-They all tend to show you at least three panels:
+Chúng đều có xu hướng hiển thị ít nhất ba panel (khung):
 
-* Your conflicting changes
-* Their conflicting changes
-* The result file that is _Right_
+* Các thay đổi xung đột của bạn
+* Các thay đổi xung đột của họ
+* File kết quả _Đúng_
 
-And they all tend to have the same core operations:
+Và chúng đều có xu hướng có cùng các thao tác cốt lõi:
 
-* **Go to next conflict**—all panels will move to the next conflict.
-* **Go to previous conflict**
-* **Choose yours**—copy _your_ conflicting changes into the final result,
-  i.e. your changes are _Right_.
-* **Choose theirs**—copy _their_ conflicting changes into the final
-  result, i.e. their changes are _Right_.
+* **Đến xung đột tiếp theo**---tất cả panel sẽ chuyển đến xung đột tiếp theo.
+* **Đến xung đột trước đó**
+* **Chọn của bạn**---sao chép các thay đổi xung đột _của bạn_ vào kết quả cuối cùng, tức là các thay đổi của bạn là _Đúng_.
+* **Chọn của họ**---sao chép các thay đổi xung đột _của họ_ vào kết quả cuối cùng, tức là các thay đổi của họ là _Đúng_.
 
-In terms of usage, here's what we're going to do, assuming that the
-merge tool starts you at the first conflict when it is launched:
+Về cách dùng, đây là những gì chúng ta sẽ làm, giả sử merge tool bắt đầu từ xung đột đầu tiên khi khởi động:
 
-1. Choose either "yours" or "theirs" to keep the _Right_ changes.
-2. Go to the next conflict.
-3. Repeat from Step 1 until all conflicts are resolved.
+1. Chọn "của bạn" hoặc "của họ" để giữ các thay đổi _Đúng_.
+2. Đến xung đột tiếp theo.
+3. Lặp lại từ Bước 1 cho đến khi tất cả xung đột được giải quyết.
 
-After you've gone through all the conflicts and chosen one or the other,
-make sure the final result is _Right_ and then save/finish the result.
+Sau khi đã đi qua tất cả xung đột và chọn bên này hay bên kia, hãy đảm bảo kết quả cuối cùng là _Đúng_ rồi lưu/hoàn tất kết quả.
 
-The merge tool will have staged the result for you, ready to commit and
-finish the merge.
+Merge tool sẽ đã stage kết quả cho bạn, sẵn sàng để commit và hoàn tất merge.
 
-## Some Example Merge Tools
+## Một Số Merge Tool Ví Dụ
 
-There are a lot of them, and I'll include some links here in
-alphabetical order. Cross-platform unless otherwise noted.
+Có rất nhiều, và tôi sẽ đưa vào một số link ở đây theo thứ tự bảng chữ cái. Đa nền tảng trừ khi có ghi chú khác.
 
-* [fl[Araxis Merge|https://www.araxis.com/merge/index.en]]—Windows, Mac
+* [fl[Araxis Merge|https://www.araxis.com/merge/index.en]]---Windows, Mac
 * [fl[Beyond Compare|https://www.scootersoftware.com/]]
-* [fl[Code Compare|https://www.devart.com/codecompare/]]—Windows
+* [fl[Code Compare|https://www.devart.com/codecompare/]]---Windows
 * [fl[KDiff3|https://invent.kde.org/sdk/kdiff3]]
 * [fl[Meld|https://meldmerge.org/]]
 * [fl[P4Merge|https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge]]
 * [fl[Vimdiff|https://www.vim.org/]]
-* [fl[WinMerge|https://winmerge.org/]]—Windows
+* [fl[WinMerge|https://winmerge.org/]]---Windows
 
-In addition, IDEs like VS Code and IntelliJ often have their own
-built-in merge tools that work independent of Git (no need to configure
-anything in Git).
+Ngoài ra, các IDE như VS Code và IntelliJ thường có merge tool tích hợp sẵn hoạt động độc lập với Git (không cần cấu hình gì trong Git).
 
-## Using Vimdiff as a Merge Tool
+## Dùng Vimdiff Làm Merge Tool
 
 [i[Mergetool-->With Vimdiff]<]
 
-We'll do a quick run-through of using Vimdiff as a merge tool since it
-covers all the bases and has some tricky configuration. Other
-third-party tools (except VS Code and other IDEs with this functionality
-built-in) would have a similar configuration. Search the Internet for
-the proper config for other tools.
+Chúng ta sẽ đi nhanh qua việc dùng Vimdiff làm merge tool vì nó bao quát tất cả các tình huống và có cấu hình khá phức tạp. Các công cụ của bên thứ ba khác (ngoại trừ VS Code và các IDE khác có chức năng này tích hợp) sẽ có cấu hình tương tự. Hãy tìm kiếm trên Internet để có cấu hình phù hợp cho các công cụ khác.
 
-> **This isn't a Vim tutorial.** So I'm just going to assume you know
-> how to do things like save files and quit. I will say that to switch
-> windows in Vim you use `CTRL-W` followed by a cursor direction, such
-> as `CTRL-W` followed by `h` to move to the window to the left.
+> **Đây không phải tutorial Vim.** Vì vậy tôi chỉ giả định bạn biết cách làm những việc như lưu file và thoát. Tôi sẽ nói rằng để chuyển cửa sổ trong Vim bạn dùng `CTRL-W` theo sau là hướng con trỏ, chẳng hạn `CTRL-W` theo sau là `h` để di chuyển đến cửa sổ bên trái.
 
-First things first, let's set up the configuration.
+Trước tiên, hãy thiết lập cấu hình.
 
 ``` {.default}
 $ git config --global set merge.tool vimdiff
@@ -110,15 +76,11 @@ $ git config --global set difftool.vimdiff.cmd \
                              'vimdiff "$LOCAL" "$REMOTE"'
 ```
 
-(Long commands split to fit in the book margins—it could be on a single
-line.)
+(Các lệnh dài được chia nhỏ để vừa lề trang---có thể viết trên một dòng.)
 
-Note that last line is to explicitly set a two-panel view for `vimdiff`
-and `difftool`. If it's not set, the `mergetool.vimdiff.cmd` directive
-will make `difftool` have a three-panel display—probably not what you
-wanted.
+Lưu ý dòng cuối để thiết lập rõ ràng chế độ hai panel cho `vimdiff` và `difftool`. Nếu không đặt, chỉ thị `mergetool.vimdiff.cmd` sẽ khiến `difftool` hiển thị ba panel---có thể không phải thứ bạn muốn.
 
-Once that's in place, let's say we have a merge conflict.
+Khi đã có cấu hình đó, giả sử chúng ta có xung đột merge.
 
 ``` {.default}
 $ git merge branch
@@ -127,7 +89,7 @@ $ git merge branch
   Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-At this point, we're in a classic run-of-the-mill merge conflict.
+Lúc này, chúng ta đang trong tình trạng xung đột merge bình thường.
 
 ``` {.default}
 $ git status
@@ -143,15 +105,13 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-But since we've set up our merge tool, let's use it:
+Nhưng vì chúng ta đã thiết lập merge tool, hãy dùng nó:
 
 ``` {.default}
 $ git mergetool
 ```
 
-> **If Git is prompting you to ask if you really want to run the merge
-> tool** (which you presumably do since you just ran `git mergetool`),
-> you can turn off that "feature" with this config command:
+> **Nếu Git đang hỏi bạn xem có thực sự muốn chạy merge tool không** (điều mà bạn có lẽ muốn vì vừa chạy `git mergetool`), bạn có thể tắt "tính năng" đó với lệnh config này:
 >
 > ``` {.default}
 > $ git config --global set mergetool.prompt false
@@ -159,91 +119,66 @@ $ git mergetool
  
 <!-- ` -->
 
-This is going to bring up a Vim window with three panels. The left is
-your local changes, the middle is the file as it exists in the repo, and
-the right is the result of the merge.
+Lệnh này sẽ mở một cửa sổ Vim với ba panel. Bên trái là các thay đổi cục bộ của bạn, ở giữa là file đang tồn tại trong repo, và bên phải là kết quả của merge.
 
-The goal is to make the one on the right look _Right_. Now, you could
-just do that outright by modifying the file there, but at that point,
-why even use a merge tool?
+Mục tiêu là làm cho cái bên phải trông _Đúng_. Bạn có thể làm trực tiếp bằng cách chỉnh sửa file ở đó, nhưng nếu vậy thì tại sao lại dùng merge tool?
 
-So we'll follow the steps we outlined earlier.
+Vì vậy chúng ta sẽ theo các bước đã phác thảo trước đó.
 
-When we first run `git mergetool`, we get dropped at the first conflict
-with the cursor in the left window. The left window holds the changes we
-made.
+Khi lần đầu chạy `git mergetool`, chúng ta được đặt tại xung đột đầu tiên với con trỏ ở cửa sổ bên trái. Cửa sổ bên trái chứa các thay đổi chúng ta đã thực hiện.
 
-In the middle window, we'll see the corresponding changes that are in
-the repo.
+Trong cửa sổ giữa, chúng ta sẽ thấy các thay đổi tương ứng trong repo.
 
-And in the right window, we see what will be staged when we're done. Right
-now in the right window, we see all the `=====` and `<<<<<` stuff. But
-we'll change that in a moment.
+Và trong cửa sổ bên phải, chúng ta thấy những gì sẽ được stage khi xong. Ngay lúc này ở cửa sổ bên phải, chúng ta thấy tất cả những dấu `=====` và `<<<<<`. Nhưng chúng ta sẽ thay đổi điều đó trong giây lát.
 
-*Move the cursor to the right window.* This is where the action will be.
+*Di chuyển con trỏ đến cửa sổ bên phải.* Đây là nơi hành động diễn ra.
 
-Make sure the cursor is on a highlighted section (which probably will be
-in multiple colors). This highlighted section is what we'll replace.
+Đảm bảo con trỏ ở trên một phần được đánh dấu (có thể sẽ có nhiều màu). Phần được đánh dấu này là thứ chúng ta sẽ thay thế.
 
-Let's choose which change to use.
+Hãy chọn thay đổi nào cần dùng.
 
-If you want to keep your changes (and ditch the ones in the repo), use
-this Vim command:
+Nếu bạn muốn giữ các thay đổi của mình (và bỏ những thay đổi trong repo), dùng lệnh Vim này:
 
 ``` {.default}
 :diffget LOCAL
 ```
 
-If you want to discard your changes (and keep the ones in the repo), use
-this command:
+Nếu bạn muốn bỏ các thay đổi của mình (và giữ những thay đổi trong repo), dùng lệnh này:
 
 ``` {.default}
 :diffget REMOTE
 ```
 
-When you run one of those, you'll see the content in the right window
-change to what you wanted.
+Khi bạn chạy một trong hai lệnh đó, bạn sẽ thấy nội dung trong cửa sổ bên phải thay đổi theo ý muốn.
 
-And then you can go to the next conflict with `]c`. (or to the previous
-with `[c`.)
+Sau đó bạn có thể đến xung đột tiếp theo với `]c`. (hoặc về trước với `[c`.)
 
-Do this until the right window is _Right_. Note that you are also free
-to edit the right window directly all you want.
+Làm điều này cho đến khi cửa sổ bên phải _Đúng_. Lưu ý rằng bạn cũng có thể chỉnh sửa cửa sổ bên phải trực tiếp thoải mái.
 
-When you're done, save the right window and quit all the windows.
+Khi xong, lưu cửa sổ bên phải và thoát tất cả cửa sổ.
 
-**Importantly** the second you exit the merge tool, Git will stage
-whatever you saved in the rightmost window. If you exited too soon and
-got stuff staged before you were done, use `git checkout --merge` with
-the file in question to get it off the stage and back to "both modified"
-state.
+**Quan trọng** là ngay khi bạn thoát merge tool, Git sẽ stage bất cứ thứ gì bạn đã lưu trong cửa sổ ngoài cùng bên phải. Nếu bạn thoát quá sớm và có thứ được stage trước khi xong, dùng `git checkout --merge` với file đó để đưa nó ra khỏi stage và trở về trạng thái "both modified".
 
-If there are multiple conflicting files, Git will bring up the merge
-tool again to handle the next file in line.
+Nếu có nhiều file xung đột, Git sẽ mở merge tool lại để xử lý file tiếp theo.
 
-And when you're done, the changes are made and you can finish the merge
-with a commit as per usual.
+Và khi xong, các thay đổi đã được thực hiện và bạn có thể hoàn tất merge bằng commit như thường.
 
-But wait—what's that `.orig` file that wasn't there before? Read on!
+Nhưng khoan---cái file `.orig` kia xuất hiện từ đâu? Đọc tiếp!
 
 [i[Mergetool-->With Vimdiff]>]
 
-## Backing up the Originals
+## Sao Lưu Bản Gốc
 
 [i[Mergetool-->File backups]]
 
-By default, when using a merge tool, Git will keep a backup of the file
-before the merge tool touched it. You'll see these with a `.orig`
-extension, like so:
+Theo mặc định, khi dùng merge tool, Git sẽ giữ bản sao lưu của file trước khi merge tool chỉnh sửa nó. Bạn sẽ thấy chúng với phần mở rộng `.orig`, như thế này:
 
 ``` {.default}
 foo.txt.orig
 bar.txt.orig
 ```
 
-You can add these to your `.gitignore` if you want to, or you can
-prevent the creation of them in the first place with this configuration
-variable:
+Bạn có thể thêm chúng vào `.gitignore` nếu muốn, hoặc bạn có thể ngăn việc tạo ra chúng ngay từ đầu với biến cấu hình này:
 
 ``` {.default}
 $ git config --global set mergetool.keepBackup false
