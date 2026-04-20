@@ -1,79 +1,80 @@
-# Using Subdirectories with Git
+# Dùng Subdirectories với Git
 
 [i[Subdirectories]<]
 
-This is a shorter chapter, but we want to talk about Git's behavior when
-it comes to working in subdirectories and some gotchas that you
-probably don't want to get wrapped up in.
+Đây là một chương ngắn hơn, nhưng chúng ta muốn nói về hành vi của Git
+khi làm việc trong các subdirectory (thư mục con) và một số gotcha (cạm
+bẫy) mà bạn có lẽ không muốn vướng vào.
 
-## Repos and Subdirectories
+## Repos và Subdirectories
 
-When you run a `git` command, Git looks for a [i[`.git` directory]]
-special directory called `.git` ("dot git") in the current directory. As
-we've already mentioned, this is the directory, created when you create
-the repo, that holds the metadata about the repo.
+Khi bạn chạy lệnh `git`, Git tìm kiếm một [i[`.git` directory]]
+thư mục đặc biệt gọi là `.git` ("dot git") trong thư mục hiện tại. Như
+chúng ta đã đề cập trước, đây là thư mục, được tạo khi bạn tạo repo,
+lưu giữ metadata về repo.
 
-But what if you're in a subdirectory in your project, and there's no
-`.git` directory there?
+Nhưng nếu bạn đang ở trong một subdirectory trong dự án của mình và
+không có thư mục `.git` ở đó thì sao?
 
-Git starts by looking in the current directory for `.git`. If it can't
-find it there, it looks in the parent directory. And if it's not there,
-it looks in the grandparent, etc., all the way back to the root
-directory.
+Git bắt đầu bằng cách tìm kiếm trong thư mục hiện tại cho `.git`. Nếu
+không tìm thấy ở đó, nó tìm trong thư mục parent (cha). Và nếu không
+ở đó, nó tìm trong grandparent (ông nội), v.v., tất cả đường về root
+directory (thư mục gốc).
 
-### What about Subprojects?
+### Còn về Subprojects thì sao?
 
 [i[Subprojects]]
 
-One common student question is, "Should I make one single repo for CS101
-with subdirectories for each project? Or should I make a different repo
-for every project?"
+Một câu hỏi phổ biến của sinh viên là, "Tôi có nên tạo một repo duy
+nhất cho CS101 với các subdirectory cho mỗi dự án không? Hay tôi nên
+tạo một repo khác nhau cho mỗi dự án?"
 
-Firstly, see if your instructor has a requirement or preference, but
-other than that, it doesn't technically matter which approach you use.
+Trước tiên, hãy xem instructor (giảng viên) của bạn có yêu cầu hoặc
+ưu tiên không, nhưng ngoài ra, về mặt kỹ thuật không quan trọng cách
+tiếp cận nào bạn dùng.
 
-In real life, bigger repos (much bigger than you'll typically be using
-for a class) take a lot longer to clone due to their size.
+Trong thực tế, các repo lớn hơn (lớn hơn nhiều so với những gì bạn
+thường dùng cho một lớp học) mất nhiều thời gian hơn để clone do kích
+thước của chúng.
 
-What happens if you initialize a new Git repo _inside_ an existing repo?
-It's not great. Don't do this.
+Điều gì xảy ra nếu bạn khởi tạo một Git repo mới _bên trong_ một repo
+hiện có? Không hay. Đừng làm vậy.
 
-For mixing and matching different repos in the same hierarchy, Git has
-the concept of submodules, and you can find more information in the
-[Submodules chapter](#submodules). If you're in school, submodules are
-typically not used.
+Để kết hợp các repo khác nhau trong cùng một hierarchy (cấu trúc phân
+cấp), Git có khái niệm submodule (module con), và bạn có thể tìm thêm
+thông tin trong [chương Submodules](#submodules). Nếu bạn đang học, các
+submodule thường không được dùng.
 
-## Accidentally Making a Repo in your Home Directory
+## Vô Tình Tạo Repo trong Home Directory
 
-Git won't stop you from making a repo in your home directory, i.e. a
-repo that contains everything in all your directories.
+Git sẽ không ngăn bạn tạo repo trong home directory (thư mục home) của
+bạn, tức là một repo chứa mọi thứ trong tất cả các thư mục của bạn.
 
-But that's probably not what you wanted to do.
+Nhưng đó có lẽ không phải là điều bạn muốn làm.
 
-How does one make this mistake? Usually it's with `git init .` in your
-home directory. You can also make this error by launching VS Code from
-your home directory and telling it to "Initialize Repository" in that
-location. 
+Làm thế nào ai đó mắc lỗi này? Thường là với `git init .` trong home
+directory của bạn. Bạn cũng có thể mắc lỗi này bằng cách khởi động VS
+Code từ home directory của bạn và nói với nó "Initialize Repository"
+tại vị trí đó.
 
-This is particularly insidious because if you're in a subdirectory that
-you _think_ is a standalone repo, you might have been misled since Git
-searches parent folder for the `.git` directory and it could be finding
-the spurious one you accidentally made in your home directory.
+Điều này đặc biệt nguy hiểm vì nếu bạn đang ở trong một subdirectory
+mà bạn _nghĩ_ là một repo độc lập, bạn có thể đã bị nhầm vì Git tìm
+kiếm thư mục parent cho thư mục `.git` và nó có thể đang tìm thấy cái
+giả mà bạn vô tình tạo trong home directory.
 
-We[^5d3e] recommend against one big repo from your home directory. You
-should have separate subdirectories for each of your repos.
+Chúng tôi[^5d3e] khuyến nghị chống lại một repo lớn từ home directory
+của bạn. Bạn nên có các subdirectory riêng biệt cho mỗi repo của mình.
 
-[^5d3e]: All Git enthusiasts collectively, that is.
+[^5d3e]: Tức là tất cả những người yêu thích Git nói chung.
 
 [i[`.git` directory-->Removing]]
-If you accidentally create a repo where you didn't want to, changing a
-Git repo to a regular subdirectory is as simple as removing the `.git`
-directory. Be careful that you're removing the correct one when you do
-this!
+Nếu bạn vô tình tạo một repo ở nơi bạn không muốn, thay đổi một Git
+repo thành một subdirectory thông thường cũng đơn giản như xóa thư mục
+`.git`. Hãy cẩn thận rằng bạn đang xóa đúng cái khi bạn làm điều này!
 
-> [i[`.git` directory-->Preventing in home]]One hack you can do to
-> prevent Git from creating a repo in your home directory is to
-> preemptively put an unwriteable `.git` directory there.
+> [i[`.git` directory-->Preventing in home]]Một mẹo bạn có thể làm để
+> ngăn Git tạo repo trong home directory của bạn là đặt trước một thư
+> mục `.git` không thể ghi.
 >
 > ``` {.default}
 > $ mkdir ~/.git       # Make the .git directory
@@ -81,28 +82,26 @@ this!
 > ```
 > <!-- ` -->
 >
-> This way when Git tries to make its metadata folder there, it'll be
-> stopped because you don't have write permission to that `.git`
-> directory.
+> Bằng cách này khi Git cố tạo thư mục metadata của nó ở đó, nó sẽ bị
+> dừng lại vì bạn không có quyền ghi vào thư mục `.git` đó.
 >
-> (You can always delete this directory with `rmdir` even if you don't
-> have write permission to it.)
+> (Bạn luôn có thể xóa thư mục này với `rmdir` ngay cả khi bạn không
+> có quyền ghi vào nó.)
 
-## Empty Subdirectories in Repos
+## Các Subdirectory Trống trong Repos
 
 [i[Subdirectories-->Empty]]
-Turns out Git doesn't support this. It only tracks files, so if you want
-a subdirectory represented in your repo, you must have at least one file
-in it.
+Hóa ra Git không hỗ trợ điều này. Nó chỉ theo dõi các file, vì vậy
+nếu bạn muốn một subdirectory được đại diện trong repo của mình, bạn
+phải có ít nhất một file trong đó.
 
-A common thing to do is add an empty file called `.gitkeep` ("dot
-git keep") to the subdirectory, then add it to the repo. This will cause
-Git to recreate the subdirectory when it clones or merges the `.gitkeep`
-directory.
+Một điều phổ biến cần làm là thêm một file trống gọi là `.gitkeep` ("dot
+git keep") vào subdirectory, sau đó thêm nó vào repo. Điều này sẽ khiến
+Git tạo lại subdirectory khi nó clone hoặc merge thư mục `.gitkeep`.
 
-> The file `.gitkeep` isn't special in any way, other than convention.
-> The file could be called anything. For example, if you know you'll
-> need to eventually put a `.gitignore` in that directory, you might
-> just use that instead. Or a `README`.
+> File `.gitkeep` không đặc biệt theo bất kỳ cách nào, ngoài quy ước.
+> File có thể được gọi là bất cứ điều gì. Ví dụ, nếu bạn biết mình sẽ
+> cần đặt một `.gitignore` trong thư mục đó, bạn có thể chỉ dùng cái
+> đó thay thế. Hoặc một `README`.
 
 [i[Subdirectories]>]
