@@ -1,23 +1,18 @@
-# Renaming and Removing Files
+# Đổi Tên và Xóa File
 
-This is an extension of dealing with [file states](#file-states), so
-make sure you read that chapter first!
+Đây là phần mở rộng của [trạng thái file](#file-states), vì vậy hãy chắc chắn đọc chương đó trước!
 
-Also, I'm going to interchangeably use the terms _rename_ and _move_ to
-mean the same thing. Moving as a concept is a little more powerful
-because not only can it rename, but it can also move files to other
-directories. It's notable because the command to rename is `git mv`.
+Ngoài ra, tôi sẽ dùng lẫn lộn các thuật ngữ _rename_ (đổi tên) và _move_ (di chuyển) để chỉ cùng một thứ. Move là khái niệm mạnh mẽ hơn một chút vì không chỉ đổi tên được mà còn có thể di chuyển file sang thư mục khác. Điều đáng lưu ý là lệnh để đổi tên là `git mv`.
 
-## Renaming Files
+## Đổi Tên File
 
 [i[Move]<]
 
-You can use the OS rename command to rename files, but if they're in a
-Git repo, it's better to `git mv` them so that Git has total awareness.
+Bạn có thể dùng lệnh đổi tên của hệ điều hành để đổi tên file, nhưng nếu chúng nằm trong repo Git, tốt hơn là dùng `git mv` để Git hoàn toàn biết được.
 
-Git is confusingly unhelpful with this.
+Git khá khó chịu và không mấy hữu ích trong trường hợp này.
 
-Let's rename `foo.txt` to `bar.txt` and get a status:
+Hãy đổi tên `foo.txt` thành `bar.txt` và xem status:
 
 ``` {.default}
 $ git mv foo.txt bar.txt
@@ -27,33 +22,25 @@ $ git mv foo.txt bar.txt
 	  renamed:    foo.txt -> bar.txt
 ```
 
-So it knows the file is renamed, and the file has been moved to the
-stage. Like so:
+Vậy nó biết file đã được đổi tên, và file đã được đưa lên stage. Như thế này:
 
 * **Unmodified** → `git mv foo.txt bar.txt` → **Staged** (as "renamed")
 
-And if we look, we see the file has actually been renamed in the
-directory to `bar.txt`, as well.
+Và nếu kiểm tra, ta thấy file đã thực sự được đổi tên trong thư mục thành `bar.txt`.
 
-If we make a commit at this point, the file will be renamed in the repo.
-Done.
+Nếu ta commit tại đây, file sẽ được đổi tên trong repo. Xong.
 
 [i[Move-->Reverting]]
-But what if we want to undo the rename?
+Nhưng nếu ta muốn hoàn tác việc đổi tên thì sao?
 
-Git suggests `git restore --staged` to the rescue... But which file name
-to use, the old one or new one? And then what? It turns out that while
-you *can* use `git restore` to undo this by following it with multiple
-other commands, you should, in this case, ignore Git's advice, and
-instead read the following section.
+Git gợi ý `git restore --staged` để giải cứu... Nhưng dùng tên file nào, tên cũ hay tên mới? Và rồi thì sao? Hóa ra mặc dù bạn *có thể* dùng `git restore` để hoàn tác điều này bằng cách theo sau nó với nhiều lệnh khác, trong trường hợp này bạn nên bỏ qua lời khuyên của Git và đọc phần sau.
 
-## Unrenaming Files from the Stage
+## Hủy Đổi Tên File Khỏi Stage
 
 [i[Move-->Unstaging]<]
-Just remember this part: **the easiest way to undo a Staged rename is to
-just do the reverse rename**.
+Chỉ cần nhớ phần này: **cách dễ nhất để hoàn tác một rename đã Staged là đơn giản thực hiện rename ngược lại**.
 
-Let's say we renamed and got here:
+Giả sử ta đã đổi tên và đến đây:
 
 ``` {.default}
 $ git mv foo.txt bar.txt    # Rename foo.txt to bar.txt
@@ -64,7 +51,7 @@ $ git status
 	  renamed:    foo.txt -> bar.txt
 ```
 
-This easiest way to revert this change is to do this:
+Cách dễ nhất để hoàn tác thay đổi này là làm thế này:
 
 ``` {.default}
 $ git mv bar.txt foo.txt    # Rename it back to foo.txt
@@ -73,41 +60,38 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-And there you go.
+Và thế là xong.
 
-In summary, the way to rename a file is:
+Tóm lại, cách đổi tên file là:
 
 * **Unmodified** → `git mv foo.txt bar.txt` → **Staged**
 * **Staged** → `git commit` → **Unmodified**
 
-And the way to back out of a Staged rename is to rename them back the
-way they were:
+Và cách thoát khỏi rename đã Staged là đổi tên ngược lại như cũ:
 
 * **Staged** → `git mv bar.txt foo.txt` → **Unmodified**
 
 [i[Move-->Unstaging]>]
 [i[Move]>]
 
-## Removing Files
+## Xóa File
 
 [i[Remove]<]
 
-You can use the OS remove command to remove files, but if they're in a
-git repo, it's better to `git rm` them so that Git has total awareness.
+Bạn có thể dùng lệnh xóa của hệ điều hành để xóa file, nhưng nếu chúng nằm trong repo git, tốt hơn là dùng `git rm` để Git hoàn toàn biết được.
 
-And what happens might seem a little strange.
+Và những gì xảy ra có thể trông hơi kỳ lạ.
 
-Let's say we have a file `foo.txt` that has already been committed. But
-we decide to remove it.
+Giả sử ta có file `foo.txt` đã được commit. Nhưng ta quyết định xóa nó.
 
 ``` {.default}
 $ git rm foo.txt
   rm 'foo.txt'         # This is Git's output
 ```
 
-This actually removes the file—if you look in the directory, it's gone.
+Lệnh này thực sự xóa file --- nếu bạn xem trong thư mục, nó không còn đó nữa.
 
-But let's check the status:
+Nhưng hãy kiểm tra status:
 
 ``` {.default}
 $ git status
@@ -117,19 +101,16 @@ $ git status
 	  deleted:    foo.txt
 ```
 
-So the now-deleted file is in Staged State, as it were. Which makes
-sense since there's now a "difference" between the working tree (where
-the file is gone) and the stage (where the file still exists).
+Vậy file đã bị xóa bây giờ ở Staged State, theo một nghĩa nào đó. Điều này có lý vì bây giờ có "sự khác biệt" giữa working tree (nơi file biến mất) và stage (nơi file vẫn còn).
 
-If we do a commit here, the file is deleted. Done.
+Nếu ta commit ở đây, file sẽ bị xóa. Xong.
 
-## Unremoving Files from the Stage
+## Hủy Xóa File Khỏi Stage
 
 [i[Remove-->Unstaging]<]
-But what if we want to undo the staging of the now-deleted file? There's
-a hint for how to get it back with `git restore --staged`, as per usual.
+Nhưng nếu ta muốn hoàn tác việc staging của file đã bị xóa thì sao? Có gợi ý cách lấy nó lại với `git restore --staged`, như thường lệ.
 
-Let's try it:
+Hãy thử:
 
 ``` {.default}
 $ git restore --staged foo.txt
@@ -144,15 +125,11 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Hmmm. "Changes not staged for commit" are files in Modified State. This
-means that `foo.txt` has been "modified", which is, in this context, a
-friendlier way of saying "deleted".
+Hmm. "Changes not staged for commit" là các file ở Modified State. Điều này có nghĩa là `foo.txt` đã "bị sửa đổi", đây là cách nói thân thiện hơn cho từ "đã bị xóa".
 
-So we've backed up from Staged State to Modified State. But looking
-around, the file is still gone! I want my file back!
+Vậy ta đã lùi từ Staged State về Modified State. Nhưng nhìn xung quanh, file vẫn biến mất! Tôi muốn lấy lại file của mình!
 
-We want to move it back to Unmodified State, which Git once again hints
-how to do in the status: `git restore`. Let's try:
+Ta muốn chuyển nó về Unmodified State, Git một lần nữa gợi ý cách làm trong status: `git restore`. Hãy thử:
 
 ``` {.default}
 $ git restore foo.txt
@@ -161,44 +138,38 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-Git's telling us there are no Modified files here. Let's look and see:
+Git cho ta biết không có file Modified nào ở đây. Hãy xem thử:
 
 ``` {.default}
 $ ls foo.txt
   foo.txt
 ```
 
-There it is, back safe and sound.
+Đó rồi, file đã trở về an toàn.
 
-So the process for deleting a committed file is a variant of what we've
-already seen:
+Vậy quy trình xóa một file đã commit là biến thể của những gì ta đã thấy:
 
 * **Unmodified** → `git rm foo.txt` → **Staged**
-* **Staged** → `git commit` → The file is now gone
+* **Staged** → `git commit` → File bây giờ đã biến mất
 
-And you can undo a deleted file (as long as the delete hasn't yet been
-committed) in the same way you can undo any other file states:
+Và bạn có thể hoàn tác việc xóa file (miễn là xóa chưa được commit) theo cách tương tự như hoàn tác bất kỳ trạng thái file nào khác:
 
 * **Staged** → `git restore --staged foo.txt` → **Modified**
 * **Modified** → `git restore foo.txt` → **Unmodified**
 
 [i[Remove-->Unstaging]>]
 
-## Unremoving Files from Earlier Commits
+## Lấy Lại File Từ Các Commit Trước
 
 [i[Remove-->Unremoving from earlier commits]<]
-What if there's a file that was removed some time ago and you want it
-back?
+Nếu có một file đã bị xóa từ lâu và bạn muốn lấy lại thì sao?
 
-1. Find the commit hash where the file exists.
-2. Restore the file from that commit.
+1. Tìm commit hash nơi file đó tồn tại.
+2. Khôi phục file từ commit đó.
 
-Presumably you know the name of the file, but if you don't, you'll have
-to painstakingly pore over the logs with `git log --name-only` until you
-find it.
+Có thể bạn biết tên file, nhưng nếu không, bạn sẽ phải lần lượt tra cứu log bằng `git log --name-only` cho đến khi tìm thấy.
 
-But let's say you know the name. In this case, you can get the log for
-the deleted file like so (assuming the file we want is `foo.txt`):
+Nhưng giả sử bạn biết tên file. Trong trường hợp này, bạn có thể lấy log cho file đã bị xóa như sau (giả sử file ta muốn là `foo.txt`):
 
 ``` {.default}
 $ git log -- foo.txt
@@ -221,15 +192,11 @@ $ git log -- foo.txt
       Initial splungification
 ```
 
-There we see the history of the illustrious `foo.txt`.
+Ở đó ta thấy lịch sử lẫy lừng của `foo.txt`.
 
-We see it was removed in commit `97bdb`. So no point in restoring it
-from there (it's already gone by then!). But the commit just _prior_ to
-that (`1c9bf`) is the most recent version of `foo.txt` before it was
-deleted. That's probably what we want. (Or maybe an earlier one if you
-want to go back farther in time—no law against that.)
+Ta thấy nó bị xóa trong commit `97bdb`. Vậy không có điểm gì khi khôi phục từ đó (file đã biến mất rồi!). Nhưng commit _trước_ đó (`1c9bf`) là phiên bản mới nhất của `foo.txt` trước khi bị xóa. Đó có lẽ là cái ta muốn. (Hoặc có thể là commit cũ hơn nếu bạn muốn quay về xa hơn --- không có luật nào cấm điều đó.)
 
-And the restore is pretty easy:
+Và việc khôi phục khá đơn giản:
 
 ``` {.default}
 $ git restore --source=1c9bf foo.txt
@@ -237,7 +204,7 @@ $ ls foo.txt
   foo.txt
 ```
 
-There it is! But in what state?
+Đây rồi! Nhưng ở trạng thái nào?
 
 ``` {.default}
 $ git status
@@ -247,63 +214,47 @@ $ git status
 	  foo.txt
 ```
 
-It's not even added yet. So if you want to bring it back to life, you'll
-have to add and commit it just as if it were a brand new file.
+Nó thậm chí chưa được add. Vậy nếu bạn muốn đưa nó trở lại, bạn sẽ phải add và commit nó như thể nó là một file hoàn toàn mới.
 
 [i[Remove-->Unremoving from earlier commits]>]
 
-## A Note on Removing Secrets
+## Lưu Ý Về Việc Xóa Bí Mật
 
 [i[Remove-->Secrets]<]
 
-We've seen that once something is committed and deleted, it's possible
-to resurrect that thing.
+Ta đã thấy rằng một khi thứ gì đó được commit và xóa đi, vẫn có thể khôi phục lại.
 
-Now, let's say you've committed some code that looks like this:
+Bây giờ, giả sử bạn đã commit một đoạn code trông như thế này:
 
 ``` {.default}
 MASTER_PASSWORD_FOR_THE_ENTIRE_COMPANY=pencil
 ```
 
-And then you make the horrible mistake of pushing it.
+Và sau đó bạn mắc sai lầm khủng khiếp là push nó lên.
 
-That's bad enough, but let's say it's even worse and you pushed it to a
-repo on GitHub that has public access.
+Điều đó đã đủ tệ rồi, nhưng giả sử còn tệ hơn nữa và bạn push nó lên một repo trên GitHub với quyền truy cập công khai.
 
-Now the entire world has your password! You're hosed!
+Bây giờ cả thế giới đều có mật khẩu của bạn! Bạn xong rồi!
 
-"But wait! I'll just remove it real fast and push and no one will
-notice!"
+"Nhưng đợi đã! Tôi sẽ xóa nó thật nhanh rồi push và không ai biết đâu!"
 
-No. The company can't take that chance. Anyone can clone the repo and
-look back in the history to get the deleted file. The only recourse is
-to change that password immediately. Throughout the entire company. That
-is what **must** happen. Your manager is not amused.
+Không. Công ty không thể chấp nhận rủi ro đó. Bất kỳ ai cũng có thể clone repo và nhìn vào lịch sử để lấy file đã bị xóa. Biện pháp duy nhất là đổi mật khẩu đó ngay lập tức. Trên toàn công ty. Đó là điều **bắt buộc** phải làm. Sếp của bạn không vui đâu.
 
-> **Never, EVER commit secrets to Git.** Use a dot-env[^e749] file or
-> literally anything other than committing the secret.
+> **Không bao giờ, KHÔNG BAO GIỜ commit bí mật vào Git.** Hãy dùng file
+> dot-env[^e749] hoặc bất cứ thứ gì khác thay vì commit bí mật.
 
-[^e749]: A dot-env (`.env`) file is one that contains secret information
-    (like login credentials) that is never committed to the repo. It's
-    usually in the `.gitignore` just to be sure. Someone related to the
-    project will use a side channel to tell you what to put in it so you
-    can authenticate properly. Support for `.env` files exists for a
-    variety of languages and frameworks. I'm using my serious voice
-    because this is a serious matter!
+[^e749]: File dot-env (`.env`) là file chứa thông tin bí mật (như thông
+    tin đăng nhập) mà không bao giờ được commit vào repo. Thường nó nằm
+    trong `.gitignore` cho chắc chắn. Ai đó liên quan đến dự án sẽ dùng
+    kênh liên lạc phụ để cho bạn biết nội dung của nó để bạn có thể xác
+    thực đúng cách. Tôi đang dùng giọng nghiêm túc vì đây là vấn đề
+    nghiêm túc!
 
-Let's make the infraction less severe. Let's say you've pushed to
-GitHub, but it's a private repo. It's still kinda bad. You have to trust
-everyone who has access, and trust that no clones of the repo will ever
-end up in the hands of anyone outside the company or those of any
-disgruntled employees. The only recourse is to change that password.
+Hãy giảm nhẹ mức độ vi phạm. Giả sử bạn đã push lên GitHub, nhưng đó là repo riêng tư. Vẫn còn khá tệ. Bạn phải tin tưởng tất cả những người có quyền truy cập, và tin tưởng rằng không có bản clone nào của repo sẽ rơi vào tay bất kỳ ai bên ngoài công ty hoặc nhân viên bất mãn nào. Biện pháp duy nhất vẫn là đổi mật khẩu.
 
-Okay. Let's make it even *less* severe, still. Let's say you've
-committed the password to your repo, *but you haven't yet pushed*.
+Được rồi. Hãy làm nhẹ hơn *nữa*. Giả sử bạn đã commit mật khẩu vào repo, *nhưng bạn chưa push*.
 
-Now we can do something about it because there's no chance anyone other
-than you has seen the code. You didn't push it, so no one can have
-pulled it. But we'll not talk about that here; see the chapter on
-[Amending Commits](#amend) for fixing the file before the push.
+Bây giờ ta có thể làm gì đó vì không có cơ hội nào người khác đã thấy code. Bạn chưa push nó, vì vậy không ai có thể đã pull nó. Nhưng ta sẽ không nói về điều đó ở đây; xem chương về [Sửa Đổi Commit](#amend) để sửa file trước khi push.
 
 [i[Remove-->Secrets]>]
 
