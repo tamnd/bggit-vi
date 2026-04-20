@@ -1,50 +1,46 @@
-# Appendix: Making a Playground {#making-playground}
+# Phụ lục: Tạo Playground {#making-playground}
 
 [i[Playground]<]
 
-In programming circles in general, a *playground* is a place you can go
-to mess with code and tech and not worry about messing up your
-production system.
+Trong giới lập trình, *playground* (sân chơi thử nghiệm) là nơi bạn có thể
+thoải mái nghịch code và công nghệ mà không sợ làm hỏng hệ thống production.
 
-And there are places you can go online to find these, but with Git, I
-find it's just as easy to make your own local repo.
+Có nhiều playground online, nhưng với Git, tôi thấy tự tạo một repo local
+còn dễ hơn.
 
-Here's a way to make a new local repo called `playground` out of the
-current directory. (You should **not** be under a Git repo at this
-time; create the playground outside other existing repos.)
+Đây là cách tạo một repo local mới tên `playground` từ thư mục hiện tại.
+(Bạn **không** được đang ở trong một Git repo khác lúc này; hãy tạo playground
+bên ngoài các repo đang tồn tại.)
 
 ``` {.default}
 $ git init playground
   Initialized empty Git repository in /user/playground/.git/
 ```
 
-`playground` isn't a special name. You can call it `foo` or anything.
-I'll just use it for this example.
+`playground` không phải tên đặc biệt gì. Bạn có thể gọi nó là `foo` hay bất
+cứ thứ gì. Tôi chỉ dùng tên đó cho ví dụ này thôi.
 
-What that command did was create a new subdirectory called `playground`
-and create a Git repo in it.
+Lệnh đó tạo ra một thư mục con tên `playground` và khởi tạo một Git repo bên trong.
 
-Let's continue at the end: how do you delete the repo? You just remove
-the directory.
+Nói luôn phần cuối: làm sao xóa repo? Chỉ cần xóa thư mục đó đi.
 
 ```
 $ rm -rf playground   # delete the playground repo
 ```
 
-And let's create it again:
+Và tạo lại:
 
 ``` {.default}
 $ git init playground
 ```
 
-We have all the power!
+Ta nắm quyền năng tuyệt đối!
 
-> **This repo only exists on this computer**; it has no remotes and no
-> way to push. You could add that stuff later, if you wanted, but
-> playgrounds tend to be temporary areas where you're just trying things
-> out.
+> **Repo này chỉ tồn tại trên máy này**; nó không có remote và không có cách
+> nào để push. Bạn có thể thêm sau nếu muốn, nhưng playground thường chỉ là
+> khu vực tạm để thử nghiệm.
 
-Let's go into the playground and check it out.
+Vào playground xem sao nào.
 
 ``` {.default}
 $ cd playground
@@ -55,22 +51,21 @@ $ ls -la
   drwxr-xr-x  7 user group  119 Jul 13 14:43 .git
 ```
 
-There's a directory there called `.git` that has all the metadata in it.
+Có một thư mục `.git` chứa toàn bộ metadata.
 
-> **If we wanted to change this directory from a Git repo to
-> just a normal directory**, we could run this:
+> **Nếu muốn biến thư mục này từ Git repo trở lại thư mục bình thường**,
+> chạy lệnh này:
 >
 > ``` {.default}
 > $ rm -rf .git       # Delete the .git directory
 > ```
 >
 > <!-- ` -->
-> Again, we have all the power! But let's show some restraint and not do
-> that yet.
+> Lại quyền năng tuyệt đối! Nhưng hãy kiềm chế, đừng làm vậy vội.
 
-What can we do?
+Ta có thể làm gì?
 
-What *can't* we do? Let's make a file and see where we stand:
+*Không* làm được gì? Hãy tạo một file và xem tình hình:
 
 ``` {.default}
 $ echo "Hello, world" > hello.txt   # Create a file
@@ -94,42 +89,39 @@ $ git status
   add" to track)
 ```
 
-Now we have an untracked file.
+Giờ ta có một file chưa được theo dõi (untracked).
 
-We can `git add` it, we can `git commit` it, we can create branches, we
-can merge them and make conflicts and resolve them and `git rebase` and
-`git reset` and all kinds of stuff.
+Ta có thể `git add` nó, `git commit` nó, tạo branch (nhánh), merge (gộp nhánh)
+rồi tạo conflict (xung đột) rồi giải quyết, rồi `git rebase` và `git reset`
+và đủ thứ khác.
 
-We don't have a remote, so the only things we can't do involve pushing
-and pulling.
+Ta không có remote, nên chỉ thiếu mỗi push và pull.
 
-But it turns out we can even make that happen! Let's see how.
+Nhưng thực ra ta có thể làm được cả điều đó! Xem tiếp nhé.
 
-## Cloning Bare Repos
+## Clone Bare Repo
 
 [i[Bare repo]] [i[Playground-->Cloning]]
 
-A *bare repo* is one without a working tree. You can't go in there to
-see files, because they don't exist in there in a normal sense. The only
-thing that's there is metadata and the commit snapshots.
+*Bare repo* (repo trống) là repo không có working tree (cây làm việc). Không
+thể vào đó để xem file theo nghĩa thông thường. Chỉ có metadata và các
+snapshot commit.
 
 [i[Clone]]
 
-You can clone, push, and pull bare repos.
+Bạn có thể clone, push, và pull bare repo.
 
-Let's make one (again, you could name it anything you want), noting the
-`--bare` command line option:
+Hãy tạo một cái (lại, đặt tên gì cũng được), chú ý tùy chọn `--bare`:
 
 ``` {.default}
 $ git init --bare origin_repo
   Initialized empty Git repository in /user/origin_repo/
 ```
 
-If you look in there (to be clear, you have no reason to) you'll just see
-metadata and directories.
+Nếu nhìn vào trong đó (thực ra không có lý do gì), bạn chỉ thấy metadata và
+các thư mục.
 
-Before we can use it, we'd better clone it. For ease, we'll do this from
-the same directory we created it.
+Trước khi dùng được, phải clone nó. Cho tiện, ta làm từ cùng thư mục vừa tạo.
 
 ``` {.default}
 $ git clone origin_repo playground
@@ -138,14 +130,14 @@ $ git clone origin_repo playground
   done.
 ```
 
-It is empty, naturally. We haven't made any commits.
+Rỗng là đương nhiên rồi. Chưa có commit nào cả.
 
-Now we have two repos in this directory:
+Giờ ta có hai repo trong thư mục này:
 
-* `origin_repo`: the bare repo we cloned, and:
-* `playground`: the repo we cloned from it.
+* `origin_repo`: bare repo vừa clone, và:
+* `playground`: repo clone từ nó.
 
-Let's jump in there and see what's up:
+Vào xem sao:
 
 ``` {.default}
 $ cd playground
@@ -154,17 +146,16 @@ $ git remote -v
   origin    /user/origin_repo (push)
 ```
 
-We have remotes! Of course we do. We cloned this repo, and Git
-automatically sets up the `origin` remote.
+Có remote rồi! Tất nhiên. Ta vừa clone repo này, Git tự động thiết lập remote
+`origin`.
 
-And remember that `origin` is just an alias for some remote that's
-identified somehow. We're used to seeing remotes that start with `https`
-or `ssh`, but here's an example of a remote that's just another
-subdirectory on your disk.
+Nhớ rằng `origin` chỉ là alias (tên gọi tắt) cho một remote nào đó. Ta
+quen thấy remote bắt đầu bằng `https` hay `ssh`, nhưng đây là ví dụ về
+remote chỉ là một thư mục con trên ổ đĩa của bạn.
 
 [i[Pushing]]
 
-Let's make a file and commit it, and see if we can push!
+Tạo file, commit, rồi thử push!
 
 ``` {.default}
 $ echo "Hello, world" > hello.txt
@@ -188,10 +179,10 @@ $ git branch -va
     remotes/origin/main 4a82a14 added
 ```
 
-And we've successfully pushed our file up to `origin`.
+Đã push file lên `origin` thành công.
 
-Finally, let's make another clone. First we'll `cd` back down to where
-`origin_repo` is and clone again this time into `playground2`:
+Cuối cùng, tạo thêm một clone nữa. Trước tiên `cd` trở lại thư mục chứa
+`origin_repo` rồi clone lần này vào `playground2`:
 
 ``` {.default}
 $ git clone origin_repo playground2
@@ -199,9 +190,8 @@ $ git clone origin_repo playground2
   done.
 ```
 
-Let's `cd` in there and see what we have. It's a clone of the repo, so
-we'd better see the `hello.txt` we pushed in there from `playground`
-earlier.
+`cd` vào xem có gì. Đây là bản clone của repo, nên phải thấy `hello.txt`
+mà ta đã push từ `playground` trước đó.
 
 ``` {.default}
 $ cd playground2 
@@ -213,29 +203,28 @@ $ cat hello.txt
   Hello, world
 ```
 
-*Voila!* It's there!
+*Voila!* Có đó rồi!
 
-Since `playground` and `playground2` are both clones of the same repo,
-you can push from one and pull from the other to get the changes.
+Vì `playground` và `playground2` đều là clone của cùng một repo, bạn có thể
+push từ cái này và pull từ cái kia để nhận thay đổi.
 
 [i[Pulling]]
 
-You can even make conflicting changes and try to `git pull` or `git pull
---rebase` and see how things go wrong and how to fix them.
+Thậm chí có thể tạo thay đổi xung đột và thử `git pull` hay `git pull
+--rebase` để xem mọi thứ rối như thế nào và cách sửa.
 
-And if everything goes completely off the rails, you can just delete the
-directories and start again. It's a playground!
+Nếu mọi thứ đổ vỡ hoàn toàn, xóa các thư mục đi và làm lại. Đây là
+playground mà!
 
-## Automating Playground Builds
+## Tự động hóa việc Tạo Playground
 
 [i[Playground-->Automating]<] [i[Shell scripts]]
 
-It can be tedious to continually destroy and recreate repos that you're
-trying to learn from. I suggest putting your commands in a _shell
-script_, which is just a text file that contains the commands to run.
+Việc liên tục xóa rồi tạo lại các repo để học khá mệt mỏi. Tôi gợi ý đặt
+các lệnh vào một *shell script* (kịch bản shell), tức là một file văn bản
+chứa các lệnh cần chạy.
 
-Let's say you make a new text file called `buildrepo.sh` and you put
-the following text in it:
+Giả sử bạn tạo file `buildrepo.sh` với nội dung sau:
 
 ``` {.default}
 rm -rf playground    # Remove old playground
@@ -250,9 +239,9 @@ git add foobar.txt
 git commit -m updated
 ```
 
-That's just a bunch of shell commands. But here's the fun bit: if you
-run `sh` (the shell) with `buildrepo.sh` as an argument, it will run
-all those commands in order!
+Đó chỉ là một loạt lệnh shell. Nhưng đây là phần thú vị: nếu bạn chạy `sh`
+(shell) với `buildrepo.sh` làm tham số, nó sẽ chạy tất cả các lệnh đó theo
+thứ tự!
 
 ``` {.default}
 $ sh buildrepo.sh
@@ -265,10 +254,10 @@ $ sh buildrepo.sh
    1 file changed, 1 insertion(+)
 ```
 
-> **To debug a shell script** you can run it like this: `sh -x
-> buildrepo.sh` and it will show you the commands it is running.
+> **Để debug shell script**, chạy như này: `sh -x buildrepo.sh` và nó sẽ
+> hiển thị các lệnh đang được thực thi.
 
-After that, we can `cd` in there and see what happened:
+Sau đó, `cd` vào xem kết quả:
 
 ``` {.default}
 $ cd playground
@@ -290,9 +279,9 @@ $ cat foobar.txt
   foobar again
 ```
 
-By putting the initialization commands in a shell script, it's almost
-like having a "saved game" at that point. You can just rerun the shell
-script any time you want the same playground set up.
+Bằng cách đặt các lệnh khởi tạo vào shell script, nó gần giống như lưu
+game vậy. Bất cứ lúc nào muốn playground ở trạng thái đó, chỉ cần chạy lại
+script là xong.
 
 [i[Playground-->Automating]>]
 
