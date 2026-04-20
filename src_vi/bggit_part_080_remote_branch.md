@@ -2,35 +2,25 @@
 
 [i[Branch-->Remote tracking]<]
 
-We've seen how to create local branches that you do work on, then merge
-back into the `main` branch, then `git push` it up to a remote server.
+Ta đã thấy cách tạo branch cục bộ để làm việc, sau đó merge trở lại vào branch `main`, rồi `git push` lên máy chủ từ xa.
 
-This part of the guide is going to try to clarify what's actually going
-on behind the scenes, as well as give us a way to push our local
-branches to a remote for safe keeping.
+Phần này của hướng dẫn sẽ cố gắng làm rõ những gì thực sự xảy ra đằng sau hậu trường, đồng thời cho ta cách push branch cục bộ lên remote để lưu trữ an toàn.
 
-## Branches on Remotes
+## Các Branch trên Remote
 
 [i[Branch-->On remote]<]
 
-First, a refresher!
+Đầu tiên, hãy ôn lại nhanh!
 
-Recall that the remote repo you cloned yours from is a complete copy of
-your repo. The remote repo has a `main` branch, and therefore your
-clone also has a `main` branch.
+Nhớ rằng repo từ xa mà bạn đã clone về là một bản sao hoàn chỉnh của repo bạn. Repo từ xa có branch `main`, và do đó bản clone của bạn cũng có branch `main`.
 
-That's right! When you make a GitHub repo and then clone it, there are
-**two** `main` branches!
+Đúng vậy! Khi bạn tạo một repo GitHub rồi clone nó, thực ra có **hai** branch `main`!
 
-How do we differentiate them?
+Làm sao ta phân biệt chúng?
 
-Well, on your local clone, we just refer to branches by their plain
-name. When we say `main` or `topic2`, we mean the local branch by that
-name on our repo.
+Trong bản clone cục bộ, ta chỉ dùng tên thuần để gọi các branch. Khi ta nói `main` hay `topic2`, ta có ý là branch cục bộ với tên đó trong repo của mình.
 
-If we want to talk about a branch on a remote, we have to give the
-remote name along with the branch using that slash notation we've
-already seen:
+Nếu muốn nói đến một branch trên remote, ta phải đưa tên remote cùng với tên branch theo ký hiệu gạch chéo mà ta đã thấy:
 
 ``` {.default}
 main            # main branch on your local repo
@@ -40,73 +30,52 @@ zork/mailbox    # mailbox branch on the remote named zork
 mailbox         # mailbox branch on your local repo
 ```
 
-Importantly, not only do the words `origin/main` refer to the `main`
-branch on `origin` in casual conversation, but _you actually have a
-branch on your local repo called `origin/main`_.
+Điều quan trọng là không chỉ `origin/main` chỉ branch `main` trên `origin` trong ngôn ngữ thông thường, mà _bạn thực sự có một branch trong repo cục bộ tên là `origin/main`_.
 
-This is called a _remote-tracking branch_. It's your local copy of the
-`main` branch on the remote. You can't move your local `origin/main`
-branch directly; Git does it for you as a matter of course when you
-interact with the remote (e.g. when you push or pull).
+Đây gọi là _remote-tracking branch_ (branch theo dõi remote). Đó là bản sao cục bộ của bạn về branch `main` trên remote. Bạn không thể tự ý di chuyển branch `origin/main` cục bộ; Git làm điều đó cho bạn một cách tự nhiên khi bạn tương tác với remote (ví dụ khi push hoặc pull).
 
-We're going to call the `main` branch on our local machines the _local
-branch_, and we'll call the one on `origin` the _upstream branch_.
+Ta sẽ gọi branch `main` trên máy tính cục bộ là _local branch_ (branch cục bộ), và gọi cái trên `origin` là _upstream branch_ (branch thượng nguồn).
 
-> **And this is going to get confusing later** when we name a remote
-> `upstream` in a way that has nothing to do with the _upstream branch_
-> terminology we're using here.
+> **Và điều này sẽ gây nhầm lẫn về sau** khi ta đặt tên cho một remote là
+> `upstream` theo cách chẳng liên quan gì đến thuật ngữ _upstream branch_
+> mà ta đang dùng ở đây.
 
-I want to go over that one more time to drive it home.
+Tôi muốn đi qua điều này thêm một lần nữa để khắc sâu.
 
-Let's say you have these two branches on your computer because you've
-just cloned the remote repo at the `origin`:
+Giả sử bạn có hai branch này trên máy tính vì bạn vừa clone repo từ xa tại `origin`:
 
 ``` {.default}
 main            # main branch on your local repo
 origin/main     # main branch on the remote named origin
 ```
 
-When you have those two branches on your computer, *there are actually
-three branches in the world*. 
+Khi bạn có hai branch đó trên máy tính, *thực ra có ba branch trên thế giới*.
 
-1. `main` on your computer.
-2. `origin/main` on your computer.
-3. `main` on the `origin` computer, usually a different computer than
-   yours, e.g. one at GitHub or something.
+1. `main` trên máy tính của bạn.
+2. `origin/main` trên máy tính của bạn.
+3. `main` trên máy tính của `origin`, thường là một máy tính khác so với máy bạn, ví dụ một máy ở GitHub hay gì đó.
 
-Notice that the first two of these are on the repo on your computer!
+Lưu ý rằng hai cái đầu tiên đều ở trên repo trong máy tính của bạn!
 
-The branch `origin/main` is just where your computer *thinks* that
-`main` on the `origin` is. Your computer got this information the last
-time you pulled or fetched from `origin`.
+Branch `origin/main` chỉ là nơi máy tính của bạn *nghĩ rằng* `main` trên `origin` đang ở. Máy tính của bạn có được thông tin này vào lần cuối cùng bạn pull hoặc fetch từ `origin`.
 
-If other people have pushed to `main` on `origin` since your last pull,
-your `origin/main` on your local computer won't be up to date.
+Nếu người khác đã push lên `main` của `origin` kể từ lần pull cuối của bạn, thì `origin/main` trên máy cục bộ của bạn sẽ không còn cập nhật nữa.
 
-And normally you don't have to worry about this much; when you try to
-push, Git will tell you if someone else has pushed changes in the
-meantime and you have to pull first to update your `origin/main` branch.
-No biggie.
+Và thường thì bạn không cần lo lắng nhiều về điều này; khi bạn cố push, Git sẽ thông báo nếu ai đó đã push thay đổi trong thời gian chờ và bạn phải pull trước để cập nhật branch `origin/main` của mình. Không vấn đề gì lớn.
 
-But I wanted to spell that out so you had a more complete mental model
-of what's happening behind the curtain, here.
+Nhưng tôi muốn giải thích rõ điều đó để bạn có mô hình tư duy đầy đủ hơn về những gì đang xảy ra phía sau hậu trường.
 
 [i[Branch-->On remote]>]
 
-## Listing Remote Tracking Branches
+## Liệt Kê Remote Tracking Branches
 
 [i[Branch-->Listing remote tracking]<]
 
-Remember how `git branch` listed the branches you had? Let's power it
-up so you can see all the remote tracking branches, as well. This will
-help in the following sections.
+Nhớ rằng `git branch` liệt kê các branch bạn có? Hãy nâng cấp nó để xem tất cả các remote tracking branch luôn. Điều này sẽ giúp trong các phần tiếp theo.
 
-Basically, we just give it the `-avv` switch for "all" (to list the
-remote tracking branches) and "verbose" (to give info about which
-commits they're pointing to) and "verbose" again (to give info about
-which remote branches map to which local branches.)
+Về cơ bản, ta chỉ cần thêm tùy chọn `-avv` nghĩa là "all" (để liệt kê các remote tracking branch) và "verbose" (để hiện thông tin về commit nào chúng đang trỏ đến) và "verbose" thêm lần nữa (để cho biết remote branch nào ánh xạ đến local branch nào).
 
-Here's the result for the repo that holds the source for this book:
+Đây là kết quả cho repo chứa mã nguồn cuốn sách này:
 
 ``` {.default}
 % git branch -avv
@@ -117,34 +86,21 @@ Here's the result for the repo that holds the source for this book:
     remotes/origin/sphinx cdac325 partial port
 ```
 
-We see my two local branches (`main` and `sphinx`). Looking on those two
-top lines, you see remote tracking branches in brackets (`origin/main`
-and `origin/sphinx`). When I push or pull from `main` or `sphinx`, those
-are the remote tracking branches that are merged to.
+Ta thấy hai branch cục bộ của tôi (`main` và `sphinx`). Nhìn vào hai dòng trên cùng đó, bạn thấy remote tracking branch trong dấu ngoặc vuông (`origin/main` và `origin/sphinx`). Khi tôi push hoặc pull từ `main` hay `sphinx`, đó là các remote tracking branch được merge đến.
 
-Additionally, we see information about the remote below that.
+Ngoài ra, ta thấy thông tin về remote bên dưới đó.
 
-The first line about `remotes/origin/HEAD` is a little strange. It just
-points to `origin/main` which simply lets us know that `main` is the
-initial branch for the repo that Git will use when you clone it. You
-typically don't need to think about this line.
+Dòng đầu tiên về `remotes/origin/HEAD` hơi kỳ lạ. Nó chỉ trỏ đến `origin/main`, đơn giản là cho ta biết rằng `main` là branch khởi đầu của repo mà Git sẽ dùng khi bạn clone nó. Thường thì bạn không cần nghĩ đến dòng này.
 
-The remaining two lines tell us what commits the remote tracking
-branches `origin/main` and `origin/sphinx` are pointing at. Looking
-closely, we see they're pointing to the same commits as our local `main`
-and `sphinx` indicating that everything is in sync. (As far as we
-know—someone else might have pushed something to the repo since our last
-pull and we don't know about that yet.)
+Hai dòng còn lại cho ta biết các commit mà remote tracking branch `origin/main` và `origin/sphinx` đang trỏ đến. Nhìn kỹ, ta thấy chúng đang trỏ đến cùng commit với `main` và `sphinx` cục bộ của ta, nghĩa là mọi thứ đang đồng bộ. (Theo như ta biết --- ai đó có thể đã push thứ gì đó lên repo sau lần pull cuối của ta mà ta chưa hay.)
 
 [i[Branch-->Listing remote tracking]>]
 
-## Pushing to a Remote
+## Push Lên Remote
 
 [i[Branch-->Set upstream]<]
 
-Fun Fact: when you push or pull, you technically specify the remote and
-the branch you want to use. This is me saying, "Push the branch I'm on
-right now (presumably `main`) and merge it into `main` on `origin`.
+Thú vị đây: khi bạn push hoặc pull, về mặt kỹ thuật bạn chỉ định remote và branch muốn dùng. Đây là tôi đang nói, "Push branch tôi đang ở ngay lúc này (giả sử là `main`) và merge nó vào `main` trên `origin`."
 
 [i[Push-->Branch to remote]]
 [i[Branch-->Pushing to remote]]
@@ -152,66 +108,57 @@ right now (presumably `main`) and merge it into `main` on `origin`.
 $ git push origin main
 ```
 
-"But wait! I haven't been doing that!"
+"Nhưng đợi đã! Tôi chưa bao giờ làm vậy!"
 
-It turns out there's an option you can set to make it happen
-automatically. Let's say you're on the `main` branch and then run this:
+Hóa ra có một tùy chọn bạn có thể đặt để điều đó xảy ra tự động. Giả sử bạn đang ở branch `main` và chạy lệnh này:
 
 ``` {.default}
 $ git push --set-upstream origin main
 $ git push -u origin main              # same thing, shorthand
 ```
 
-This will do a couple things:
+Lệnh này sẽ làm hai việc:
 
-1. It'll push changes on your local `main` to the remote server (that's
-   the `push origin main` part).
-2. It'll remember that local `main` branch is tracking the remote branch
-   `origin/main` (that's the `-u` part).
+1. Push các thay đổi trên `main` cục bộ lên máy chủ từ xa (đó là phần `push origin main`).
+2. Nhớ rằng branch `main` cục bộ đang theo dõi branch từ xa `origin/main` (đó là phần `-u`).
 
-And then, from then on, from the `main` branch, you can just:
+Và sau đó, từ đây về sau, từ branch `main`, bạn chỉ cần:
 
 ``` {.default}
 $ git push
 ```
 
-and it'll automatically push to `main` on `origin` (and update your
-`origin/main` branch) thanks to your earlier usage of `--set-upstream`.
+và nó sẽ tự động push lên `main` trên `origin` (và cập nhật branch `origin/main` của bạn) nhờ vào việc bạn đã dùng `--set-upstream` trước đó.
 
-And `git pull` has the same option, as well, though you only need to do
-it once with either push or pull.
+Và `git pull` cũng có tùy chọn tương tự, mặc dù bạn chỉ cần làm một lần với push hoặc pull là đủ.
 
-"But wait! I've never used `--set-upstream`, either!"
+"Nhưng đợi đã! Tôi cũng chưa bao giờ dùng `--set-upstream`!"
 
-That's because by default when you clone a repo, Git automagically sets
-up a local branch to track the `main` branch on the remote.
+Vì mặc định khi bạn clone một repo, Git tự động thiết lập branch cục bộ để theo dõi branch `main` trên remote.
 
-> **Depending on how you made your repo, you might also have a reference
-> to `origin/HEAD`.** It might be weird to think that there's a `HEAD`
-> ref on a remote server that you can see, but in this case it's just
-> referring to the branch that you'll be checking out by default when
-> you clone the repo.
+> **Tùy thuộc vào cách bạn tạo repo, bạn cũng có thể có tham chiếu đến
+> `origin/HEAD`.** Có thể hơi kỳ lạ khi nghĩ rằng có một ref `HEAD` trên
+> máy chủ từ xa mà bạn có thể thấy, nhưng trong trường hợp này nó chỉ đơn
+> giản là chỉ đến branch mà bạn sẽ checkout mặc định khi clone repo.
 
-"OK, so what you're telling me is that I can just `git push` and `git
-pull` like always and just ignore everything you wrote in this section?"
+"OK, vậy ý bạn là tôi chỉ cần `git push` và `git pull` như thường lệ và bỏ qua mọi thứ bạn vừa viết trong phần này?"
 
-Well... yes. Ish. No. We're going to make use of this to push other
-branches to the remote!
+Ừ thì... đúng. Kiểu kiểu. Không hẳn. Ta sẽ dùng điều này để push các branch khác lên remote!
 
 [i[Branch-->Set upstream]>]
 
-## Making a Branch and Pushing to Remote
+## Tạo Branch và Push Lên Remote
 
 [i[Push-->Branch to remote]<]
 
-I'm going to make a new local branch `topic99`:
+Tôi sẽ tạo một branch cục bộ mới `topic99`:
 
 ``` {.default}
 $ git switch -c topic99
   Switched to a new branch 'topic99'
 ```
 
-And make some changes:
+Và thực hiện một số thay đổi:
 
 ``` {.default}
 $ vim README.md        # Create and edit a README
@@ -219,7 +166,7 @@ $ git add README.md
 $ git commit -m "Some important additions"
 ```
 
-In our log, we can see where all the branches are:
+Trong log, ta có thể thấy tất cả các branch đang ở đâu:
 
 ``` {.default}
 commit 79ddba75b144bad89e1cbd862e5f3b3409f6c498 (HEAD -> topic99)
@@ -235,12 +182,9 @@ Date:   Fri Feb 16 16:14:13 2024 -0800
     Initial checkin
 ```
 
-`HEAD` refers to `topic99`, and that's one commit ahead of `main`
-(local) and `main` (upstream on the `origin` remote), as far as we know.
-And we know this because it's one commit ahead of our remote-tracking
-branch `origin/main`.
+`HEAD` trỏ đến `topic99`, và đó là một commit phía trước `main` (cục bộ) và `main` (upstream trên remote `origin`), theo như ta biết. Và ta biết điều đó vì nó đứng trước remote-tracking branch `origin/main` một commit.
 
-Now let's push!
+Bây giờ hãy push!
 
 ``` {.default}
 $ git push
@@ -253,13 +197,11 @@ $ git push
   upstream, see 'push.autoSetupRemote' in 'git help config'.
 ```
 
-Ouch. The short of all this is that we said "push", and Git said, "To
-what? You haven't associated this branch with anything on the remote!"
+Ối. Tóm lại, ta đã nói "push", và Git nói, "Push đến đâu? Bạn chưa liên kết branch này với bất kỳ thứ gì trên remote!"
 
-And we haven't. There's no `origin/topic99` remote-tracking branch, and
-certainly no `topic99` branch on that remote. Yet.
+Và quả là ta chưa. Không có remote-tracking branch `origin/topic99`, và chắc chắn cũng chưa có branch `topic99` trên remote đó. Chưa thôi.
 
-The fix is easy enough—Git already told us what to do.
+Sửa thì đơn giản --- Git đã nói cho ta biết phải làm gì rồi.
 
 [i[Branch-->Set upstream]]
 
@@ -267,121 +209,106 @@ The fix is easy enough—Git already told us what to do.
 $ git push --set-upstream origin topic99
 ```
 
-And that will do it.
+Và xong.
 
 [i[GitHub-->Branches]]
 
-At this point, assuming you've pushed to GitHub, you could go to your
-GitHub page for the project, and near the top left you should see
-something that looks like Figure_#.1.
+Tại thời điểm này, giả sử bạn đã push lên GitHub, bạn có thể vào trang GitHub cho dự án và ở góc trên bên trái bạn sẽ thấy thứ gì đó trông như Figure_#.1.
 
 ![Two branches on GitHub](img_080_010.png "Two branches on GitHub")
 
-If you pull down that `main` button, you'll see `topic99` there as well.
-You can select either branch and view it in the GitHub interface.
+Nếu bạn kéo xuống nút `main` đó, bạn sẽ thấy `topic99` ở đó nữa. Bạn có thể chọn một trong hai branch và xem trong giao diện GitHub.
 
 [i[Push-->Branch to remote]>]
 
-## Deleting Remote Tracking Branches
+## Xóa Remote Tracking Branches
 
 [i[Branch-->Deleting remote]<]
 [i[Branch-->Deleting remote tracking]<]
 
-There are few things that can happen here.
+Có một vài tình huống có thể xảy ra ở đây.
 
-1. Someone deletes the branch on the remote, but your corresponding
-   remote tracking branch (the one on your clone) still exists and you
-   want to delete it.
+1. Ai đó xóa branch trên remote, nhưng remote tracking branch tương ứng (cái trong bản clone của bạn) vẫn còn và bạn muốn xóa nó.
 
-2. You want to delete your remote tracking branch, and you want to leave
-   the corresponding branch untouched on the remote.
+2. Bạn muốn xóa remote tracking branch của mình, và muốn giữ nguyên branch tương ứng trên remote.
 
-3. You delete your remote tracking branch and you want to delete the
-   corresponding branch on the remote, too.
+3. Bạn xóa remote tracking branch của mình và cũng muốn xóa branch tương ứng trên remote.
 
-For all of these, it's good to have your working tree clean, of course.
+Trong tất cả các trường hợp này, tốt nhất là working tree sạch sẽ trước đã.
 
-### Fetching Deleted Remote Branches
+### Fetch Các Branch Remote Đã Bị Xóa
 
-The first one is pretty easy. Let's tell Git to delete all our remote
-tracking branches that no longer exist on the `origin` remote:
+Cái đầu tiên khá dễ. Hãy bảo Git xóa tất cả remote tracking branch không còn tồn tại trên remote `origin`:
 
 [i[Fetch-->Pruning remote tracking branches]]
 ``` {.default}
 $ git fetch --prune
 ```
 
-or if you want to specify a remote:
+hoặc nếu bạn muốn chỉ định một remote:
 
 ``` {.default}
 $ git fetch --prune someremote
 ```
 
-or if you want to prune all remotes:
+hoặc nếu muốn prune (tỉa) tất cả remote:
 
 ``` {.default}
 $ git fetch --prune --all
 ```
 
-### Deleting Your Remote Tracking Branch
+### Xóa Remote Tracking Branch của Bạn
 
-In this case, you have a remote tracking branch on your clone that you
-want to delete. But you don't want to delete that branch from the
-server.
+Trong trường hợp này, bạn có một remote tracking branch trong bản clone mà bạn muốn xóa. Nhưng bạn không muốn xóa branch đó trên máy chủ.
 
-Use `-d` for delete and `-r` for remote:
+Dùng `-d` để xóa và `-r` cho remote:
 
 ``` {.default}
 $ git branch -dr remote/branch
 ``` 
 
-For example:
+Ví dụ:
 
 ``` {.default}
 $ git branch -dr origin/topic99
 ``` 
 
-### Deleting a Branch on a Remote
+### Xóa Branch trên Remote
 
-Finally, let's say you've deleted your remote tracking branch on your
-clone, as per above, and you also want to delete it on the remote.
+Cuối cùng, giả sử bạn đã xóa remote tracking branch trong bản clone như hướng dẫn trên, và bạn cũng muốn xóa nó trên remote.
 
-We're going to (perhaps surprisingly) use `git push` for this.
+Ta sẽ (có thể bất ngờ) dùng `git push` cho việc này.
 
-To delete a branch on the remote, you:
+Để xóa một branch trên remote, bạn:
 
 ``` {.default}
 $ git push someremote --delete branchname
 ``` 
 
-For example:
+Ví dụ:
 
 ``` {.default}
 $ git push origin --delete topic99
 ``` 
 
-And that's it! Make sure you delete your remote tracking branch if you
-haven't done so already.
+Vậy là xong! Hãy chắc chắn xóa remote tracking branch của bạn nếu chưa làm.
 
 [i[Branch-->Deleting remote]>]
 [i[Branch-->Deleting remote tracking]>]
 
-## Multiple Remotes
+## Nhiều Remote
 
 [i[Remote-->Multiple]<]
 
-It's possible that you might have multiple remotes. (This is commonly
-put in place when you've forked someone's repo on GitHub.)
+Bạn có thể có nhiều remote. (Điều này thường xảy ra khi bạn fork repo của ai đó trên GitHub.)
 
-How do remote tracking branches work in that case?
+Remote tracking branch hoạt động thế nào trong trường hợp đó?
 
-Let's say your main remote is called `origin` as usual. But you've also
-set another remote called `remote2`, unoriginally.
+Giả sử remote chính của bạn là `origin` như thường lệ. Nhưng bạn cũng đã thiết lập một remote khác gọi là `remote2`, tên hơi thiếu sáng tạo.
 
-Someone else pushes a new branch called `foobranch` (slightly more
-originally) up to `remote2` and you'd like to get it.
+Ai đó push một branch mới tên `foobranch` (sáng tạo hơn một chút) lên `remote2` và bạn muốn lấy nó về.
 
-So you do this:
+Vậy bạn làm thế này:
 
 [i[Fetch]]
 
@@ -396,7 +323,7 @@ $ git fetch remote2
    * [new branch]      foobranch -> remote2/foobranch
 ```
 
-So far so good. Let's switch to it:
+Ổn rồi. Hãy switch sang nó:
 
 ``` {.default}
 $ git switch foobranch
@@ -404,21 +331,17 @@ $ git switch foobranch
   Switched to a new branch 'foobranch'
 ```
 
-Wait! We're tracking at `remote2`? That's a little weird because it's
-the other person's repo. Maybe you have permission to write to it, and
-that's what you want to do. But it's more probably you'd like your own
-version of this branch on your repo as well.
+Đợi đã! Ta đang track ở `remote2`? Hơi kỳ vì đó là repo của người khác. Có thể bạn có quyền ghi vào đó và đó là điều bạn muốn. Nhưng nhiều khả năng hơn là bạn muốn có phiên bản branch này trong repo của mình nữa.
 
-You can do that by pushing it to your remote with `-u` again.
+Bạn có thể làm điều đó bằng cách push nó lên remote của mình với `-u` một lần nữa.
 
 ``` {.default}
 $ git push -u origin foobranch
 ```
 
-And that'll do it.
+Và xong rồi.
 
-If you look at your branches with `git branch -avv` you'll see now
-several `foobranch` variants for different clones.
+Nếu bạn xem các branch với `git branch -avv`, bây giờ bạn sẽ thấy nhiều biến thể `foobranch` cho các clone khác nhau.
 
 ``` {.default}
 foobranch
@@ -426,8 +349,7 @@ remotes/origin/foobranch
 remotes/remote2/foobranch
 ```
 
-If you want to keep your `origin/foobranch` in sync with that on
-`remote2`, you'll have to do a bunch of merging.
+Nếu bạn muốn giữ `origin/foobranch` đồng bộ với cái trên `remote2`, bạn sẽ phải merge nhiều lần.
 
 [i[Fetch]]
 
@@ -438,10 +360,9 @@ $ git merge remote2/foobranch  # Merge changes from remote2
 $ git push origin foobranch    # Push changes back to origin
 ```
 
-(You can leave the `origin foobranch` off the `push` if you've already
-pushed it with `-u` earlier, of course.)
+(Bạn có thể bỏ `origin foobranch` khỏi lệnh `push` nếu bạn đã push với `-u` trước đó, tất nhiên.)
 
-At that point, every `foobranch` should be on the same commit.
+Tại thời điểm đó, mọi `foobranch` đều nên ở cùng một commit.
 
 [i[Remote-->Multiple]>]
 [i[Branch-->Remote tracking]>]
