@@ -1,37 +1,29 @@
-# Amending Commits {#amend}
+# Amend Commit (Sửa Commit) {#amend}
 
 [i[Commit-->Amending]<]
 
-Git gives you the power to relatively easily amend the last commit.
+Git cho bạn khả năng sửa commit cuối cùng một cách tương đối dễ dàng.
 
-> **Caution!** This section talks about changing history, and let's not
-> forget The One Rule Of Changing History: thou shalt not change history
-> of anything that you've pushed, lest someone else might have already
-> pulled thy earlier changes, causing your commit histories to become
-> woefully out of sync and much shouting.
+> **Cẩn thận!** Phần này nói về việc thay đổi lịch sử, và đừng quên Quy Tắc Số Một Khi Thay Đổi Lịch Sử: ngươi không được thay đổi lịch sử của bất cứ thứ gì đã push, kẻo người khác đã pull thay đổi trước đó của ngươi, khiến lịch sử commit của ngươi trở nên hoàn toàn lệch lạc và gây ra nhiều tiếng la hét.
 >
-> In short, if you pushed a change, assume someone else has pulled it
-> already and amending your commit (changing history) would cause lots
-> of pain.
+> Nói ngắn gọn, nếu bạn đã push một thay đổi, hãy giả định rằng người khác đã pull nó và việc amend commit (thay đổi lịch sử) sẽ gây ra nhiều phiền toái.
 > 
-> In shorter, if you pushed, it's too late. No more amending the commit.
+> Ngắn hơn nữa, nếu bạn đã push, đã muộn rồi. Không amend commit nữa.
 
-So what are some use cases?
+Vậy một số trường hợp dùng là gì?
 
-* Maybe you botched the commit message and you want to rewrite it.
-* Maybe you forgot to add some files.
+* Có thể bạn viết nhầm commit message và muốn viết lại.
+* Có thể bạn quên thêm vài file.
 
-That kind of thing that none of us have ever done ever, right?
+Những điều mà không ai trong chúng ta từng làm, phải không nào?
 
-## Amending the Commit Message
+## Sửa Commit Message
 
 [i[Commit-->Amending commit messages]<]
 
-This one is pretty easy. Let's take an example of a commit that I've
-botched. Note that this is completely committed at this point—I've
-already run `git commit`. But, crucially, I haven't pushed yet.
+Cái này khá dễ. Hãy lấy ví dụ về một commit tôi đã làm sai. Lưu ý rằng lúc này đã commit hoàn toàn---tôi đã chạy `git commit`. Nhưng, quan trọng là, tôi chưa push.
 
-Let's get a status and see the log:
+Hãy xem trạng thái và log:
 
 ``` {.default}
 $ git status
@@ -45,25 +37,21 @@ $ git log
     addded
 ```
 
-That's one "d" too many in the commit message. Fixing it up is as easy
-as this:
+Có một chữ "d" thừa trong commit message. Sửa lại chỉ đơn giản như thế này:
 
 ``` {.default}
 $ git commit --amend
 ```
 
-And that brings me right into my editor where I can change the message.
+Và ngay lập tức tôi được đưa vào editor để thay đổi message.
 
-If I don't want to use the editor, I can do it on the command line:
+Nếu không muốn dùng editor, tôi có thể làm trực tiếp trên dòng lệnh:
 
 ``` {.default}
 $ git commit --amend -m "the new commit message"
 ```
 
-Note that doing this preserves the author of the commit. (Which is
-probably what you want 99.9999% of the time since you were probably
-already the author.) If you want to change the identity, you'll have to
-reconfigure your identity with `git config` and then run:
+Lưu ý rằng cách này giữ nguyên tác giả của commit. (Điều này hầu như bạn luôn muốn vì bạn vốn là tác giả rồi.) Nếu muốn thay đổi identity, bạn phải cấu hình lại identity bằng `git config` rồi chạy:
 
 ``` {.default}
 $ git commit --amend --reset-author
@@ -71,14 +59,13 @@ $ git commit --amend --reset-author
 
 [i[Commit-->Amending commit messages]>]
 
-## Adding some Files to the Commit
+## Thêm Một Số File Vào Commit
 
 [i[Commit-->Amending files]<]
 
-Ugh! You just made that commit but you forgot to add one of the files to
-it! You got `foo.c` and `bar.c` in there, but you left out `baz.h`!
+Ugh! Bạn vừa tạo commit nhưng quên thêm một trong các file vào! Bạn đã có `foo.c` và `bar.c` trong đó, nhưng bỏ sót `baz.h`!
 
-Let's look.
+Hãy xem nào.
 
 ``` {.default}
 $ ls
@@ -94,26 +81,22 @@ $ git log --name-only
   foo.c
 ```
 
-OK, so how can we get `baz.h` in there? Like this:
+OK, vậy làm thế nào để đưa `baz.h` vào? Như thế này:
 
-1. `git add baz.h` to add it to the stage.
-2. `git commit --amend` to get it into the commit.
+1. `git add baz.h` để thêm nó vào stage.
+2. `git commit --amend` để đưa nó vào commit.
 
-This will bring you into an editor to edit the commit message. You can
-just save it as is. Or you can specify the `-m` option on the command
-line to give a new message.
+Lệnh này sẽ mở editor để chỉnh sửa commit message. Bạn có thể lưu như cũ. Hoặc bạn có thể dùng tùy chọn `-m` trên dòng lệnh để đặt message mới.
 
-Alternately, if you're just adding files, you might not need to change
-the commit message at all. In that case you can just run:
+Ngoài ra, nếu bạn chỉ thêm file, bạn có thể không cần thay đổi commit message. Trong trường hợp đó bạn có thể chạy:
 
 ``` {.default}
 $ git commit --amend --no-edit
 ```
 
-That'll run the amend and not edit the commit message at all.
+Lệnh đó sẽ thực hiện amend mà không chỉnh sửa commit message.
 
-And there we have it—you can easily amend the last commit. Just be sure
-you haven't pushed it before you do.
+Và thế là xong---bạn có thể dễ dàng amend commit cuối cùng. Chỉ cần chắc chắn bạn chưa push trước khi làm.
 
 [i[Commit-->Amending files]>]
 
