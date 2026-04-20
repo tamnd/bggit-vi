@@ -1,178 +1,121 @@
-# Collaboration across Branches
+# Cộng Tác Trên Các Branch
 
 [i[Collaboration-->Across branches]<]
 
-Let's say you're on a team of coders and you all have access to the same
-GitHub repo. (One person on the team owns the repo, and they've
-[fl[added you all as collaborators|https://tinyurl.com/y5kzpeyk]].)
+Giả sử bạn đang trong một nhóm lập trình viên và tất cả mọi người đều có quyền truy cập vào cùng một repo GitHub. (Một người trong nhóm sở hữu repo, và họ đã [fl[thêm tất cả mọi người làm collaborator|https://tinyurl.com/y5kzpeyk]].)
 
-> I'm going to use the term _collaborator_ to mean "someone to whom you
-> have granted write access to your repo".
+> Tôi sẽ dùng thuật ngữ _collaborator_ (cộng tác viên) để chỉ "ai đó
+> mà bạn đã cấp quyền ghi vào repo của bạn".
 
-How can you all structure your work so that you're minimizing conflicts?
+Làm thế nào để tất cả mọi người cấu trúc công việc để giảm thiểu xung đột?
 
-There are a number of ways to do this.
+Có một số cách để làm điều này.
 
-* Everyone is a collaborator on the repo, and:
-  * Everyone uses the same branch, probably `main`, or
-  * Everyone uses their own remote tracking branch and periodically
-    merges with the main branch, or
-  * Everyone uses their own remote tracking branch and periodically
-    merges with a development branch, which itself is periodically
-    merged into `main` for each official release.
-* Or everyone has their own repo (and are not collaborators on the same
-  repo), and:
-  * Everyone uses _pull requests_ or other synchronization methods to
-    get their repos merged into the other devs'.
+* Mọi người đều là collaborator trên repo, và:
+  * Mọi người dùng cùng một branch, có thể là `main`, hoặc
+  * Mọi người dùng remote tracking branch riêng và định kỳ merge với branch main, hoặc
+  * Mọi người dùng remote tracking branch riêng và định kỳ merge với branch development, branch này lại định kỳ được merge vào `main` cho mỗi bản phát hành chính thức.
+* Hoặc mọi người có repo riêng (và không phải collaborator trên cùng một repo), và:
+  * Mọi người dùng _pull request_ hay các phương thức đồng bộ hóa khác để merge repo của họ vào repo của các dev khác.
 
-We'll look at the first few ways in this chapter, but we'll save pull
-requests for later.
+Ta sẽ xem xét vài cách đầu tiên trong chương này, nhưng sẽ để pull request cho sau.
 
-There's no one-size-fits-all approach to teamwork with Git, and the
-methods outlined below can be mixed and matched with local topic
-branches, or people having multiple remote tracking branches, or
-whatever. Often management will have an approach they want to use for
-collaboration which might be one of the ones in this section, or maybe
-it's a variant, or maybe it's something completely different.
+Không có phương pháp phù hợp với tất cả mọi người cho teamwork với Git, và các phương thức được trình bày dưới đây có thể kết hợp với nhau cùng với local topic branch, hoặc người ta có nhiều remote tracking branch, hay gì đó khác. Thường thì ban quản lý sẽ có phương pháp họ muốn sử dụng cho cộng tác, có thể là một trong những cách trong phần này, hoặc biến thể, hoặc thứ hoàn toàn khác.
 
-In any case, the best strategy for you, the learner, is to just be
-familiar with the tools (branching, merging, conflict resolution,
-pushing, pulling, remote tracking branches) and use them for effect
-where it makes the most sense.
+Dù sao, chiến lược tốt nhất cho bạn, người học, là chỉ cần làm quen với các công cụ (branching, merging, giải quyết conflict, pushing, pulling, remote tracking branch) và dùng chúng đúng chỗ nhất có thể.
 
-And when you're first starting out, your intuition about "where it makes
-the most sense" might not be dead-on, but it probably won't be lethal
-and you'll figure it out in the school of hard knocks.
+Và khi mới bắt đầu, trực giác của bạn về "đúng chỗ nhất" có thể chưa hoàn hảo, nhưng nó không chết người và bạn sẽ tự rút ra kinh nghiệm thôi.
 
-> *"Oh great. Another f\-\-\-ing learning experience."* \
-> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ —Actual quote from my mother
+> *"Ồ tuyệt. Thêm một bài học f\-\-\-ing học từ bản thân."* \
+> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ---Câu trích dẫn thực tế từ mẹ tôi
 
-Finally, I'll be using GitHub in all these examples, but you could use
-any server or service as the remote instead.
+Cuối cùng, tôi sẽ dùng GitHub trong tất cả các ví dụ này, nhưng bạn có thể dùng bất kỳ máy chủ hay dịch vụ nào làm remote thay thế.
 
-## Communication and Delegation
+## Giao Tiếp và Phân Công
 
 [i[Communication]]
 
-Git can't save you from poor communication. The only way to minimize
-conflicts in a shared project is to communicate with your team and clearly
-assign different tasks to people in a non-conflicting way.
+Git không thể cứu bạn khỏi việc giao tiếp kém. Cách duy nhất để giảm thiểu xung đột trong một dự án chung là giao tiếp với nhóm của bạn và phân công rõ ràng các nhiệm vụ khác nhau cho mọi người theo cách không xung đột.
 
-Two people shouldn't generally be editing the same part of the same
-file, or even any part of the same file. That's more of a guideline than
-a rule, but if you follow it, you will never have a merge conflict.
+Hai người không nên chỉnh sửa cùng một phần của cùng một file, hay thậm chí bất kỳ phần nào của cùng một file. Đó là nguyên tắc hơn là quy tắc, nhưng nếu bạn tuân theo nó, bạn sẽ không bao giờ có merge conflict.
 
-As we've seen, it's not the end of the world if there is a merge
-conflict, but life sure is easier if they're just avoided.
+Như ta đã thấy, không phải là tận thế nếu có merge conflict, nhưng cuộc sống chắc chắn dễ dàng hơn nếu chúng chỉ đơn giản là được tránh.
 
-Takeaway: Without good communication and a good distribution of work on
-your team, you're doomed. Make a plan where no one is stepping on toes,
-and stick to it.
+Kết luận: Không có giao tiếp tốt và phân phối công việc tốt trong nhóm, bạn sẽ thất bại. Lập kế hoạch để không ai dẫm lên chân nhau, và thực hiện theo đó.
 
-## Approach: Everyone Uses One Branch
+## Cách Tiếp Cận: Mọi Người Dùng Một Branch
 
 [i[Workflow-->One Branch]<]
 
-This is really easy. Everyone has push access to the repo and does all
-their work on the `main` branch.
+Cách này thực sự đơn giản. Mọi người đều có quyền push vào repo và làm tất cả công việc trên branch `main`.
 
-Benefits:
+Ưu điểm:
 
-* Super simple to set up.
-* Conceptually not much to juggle.
-* All work instantly available to all collaborators upon push.
+* Cực kỳ đơn giản để thiết lập.
+* Về mặt khái niệm không có nhiều thứ cần xử lý.
+* Tất cả công việc lập tức có sẵn cho tất cả collaborator sau khi push.
 
-Drawbacks:
+Nhược điểm:
 
-* More potential for merge conflicts.
-* Unless you're rebasing (more on that later), you'll have a lot of
-  merge commits.
-* You can't push non-working code since it will break everything for
-  everyone else.
+* Khả năng merge conflict cao hơn.
+* Trừ khi bạn đang rebase (sẽ nói thêm sau), bạn sẽ có nhiều merge commit.
+* Bạn không thể push code chưa hoạt động vì nó sẽ làm hỏng mọi thứ cho tất cả mọi người.
 
-Initial setup:
+Thiết lập ban đầu:
 
-* One person makes the GitHub repo.
-* The owner of the GitHub repo adds all the team members as
-  collaborators.
-* Everyone clones the repo.
+* Một người tạo repo GitHub.
+* Chủ sở hữu repo GitHub thêm tất cả thành viên nhóm làm collaborator.
+* Mọi người clone repo.
 
-Workflow:
+Quy trình làm việc:
 
-* Work is delegated to all collaborators. The work should be as
-  non-overlapping as possible.
-* Everyone periodically pulls `main` and resolves any merge conflicts.
-* Everyone pushes their work to `main`.
+* Công việc được phân công cho tất cả collaborator. Công việc nên không chồng chéo nhau nhất có thể.
+* Mọi người định kỳ pull `main` và giải quyết mọi merge conflict.
+* Mọi người push công việc của họ lên `main`.
 
-In real life, this approach is probably only used on very small teams,
-e.g. three people at most, with frequent and easy communication between
-all members. If you're working on a small team in school, it could very
-well be enough, but I'd still recommend trying a different approach just
-for the experience.
+Trong thực tế, cách tiếp cận này có thể chỉ được dùng trên các nhóm rất nhỏ, ví dụ tối đa ba người, với giao tiếp thường xuyên và dễ dàng giữa tất cả thành viên. Nếu bạn đang làm việc trên một nhóm nhỏ ở trường, đây có thể đủ dùng, nhưng tôi vẫn khuyến nghị thử cách tiếp cận khác chỉ để có kinh nghiệm.
 
-The other approaches are not that much more complex, and give you a lot
-more flexibility.
+Các cách tiếp cận khác không phức tạp hơn nhiều, và cho bạn nhiều linh hoạt hơn.
 
 [i[Workflow-->One Branch]>]
 
-## Approach: Everyone Uses Their Own Branch
+## Cách Tiếp Cận: Mọi Người Dùng Branch Riêng
 
 [i[Workflow-->One Branch per Dev]<]
 
-In this scenario, we treat `main` as the working code, and we treat
-contributors' branches as where work is done. When a contributor gets
-their code working, they merge it back into `main`.
+Trong kịch bản này, ta coi `main` là code đang hoạt động, và coi các branch của contributor là nơi thực hiện công việc. Khi một contributor hoàn thiện code, họ merge nó trở lại vào `main`.
 
-Benefits:
+Ưu điểm:
 
-* You get to work on your own branch without worrying about messing up
-  other people's work.
-* You can commit non-working code since no one else can see it. (You
-  might be wrapping up the work day and want to push some incomplete
-  code for a backup, for example.)
-* Less merge conflict potential since fewer merges are happening than if
-  everyone were committing to `main`.
+* Bạn có thể làm việc trên branch riêng mà không lo làm hỏng công việc của người khác.
+* Bạn có thể commit code chưa hoạt động vì không ai khác có thể thấy nó. (Ví dụ bạn đang kết thúc ngày làm việc và muốn push một số code chưa hoàn chỉnh để backup.)
+* Ít khả năng merge conflict hơn vì ít merge hơn so với khi mọi người commit vào `main`.
 
-Drawbacks:
+Nhược điểm:
 
-* If your branch diverges too far from `main`, merging might become
-  painful.
-* Unless you're [rebasing and squashing](#squashing-commits), the
-  incremental work on your branch might "pollute" the commit history on
-  `main` with a lot of tiny commits.
+* Nếu branch của bạn phân kỳ quá xa so với `main`, việc merge có thể trở nên đau đớn.
+* Trừ khi bạn đang [rebase và squash](#squashing-commits), công việc dần dần trên branch của bạn có thể "ô nhiễm" lịch sử commit trên `main` với nhiều commit nhỏ.
 
-Initial setup:
+Thiết lập ban đầu:
 
-* One person makes the GitHub repo.
-* The owner of the GitHub repo adds all the team members as
-  collaborators.
-* Everyone clones the repo.
-* Everyone makes their own branch, possibly naming it after themselves.
-* Everyone pushes their branch to GitHub, making them remote-tracking
-  branches. (We do this so that your work is effectively backed up on
-  GitHub when you push it.)
+* Một người tạo repo GitHub.
+* Chủ sở hữu repo GitHub thêm tất cả thành viên nhóm làm collaborator.
+* Mọi người clone repo.
+* Mọi người tạo branch riêng, có thể đặt tên theo tên mình.
+* Mọi người push branch của họ lên GitHub, biến chúng thành remote-tracking branch. (Ta làm điều này để công việc của bạn được backup hiệu quả trên GitHub khi bạn push.)
 
-Workflow:
+Quy trình làm việc:
 
-* Work is delegated to all collaborators. The work should be as
-  non-overlapping as possible.
-* As collaborators finish their tasks, they will:
-  * Test everything on their branch.
-  * Merge the latest `main` into their branch; do a pull to make sure
-    you have it. (The collaborator might already have the latest `main`
-    if no one else has merged into it, which will cause Git to say
-    there's nothing to do. This is fine.)
-  * Test everything, and fix it if necessary.
-  * Merge their functioning branch into `main`.
+* Công việc được phân công cho tất cả collaborator. Công việc nên không chồng chéo nhau nhất có thể.
+* Khi các collaborator hoàn thành nhiệm vụ, họ sẽ:
+  * Test mọi thứ trên branch của họ.
+  * Merge `main` mới nhất vào branch của họ; pull để chắc chắn bạn có phiên bản mới nhất. (Collaborator có thể đã có `main` mới nhất nếu không ai merge vào nó, khiến Git báo không có gì để làm. Điều này ổn.)
+  * Test mọi thứ, và sửa nếu cần.
+  * Merge branch đang hoạt động của họ vào `main`.
   * Push.
-    * If someone else has modified `main` while you were testing, Git
-      will complain that you have to pull before you can push. If
-      there's a conflict at this point, you'll have to resolve, test,
-      and push it. And you'll have to merge `main` back into your branch
-      so that your branch is up-to-date.
+    * Nếu ai đó đã sửa đổi `main` trong khi bạn đang test, Git sẽ than phiền rằng bạn phải pull trước khi có thể push. Nếu có conflict tại điểm này, bạn sẽ phải giải quyết, test, và push. Và bạn sẽ phải merge `main` trở lại vào branch của mình để branch của bạn được cập nhật.
 
-The result will look something like Figure_#.1 to start, where all the
-collaborators have made their own branches off of `main`.
+Kết quả sẽ trông như Figure_#.1 ban đầu, khi tất cả các collaborator đã tạo branch riêng từ `main`.
 
 ![Collaborators branching off `main`.](img_100_010.pdf "[Collaborators branching off main.]")
 
@@ -197,9 +140,7 @@ collaborators have made their own branches off of `main`.
 ```
 -->
 
-Let's say Chris (on branch `chris`) finishes up their work and wants
-other contributors to be able to see it. It's time to merge into `main`,
-as we graphically see in Figure_#.2.
+Giả sử Chris (trên branch `chris`) đã hoàn thành công việc và muốn các contributor khác có thể thấy nó. Đã đến lúc merge vào `main`, như ta thấy trong Figure_#.2.
 
 ![Chris merges back into `main`.](img_100_020.pdf "[Chris merges back into main.]")
 
@@ -220,100 +161,70 @@ as we graphically see in Figure_#.2.
 ```
 -->
 
-After that, other contributors who pull `main` will see the changes.
+Sau đó, các contributor khác khi pull `main` sẽ thấy các thay đổi.
 
 [i[Workflow-->One Branch per Dev]>]
 
-## Approach: Everyone Merges to the Dev Branch
+## Cách Tiếp Cận: Mọi Người Merge Vào Branch Dev
 
 [i[Workflow-->Dev branch]<]
 
-In this scenario, we treat `main` as the published code that we're
-going to distribute, often tagged with a release version number, and we
-treat a `dev` branch as the working, unreleased code. And, as in the
-previous scenario, everyone has their own branches they're developing
-on.
+Trong kịch bản này, ta coi `main` là code đã được phát hành mà ta sẽ phân phối, thường được gắn nhãn phiên bản, và ta coi branch `dev` là code đang làm việc, chưa phát hành. Và như kịch bản trước, mọi người đều có branch riêng để phát triển.
 
-The idea is basically we're going to have two versions of the working
-code:
+Ý tưởng cơ bản là ta sẽ có hai phiên bản code đang hoạt động:
 
-1. The public, released version that's on `main`.
-2. The private, internal version that's on `dev`.
+1. Phiên bản công khai, đã phát hành trên `main`.
+2. Phiên bản nội bộ, riêng tư trên `dev`.
 
-And then, of course, we'll have one branch per collaborator.
+Và tất nhiên, ta sẽ có một branch cho mỗi collaborator.
 
-Another way of thinking about it is that we're going to have our
-internal build on `dev` that is good for testing and then, when it's all
-ready, we'll "bless" it and merge it into `main`.
+Cách nghĩ khác về điều này là ta sẽ có bản build nội bộ trên `dev` tốt cho kiểm thử và sau đó, khi mọi thứ đã sẵn sàng, ta sẽ "chứng nhận" nó và merge vào `main`.
 
-So there will be a lot of merges into `dev` from all the developer
-branches, and then every so often there will be a merge from `dev` into
-`main`.
+Vậy sẽ có nhiều lần merge vào `dev` từ tất cả các branch developer, và sau đó thỉnh thoảng sẽ có một lần merge từ `dev` vào `main`.
 
-*The developers will never directly merge into `main`!* Usually
-that is performed by someone in a managerial role.
+*Các developer sẽ không bao giờ trực tiếp merge vào `main`!* Thường đó là việc của người có vai trò quản lý.
 
 ![Working on the `dev` branch.](img_100_030.pdf "[Working on the dev branch]")
 
-Overall the process works as in Figure_#.3. This is a busy image, but
-notice how Bob and Alice are only merging their work into the `dev`
-branch, and then every so often, their manager merges the `dev` branch
-into `main` and tags that commit with a release number.
+Toàn bộ quy trình hoạt động như Figure_#.3. Đây là hình ảnh bận rộn, nhưng lưu ý cách Bob và Alice chỉ merge công việc của họ vào branch `dev`, và sau đó thỉnh thoảng manager merge branch `dev` vào `main` và gắn nhãn commit đó với số phiên bản.
 
-Benefits:
+Ưu điểm:
 
-* All the benefits of everyone having their own branch.
-* You have an internal branch from which you can make complete builds
-  for internal or external testing.
+* Tất cả ưu điểm của việc mọi người có branch riêng.
+* Bạn có một branch nội bộ để có thể tạo bản build hoàn chỉnh cho kiểm thử nội bộ hay bên ngoài.
 
-Drawbacks:
+Nhược điểm:
 
-* A little more complexity and management.
-* If your branch diverges too far from `dev`, merging might become
-  painful.
-* If the `dev` branch diverges too far from `main`, merging might become
-  painful.
-* Unless you're rebasing, the incremental work on your branch might
-  "pollute" the commit history on `dev` and `main` with a lot of tiny
-  commits.
+* Phức tạp và quản lý hơn một chút.
+* Nếu branch của bạn phân kỳ quá xa so với `dev`, việc merge có thể trở nên đau đớn.
+* Nếu branch `dev` phân kỳ quá xa so với `main`, việc merge có thể trở nên đau đớn.
+* Trừ khi bạn đang rebase, công việc dần dần trên branch của bạn có thể "ô nhiễm" lịch sử commit trên `dev` và `main` với nhiều commit nhỏ.
 
-Initial setup:
+Thiết lập ban đầu:
 
-* One person makes the GitHub repo.
-* The owner of the GitHub repo adds all the team members as
-  collaborators.
-* The owner creates the `dev` branch.
-* Everyone clones the repo.
-* Everyone makes their own branch, possibly naming it after themselves.
-* Everyone pushes their branch to GitHub, making them remote-tracking
-  branches. (We do this so that your work is effectively backed up on
-  GitHub when you push it.)
+* Một người tạo repo GitHub.
+* Chủ sở hữu repo GitHub thêm tất cả thành viên nhóm làm collaborator.
+* Chủ sở hữu tạo branch `dev`.
+* Mọi người clone repo.
+* Mọi người tạo branch riêng, có thể đặt tên theo tên mình.
+* Mọi người push branch của họ lên GitHub, biến chúng thành remote-tracking branch. (Ta làm điều này để công việc của bạn được backup hiệu quả trên GitHub khi bạn push.)
 
-Workflow:
+Quy trình làm việc:
 
-* Work is delegated to all collaborators. The work should be as
-  non-overlapping as possible.
-* As collaborators finish their tasks, they will:
-  * Test everything on their branch.
-  * Merge the latest `dev` into their branch; do a pull to make sure
-    you have it. (The collaborator might already have the latest `dev`
-    if no one else has merged into it, which will cause Git to say
-    there's nothing to do. This is fine.)
-  * Test everything, and fix it if necessary.
-  * Merge their functioning branch into `dev`.
+* Công việc được phân công cho tất cả collaborator. Công việc nên không chồng chéo nhau nhất có thể.
+* Khi các collaborator hoàn thành nhiệm vụ, họ sẽ:
+  * Test mọi thứ trên branch của họ.
+  * Merge `dev` mới nhất vào branch của họ; pull để chắc chắn bạn có phiên bản mới nhất. (Collaborator có thể đã có `dev` mới nhất nếu không ai merge vào nó, khiến Git báo không có gì để làm. Điều này ổn.)
+  * Test mọi thứ, và sửa nếu cần.
+  * Merge branch đang hoạt động của họ vào `dev`.
   * Push.
-    * If someone else has modified `dev` while you were testing, Git
-      will complain that you have to pull before you can push. If
-      there's a conflict at this point, you'll have to resolve, test,
-      and push it. And you'll have to merge `dev` back into your branch
-      so that your branch is up-to-date.
+    * Nếu ai đó đã sửa đổi `dev` trong khi bạn đang test, Git sẽ than phiền rằng bạn phải pull trước khi có thể push. Nếu có conflict tại điểm này, bạn sẽ phải giải quyết, test, và push. Và bạn sẽ phải merge `dev` trở lại vào branch của mình để branch của bạn được cập nhật.
 
-Managerial Workflow:
+Quy trình làm việc của Manager:
 
-* Coordinate with all devs to get a candidate release in `dev` tested
-  out and ready.
-* Merge that candidate release (some commit) from `dev` into `main`.
-* Tag the `main` commit with some version number, optionally.
+* Phối hợp với tất cả dev để có bản release candidate trong `dev` được test và sẵn sàng.
+* Merge bản release candidate đó (một commit nào đó) từ `dev` vào `main`.
+* Gắn nhãn commit `main` với số phiên bản nào đó, tùy chọn.
 
 [i[Workflow-->Dev branch]>]
 [i[Collaboration-->Across branches]>]
