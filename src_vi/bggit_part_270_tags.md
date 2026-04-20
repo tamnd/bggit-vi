@@ -1,29 +1,23 @@
-# Tags
+# Tag (Thẻ)
 
 [i[Tag]<]
 
-Tags are a way to annotate a particular commit. You can kind of think of
-them like branches that don't move.
+Tag là cách để chú thích một commit cụ thể. Bạn có thể nghĩ chúng như là các nhánh không di chuyển.
 
-A very common case is to take a particular commit with a version number
-like `1.2.3`.
+Trường hợp rất phổ biến là gắn một commit cụ thể với số phiên bản như `1.2.3`.
 
-I can't find any rules about what characters you can use in tag names,
-but it seems safe to use ASCII upper and lower case, numbers, and
-punctuation like `.`, `-`, and `_`, etc.
+Tôi không tìm thấy bất kỳ quy tắc nào về ký tự có thể dùng trong tên tag, nhưng có vẻ an toàn khi dùng chữ cái ASCII hoa và thường, số, và dấu câu như `.`, `-`, và `_`, v.v.
 
-There are two types of tags:
+Có hai loại tag:
 
-* ***Lightweight***: Just a tag, e.g. `v3.14`.
-* ***Annotated***: Also a tag, e.g. `v3.14`, but includes a message and
-  author, like a commit.
+* ***Lightweight (Nhẹ)***: Chỉ là một tag, ví dụ `v3.14`.
+* ***Annotated (Có chú thích)***: Cũng là một tag, ví dụ `v3.14`, nhưng bao gồm message và tác giả, giống như commit.
 
-You can generally use tags the same way you'd use branches (you can diff
-them, switch to them, etc.) except they don't move.
+Bạn thường có thể dùng tag theo cùng cách bạn dùng nhánh (bạn có thể diff chúng, switch đến chúng, v.v.) ngoại trừ chúng không di chuyển.
 
 [i[Tag-->Listing]<]
 
-And you can see them in the log with the other branch information.
+Và bạn có thể thấy chúng trong log cùng với thông tin nhánh khác.
 
 ``` {.default}
 commit 4fa1199d17a97990a7721eb8a73a4ee50 (HEAD -> main, tag: v3.14)
@@ -39,25 +33,22 @@ Date:   Sat Jan 25 18:59:58 2025 -0800
     Add the stuff
 ```
 
-Or get a list of all tags with just `git tag`.
+Hoặc lấy danh sách tất cả tag chỉ với `git tag`.
 
 [i[Tag-->Listing]>]
 
-## Lightweight Tags
+## Lightweight Tag
 
 [i[Tag-->Creating]<]
 [i[Tag-->Lightweight]<]
 
-Adding a lightweight tag is easy enough. First, switch to the commit you
-want to tag, and then run this, assuming you want a tag called
-`tagname`:
+Thêm lightweight tag khá đơn giản. Trước tiên, switch đến commit bạn muốn tag, rồi chạy lệnh này, giả sử bạn muốn một tag gọi là `tagname`:
 
 ``` {.default}
 $ git tag tagname       # Tag HEAD commit with tagname
 ```
 
-You can also tag a commit, or anything that refers to a commit (like a
-branch or even another tag):
+Bạn cũng có thể tag một commit, hoặc bất cứ thứ gì tham chiếu đến một commit (như nhánh hay thậm chí một tag khác):
 
 ``` {.default}
 $ git tag CPE1704TKS 4fa12    # tag commit 4fa12
@@ -66,21 +57,19 @@ $ git tag plover feature99    # tag branch feature99
 
 [i[Tag-->Lightweight]>]
 
-## Annotated Tags
+## Annotated Tag
 
 [i[Tag-->Annotated]<]
 
-Adding an annotated tag is just about as easy. Add the `-a` for
-"annotate" switch.
+Thêm annotated tag cũng gần như dễ dàng. Thêm `-a` cho switch "annotate".
 
-Since an annotated tag is more like a commit, it's going to prompt for a
-message. But you can also use `-m` to specify it on the command line.
+Vì annotated tag giống commit hơn, nó sẽ hỏi message. Nhưng bạn cũng có thể dùng `-m` để chỉ định trên dòng lệnh.
 
 ``` {.default}
 $ git tag -a v3490     # tag HEAD commit with v3490
 ```
 
-Or if you want to specify the message on the command line:
+Hoặc nếu bạn muốn chỉ định message trên dòng lệnh:
 
 ``` {.default}
 $ git tag -a v3490 -m "tag message"
@@ -89,47 +78,43 @@ $ git tag -a v3490 -m "tag message"
 [i[Tag-->Annotated]>]
 [i[Tag-->Creating]>]
 
-## Pushing Tags
+## Push Tag
 
 [i[Tag-->Pushing]<]
 
-By default, the tags only exist on your local repo, even if you do a
-regular push. You have to tell it you want to push tags explicitly.
+Theo mặc định, tag chỉ tồn tại trên repo cục bộ của bạn, ngay cả khi bạn push thông thường. Bạn phải bảo nó rõ ràng rằng bạn muốn push tag.
 
 [i[Push-->Tags]]
-If you want to push all new tags, you can:
+Nếu bạn muốn push tất cả tag mới, bạn có thể:
 
 ``` {.default}
 $ git push --tags
 $ git push origin --tags  # Or you can specify a remote
 ```
 
-If you want to just push one tag, you must specify the remote:
+Nếu bạn chỉ muốn push một tag, bạn phải chỉ định remote:
 
 ``` {.default}
 $ git push origin tag3.14
 ```
 
-After a tag is pushed, other collaborators will automatically get the
-tags when they pull.
+Sau khi một tag được push, các cộng tác viên khác sẽ tự động nhận được tag khi họ pull.
 
 [i[Tag-->Pushing]>]
 
-## Deleting Tags
+## Xóa Tag
 
 [i[Tag-->Deleting]<]
 
-You can delete a tag on your repo like this:
+Bạn có thể xóa một tag trên repo của mình như thế này:
 
 ``` {.default}
 $ git tag -d tagname
 ```
 
-And that's easy enough. Except if you've already pushed on the server.
-If you have, then the next time you pull you'll get the tag again.
+Và điều đó khá đơn giản. Ngoại trừ nếu bạn đã push lên server. Nếu có, lần pull tiếp theo bạn sẽ lại nhận được tag đó.
 
-So you'll have to delete the one on the remote, as well, which also must
-be named explicitly:
+Vì vậy bạn cũng phải xóa cái trên remote, cũng phải đặt tên rõ ràng:
 
 [i[Push-->Tags]]
 
@@ -137,15 +122,11 @@ be named explicitly:
 $ git push origin -d tagname
 ```
 
-That'll delete the tag on the server, but *it won't delete it from other
-people's clones*. In fact, there's no easy way to do this.
+Điều đó sẽ xóa tag trên server, nhưng *nó sẽ không xóa khỏi clone của người khác*. Thực ra, không có cách dễ dàng để làm điều này.
 
-The basic idea is that tags, once created, shouldn't be deleted. Now, if
-you haven't yet pushed, no problem. Add, delete, and change all you
-want. But once you've pushed (and someone has pulled), if you need to
-change a tag, just make a new tag.
+Ý tưởng cơ bản là tag, một khi được tạo ra, không nên bị xóa. Giờ, nếu bạn chưa push, không có vấn đề gì. Thêm, xóa, và thay đổi thoải mái. Nhưng một khi bạn đã push (và ai đó đã pull), nếu bạn cần thay đổi một tag, hãy tạo một tag mới.
 
-That's not a law; it's just more of a recommended guideline.
+Đó không phải là luật; đó chỉ là hướng dẫn được đề nghị.
 
 [i[Tag-->Deleting]>]
 [i[Tag]>]
