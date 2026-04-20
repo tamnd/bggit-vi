@@ -1,16 +1,15 @@
-# Who's to Blame for this Code?
+# Ai Chịu Trách Nhiệm Về Đoạn Code Này?
 
 [i[Blame]<]
 
-Let's say you find something in the shared codebase that's just wrong.
-Or, charitably, we'll say you found something _interesting_.
+Giả sử bạn tìm thấy thứ gì đó trong codebase chung mà hoàn toàn sai. Hoặc, nói
+nhẹ hơn, chúng ta sẽ nói bạn tìm thấy thứ gì đó _thú vị_.
 
-And you want to know who was to blame for that _incredible_ code.
+Và bạn muốn biết ai phải chịu trách nhiệm về đoạn code _tuyệt vời_ đó.
 
-This is where a simple Git command can enlighten you.
+Đây là lúc một lệnh Git đơn giản có thể khai sáng cho bạn.
 
-Here's some example truncated output (so that it fits in the book
-margins):
+Đây là một ví dụ output đã được cắt ngắn (để vừa trong lề sách):
 
 ``` {.default}
 $ git blame --date=short foo.py
@@ -25,35 +24,35 @@ $ git blame --date=short foo.py
   8c96991f (Alice 2024-10-08 12)     return data
 ```
 
-I have the `--date=short` switch in there to compress it even more so it
-fits in the book. Otherwise it would show a full time stamp.
+Tôi có switch `--date=short` trong đó để nén nó thêm nữa để vừa trong sách. Nếu
+không nó sẽ hiển thị timestamp đầy đủ.
 
-What we see in this fabricated example is that Alice has checked in the
-majority of this function, but the next day Chris came in and modified
-or added those additional lines in the middle.
+Những gì chúng ta thấy trong ví dụ giả mạo này là Alice đã check in (gửi vào)
+phần lớn hàm này, nhưng ngày hôm sau Chris đến và đã chỉnh sửa hoặc thêm những
+dòng bổ sung ở giữa.
 
-And now we know.
+Và bây giờ chúng ta biết rồi.
 
-## Fancier Blaming
+## Blame Nâng Cao Hơn
 
 [i[Blame-->Fancier output]<]
 
-You can use the `--color-lines` switch to get color output, alternating
-colors between commits. Very exciting. If you want that to always
-happen, you can set the `color.blame.repeatedLines` config option.
+Bạn có thể dùng switch `--color-lines` để có output màu, xen kẽ màu giữa các
+commit. Rất thú vị. Nếu bạn muốn điều đó luôn xảy ra, bạn có thể đặt tùy chọn
+cấu hình `color.blame.repeatedLines`.
 
-We already saw `--date=short` to chop the date down a bit.
+Chúng ta đã thấy `--date=short` để cắt ngắn ngày một chút.
 
-You can show the email address of the contributor with `-e` or
+Bạn có thể hiển thị địa chỉ email của người đóng góp với `-e` hoặc
 `--show-email`.
 
-You can reliably detect lines that were moved or copied within a file
-with `-M`. And you can do the same thing across multiple files with
+Bạn có thể phát hiện đáng tin cậy các dòng đã được di chuyển hoặc sao chép
+trong một file với `-M`. Và bạn có thể làm điều tương tự trên nhiều file với
 `-C`.
 
-Finally, your IDE (like VS Code) might support blame, either natively or
-via an extension. Some people just have this feature turned on all the
-time.
+Cuối cùng, IDE của bạn (như VS Code) có thể hỗ trợ blame, hoặc natively (tích
+hợp sẵn) hoặc qua extension (tiện ích mở rộng). Một số người luôn bật tính năng
+này.
 
 [i[Blame-->Fancier output]>]
 
