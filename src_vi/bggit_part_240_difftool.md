@@ -2,96 +2,67 @@
 
 [i[Difftool]<]
 
-Admittedly, this diff output is hard to read. I swear, though, you do
-get used to it. I use it all the time.
+Thừa nhận rằng output diff này khó đọc. Tôi thề, bạn sẽ quen với nó. Tôi dùng nó mọi lúc.
 
-That said, it can be nicer to see something more *visual*, you know,
-like the old version on the left and the new version on the right in a
-way that's visually easier to comprehend.
+Dẫu vậy, đôi khi sẽ thoải mái hơn khi nhìn thứ gì đó *trực quan* hơn, kiểu như phiên bản cũ ở bên trái và phiên bản mới ở bên phải theo cách dễ hiểu hơn.
 
-> **If you're using VS Code or some other IDEs, you get some nice
-> diffing for free and don't necessarily need to pay attention to this
-> section.** See more in the VS Code chapter.
+> **Nếu bạn đang dùng VS Code hay một số IDE khác, bạn sẽ có tính năng diff gọn đẹp miễn phí và không nhất thiết phải chú ý phần này.** Xem thêm trong chương VS Code.
 
-First, the bad news is that Git doesn't support this out of the box.
+Trước tiên, tin xấu là Git không hỗ trợ điều này ngay từ đầu.
 
-The good news is that there are a lot of third-party tools that do, and
-you can easily hook them up so that they work with Git super easily.
+Tin tốt là có rất nhiều công cụ của bên thứ ba làm được điều đó, và bạn có thể kết nối chúng để hoạt động với Git rất dễ dàng.
 
-How easy?
+Dễ như thế nào?
 
-Once you set it up, you'll be able to just write `difftool` instead of
-`diff` on the command line. For example:
+Sau khi thiết lập, bạn có thể chỉ cần viết `difftool` thay vì `diff` trên dòng lệnh. Ví dụ:
 
 ``` {.default}
 $ git difftool HEAD~3^!
 ```
 
-And what does that get you? For me, where I use Vim and have Vimdiff set
-up as my difftool, it gives me a screen like in Figure_#.1.
+Và điều đó mang lại cho bạn gì? Với tôi, người dùng Vim và đã thiết lập Vimdiff làm difftool, nó cho tôi màn hình như trong Hình_#.1.
 
 ![Vimdiff as the difftool.](img_difftool.png "Vimdiff as the difftool.")
 
-This might be a little tough to see in black and white, but what we have
-is the old version on the left and the new version on the right. The
-lines of minus signs on the left indicate lines that don't exist in the
-old version, and we can see highlighted lines on the right that exist in
-the new version.
+Có thể hơi khó nhìn khi in đen trắng, nhưng chúng ta có phiên bản cũ ở bên trái và phiên bản mới ở bên phải. Các dấu trừ ở bên trái chỉ ra các dòng không tồn tại trong phiên bản cũ, và chúng ta có thể thấy các dòng được đánh dấu ở bên phải tồn tại trong phiên bản mới.
 
-But if you just try to run `git difftool` out of the box, it won't work.
-You have to configure it first.
+Nhưng nếu bạn thử chạy `git difftool` ngay bây giờ, nó sẽ không hoạt động. Bạn phải cấu hình trước.
 
-## Configuring
+## Cấu Hình
 
 [i[Difftool-->Configuration]<]
 
-Firstly, Git normally prompts you before launching a third-party
-difftool. This is annoying, so let's turn it off globally:
+Thứ nhất, Git thường nhắc bạn trước khi khởi động difftool của bên thứ ba. Điều này khá phiền, vậy hãy tắt nó đi toàn cục:
 
 ``` {.default}
 $ git config --global difftool.prompt false
 ```
 
-Secondly, we need to tell it which tool to use.
+Thứ hai, chúng ta cần bảo nó dùng công cụ nào.
 
 ``` {.default}
 $ git config --global diff.tool vimdiff
 ```
 
-And that might be enough. If `vimdiff` (or whichever diff tool you're
-using) is in your `PATH`[^43a2], you should be in business and you're
-good to go.
+Và có thể chỉ vậy là đủ. Nếu `vimdiff` (hoặc bất kỳ công cụ diff nào bạn đang dùng) có trong `PATH`[^43a2] của bạn, bạn đã sẵn sàng.
 
-[^43a2]: Setting the `PATH` is outside the scope of this tutorial, but
-    the short of it is if you can run the diff tool command on the
-    command line (e.g. by running `vimdiff`), then it is in the `PATH`.
-    If it says `command not found` or some such, then it is **not** in
-    the `PATH`. Search the Intertubes for how to add something to the
-    `PATH` in Bash. Or set the Git path config explicitly, as shown in
-    the following paragraph.
+[^43a2]: Việc đặt `PATH` nằm ngoài phạm vi hướng dẫn này, nhưng tóm lại là nếu bạn có thể chạy lệnh công cụ diff trên dòng lệnh (ví dụ bằng cách chạy `vimdiff`), thì nó đã có trong `PATH`. Nếu nó báo `command not found` hay tương tự, thì nó **không** có trong `PATH`. Tìm kiếm trên mạng để biết cách thêm gì đó vào `PATH` trong Bash. Hoặc đặt đường dẫn cấu hình Git một cách tường minh, như được hiển thị trong đoạn tiếp theo.
 
-If it's not in your `PATH`, maybe because you installed it locally in
-your home directory tree somewhere, you can either add it to your `PATH`
-(search the Net for how to do this), *or* you can specify the full path
-to your particular difftool. Here's an example with `vimdiff`, which is
-redundant for me because `/usr/bin` is already in my `PATH`.
+Nếu nó không có trong `PATH`, có thể vì bạn cài đặt nó cục bộ trong thư mục home của mình ở đâu đó, bạn có thể thêm nó vào `PATH` (tìm kiếm trên mạng), *hoặc* bạn có thể chỉ định đường dẫn đầy đủ đến difftool của mình. Đây là ví dụ với `vimdiff`, thừa với tôi vì `/usr/bin` đã có trong `PATH` của tôi rồi.
 
 ``` {.default}
 $ git config --global difftool.vimdiff.path /usr/bin/vimdiff
 ```
 
-If you're using a different difftool other than `vimdiff`, replace that
-part of the config line with the name of the command.
+Nếu bạn đang dùng difftool khác không phải `vimdiff`, hãy thay thế phần đó trong dòng config bằng tên lệnh của công cụ đó.
 
-Again, you only have to set the path if the tool isn't installed in a
-standard place.
+Nhắc lại, bạn chỉ cần đặt path nếu công cụ không được cài đặt ở vị trí tiêu chuẩn.
 
 [i[Difftool-->Configuration]>]
 
-## Available Difftools
+## Các Difftool Có Sẵn
 
-There are a number of diff tools out there you can choose from. Here's a
-partial list, with the caveat that I've only ever used Vimdiff.
+Có một số công cụ diff ngoài kia để bạn lựa chọn. Đây là danh sách một phần, với lưu ý rằng tôi chỉ từng dùng Vimdiff.
 
 * [fl[Araxis Merge|https://www.araxis.com/merge/index.en]]
 * [fl[Beyond Compare|https://www.scootersoftware.com/]]
@@ -100,11 +71,11 @@ partial list, with the caveat that I've only ever used Vimdiff.
 * [fl[Kompare|https://apps.kde.org/kompare/]]
 * [fl[Meld|https://meldmerge.org/]]
 * [fl[P4Merge|https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge]]
-* Vimdiff (comes with [fl[Vim|https://www.vim.org/]])
+* Vimdiff (đi kèm [fl[Vim|https://www.vim.org/]])
 * [fl[WinMerge|https://winmerge.org/?lang=en]]
 
-Some of these are free, some are paid, and some are free trial.
+Một số miễn phí, một số có trả phí, và một số dùng thử miễn phí.
 
-And remember, VS Code has this functionality without using difftool.
+Và nhớ rằng, VS Code có chức năng này mà không cần dùng difftool.
 
 [i[Difftool]>]
