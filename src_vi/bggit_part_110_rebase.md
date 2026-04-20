@@ -1,150 +1,96 @@
-# Rebasing: Moving Commits {#rebase}
+# Rebase: Di Chuyển Commit {#rebase}
 
 [i[Rebase]<]
 
-I'm going to start with the Number One Rule of Rebasing: ***never rebase
-anything that you have pushed***. That is, only rebase local changes
-that no one else has seen. You can push them after the rebase.
+Tôi sẽ bắt đầu với Quy Tắc Số Một của Rebase: ***không bao giờ rebase bất cứ thứ gì bạn đã push***. Nghĩa là chỉ rebase các thay đổi cục bộ mà không ai khác đã thấy. Bạn có thể push chúng sau khi rebase.
 
-This is more of a guideline than a rule in that you can rebase things
-you've pushed *if you understand the consequences*. It's typically not a
-great situation, though, so you'll want to generally avoid it.
+Đây là nguyên tắc hơn là quy tắc ở chỗ bạn có thể rebase những thứ bạn đã push *nếu bạn hiểu hậu quả*. Nhưng thông thường đây không phải là tình huống tốt, vì vậy bạn sẽ muốn thường xuyên tránh nó.
 
-The reason is that rebasing *rewrites history*. And that makes your
-history get out of sync with the history of other devs who have cloned
-the repo with the old history, and it makes syncing up quite
-challenging.
+Lý do là rebase *viết lại lịch sử*. Và điều đó khiến lịch sử của bạn không đồng bộ với lịch sử của các dev khác đã clone repo với lịch sử cũ, và việc đồng bộ lại khá khó khăn.
 
-There are other commands in Git that also rewrite history. And the
-general rule is *never rewrite history on anything that's already been
-pushed*. Unless you really know what you're doing.
+Có các lệnh khác trong Git cũng viết lại lịch sử. Và quy tắc chung là *không bao giờ viết lại lịch sử trên bất cứ thứ gì đã được push*. Trừ khi bạn thực sự biết mình đang làm gì.
 
-## Contrasted to Merging
+## So Sánh Với Merge
 
 [i[Rebase-->Compared to merging]<]
 [i[Merge-->Compared to rebasing]<]
 
-But before we go run off in high spirits talking about rebasing, let's
-do a quick merge refresher. Here's a variation of an earlier example
-where we have two divergent branches, Figure_#.1. Let's say you're
-working on the `topic` branch.
+Nhưng trước khi ta hào hứng chạy đi nói về rebase, hãy ôn lại nhanh về merge. Đây là biến thể của một ví dụ trước khi ta có hai branch phân kỳ, Figure_#.1. Giả sử bạn đang làm việc trên branch `topic`.
 
 ![Two divergent branches.](img_110_010.pdf "Two divergent branches.")
 
-Then you hear that someone has made a change to `main` and you want to
-roll those changes into your `topic` branch, but not necessarily get
-your changes in `main` yet.
+Sau đó bạn nghe rằng ai đó đã thay đổi `main` và bạn muốn tích hợp những thay đổi đó vào branch `topic`, nhưng chưa muốn đưa thay đổi của mình vào `main`.
 
-At this point, if we wanted to get the changes in `main` into `topic`,
-our merge option was to make another commit, the *merge commit*. The
-merge commit contains the changes from two parent commits (in this case
-the commit labeled `(2)` and the one labeled `(4)` are the parents) and
-makes them into a new commit, marked `(5)` in Figure_#.2.
+Tại thời điểm này, nếu ta muốn đưa các thay đổi trong `main` vào `topic`, tùy chọn merge của ta là tạo thêm một commit --- _merge commit_. Merge commit chứa các thay đổi từ hai commit cha (trong trường hợp này commit được đánh dấu `(2)` và commit được đánh dấu `(4)` là cha) và tạo thành một commit mới, đánh dấu là `(5)` trong Figure_#.2.
 
 ![Two divergent branches, merged.](img_110_020.pdf "Two divergent branches, merged.")
 
-If we look at our log at that point, we can see the changes from all the
-other commits in the graph from the `topic` branch.
+Nếu ta xem log tại thời điểm đó, ta có thể thấy các thay đổi từ tất cả các commit khác trong graph từ branch `topic`.
 
-And we're good at this point. That worked, and it did what we wanted.
-Merging is a completely acceptable solution to this problem.
+Và đến đây ta ổn rồi. Điều đó đã hoạt động và làm được những gì ta muốn. Merging là giải pháp hoàn toàn chấp nhận được cho vấn đề này.
 
-But there are a couple drawbacks to doing the merge. See, we really just
-wanted to get the latest stuff from `main` into our branch so we could
-use it, but we didn't really want to commit anything. But here we've
-made a new commit for everyone to see.
+Nhưng có một vài nhược điểm khi merge. Thấy không, ta thực sự chỉ muốn lấy nội dung mới nhất từ `main` vào branch của mình để có thể dùng, nhưng ta không thực sự muốn commit bất cứ thứ gì. Nhưng ở đây ta đã tạo một commit mới cho mọi người thấy.
 
-Not only that, but now the commit graph forms a loop, so the history is
-a little more convoluted than perhaps we'd like it.
+Không những vậy, bây giờ commit graph tạo thành một vòng lặp, vì vậy lịch sử phức tạp hơn một chút so với mong muốn của ta.
 
-What really would have been nice is if I could just have taken commits
-`(3)` and `(4)` from `topic` and just somehow applied those changes to
-`(2)` on `main`. That is, could we pretend that instead of branching off
-`(1)` like `topic` did, that we instead branched off `(2)`?
+Điều thực sự tốt là nếu tôi có thể lấy các commit `(3)` và `(4)` từ `topic` và áp dụng những thay đổi đó lên `(2)` trong `main`. Nghĩa là, liệu ta có thể giả vờ rằng thay vì branch từ `(1)` như `topic` đã làm, ta đã branch từ `(2)` không?
 
-After all, if we branched off `(2)`, then we'd have those changes from
-`main` that we wanted.
+Xét cho cùng, nếu ta branch từ `(2)`, ta sẽ có những thay đổi từ `main` mà ta muốn.
 
-What we need is a way to somehow rewind our commits back to the branch
-point at `(1)`, and then reapply them on commit `(2)`. That is, the base
-of our `topic` branch, which was commit `(1)`, needs to be changed to
-another base at commit `(2)`. We want to ***rebase*** it to commit
-`(2)`!
+Điều ta cần là một cách nào đó để tuas lại các commit của mình về điểm phân kỳ tại `(1)`, rồi áp dụng lại chúng lên commit `(2)`. Nghĩa là, base của branch `topic`, vốn là commit `(1)`, cần được thay đổi thành một base khác tại commit `(2)`. Ta muốn ***rebase*** nó lên commit `(2)`!
 
 [i[Rebase-->Compared to merging]>]
 [i[Merge-->Compared to rebasing]>]
 
-## How it Works
+## Cách Hoạt Động
 
-So let's do exactly that. Let's take the changes we made in commit `(3)`
-and apply them to `main` at commit `(2)`. This will make a brand new
-commit that includes changes from both commit `(2)` and commit `(3)`.
-(Importantly, this commit didn't exist before; there was no commit that
-contained changes from `(2)` and `(3)`.) We'll call this new commit
-`(3')` ("three prime"), since it has the changes that we made in `(3)`.
+Vậy hãy làm chính xác điều đó. Hãy lấy các thay đổi ta đã thực hiện trong commit `(3)` và áp dụng chúng lên `main` tại commit `(2)`. Điều này sẽ tạo ra một commit hoàn toàn mới bao gồm các thay đổi từ cả commit `(2)` và commit `(3)`. (Quan trọng là commit này chưa tồn tại trước đây; không có commit nào chứa các thay đổi từ `(2)` và `(3)`.) Ta sẽ gọi commit mới này là `(3')` ("ba nháy"), vì nó có các thay đổi mà ta đã thực hiện trong `(3)`.
 
-After that, we'll do the same thing with commit `(4)`. We'll apply the
-changes from old commit `(4)` to `(3')`, making a new commit `(4')`.
+Sau đó, ta sẽ làm tương tự với commit `(4)`. Ta sẽ áp dụng các thay đổi từ commit cũ `(4)` lên `(3')`, tạo ra commit mới `(4')`.
 
-And if we do that, we end up with Figure_#.3.
+Và nếu ta làm vậy, ta sẽ có Figure_#.3.
 
 ![`topic` branch rebased on `main`.](img_110_030.pdf "topic branch rebased on main")
 
-And there you see `(3')` and `(4')` now rebased onto `main`! And now the
-`topic` branch includes commit `(2)` from the `main` branch!
+Và bạn thấy `(3')` và `(4')` bây giờ đã được rebase lên `main`! Và bây giờ branch `topic` bao gồm commit `(2)` từ branch `main`!
 
-Again, these two commits have the same changes that you originally had
-in commits `(3)` and `(4)`, but now they've been applied to `main` at
-commit `(2)`. So the code is necessarily different since it now contains
-the changes from `main`. This means your old commits `(3)` and `(4)` are
-effectively gone, and the rebase has replaced them with two new commits
-that contain the same changes, just on a different base point.
+Một lần nữa, hai commit này có cùng thay đổi mà bạn ban đầu có trong commit `(3)` và `(4)`, nhưng bây giờ chúng đã được áp dụng lên `main` tại commit `(2)`. Vì vậy code nhất thiết khác vì nó bây giờ chứa các thay đổi từ `main`. Điều này có nghĩa là các commit cũ `(3)` và `(4)` của bạn thực sự không còn nữa, và rebase đã thay thế chúng bằng hai commit mới chứa cùng thay đổi, chỉ là trên một base point khác.
 
-> **We just changed history.** When we mentioned rewriting history at
-> the top of this chapter, this is what we were talking about. Imagine
-> some other dev had your old commits `(3)` and `(4)` and was working
-> off those making their own new commits. And then you rebased
-> effectively destroying commits `(3)` and `(4)`. Now your commit
-> history is different than the other dev's and all kinds of *Fun*™ will
-> be had trying to sort it out.
+> **Ta vừa thay đổi lịch sử.** Khi ta đề cập đến việc viết lại lịch sử ở
+> đầu chương này, đây là điều ta đang nói đến. Hãy tưởng tượng một dev
+> khác có các commit cũ `(3)` và `(4)` của bạn và đang làm việc dựa trên
+> chúng để tạo commit mới của riêng họ. Và sau đó bạn rebase, thực sự phá
+> hủy commit `(3)` và `(4)`. Bây giờ lịch sử commit của bạn khác với lịch
+> sử của dev kia và mọi thứ *Thú Vị*™ sẽ xảy ra khi cố gắng sắp xếp lại.
 >
-> If you only rebase commits that you haven't pushed, you'll never get
-> into trouble. But if some other dev has a copy of your commits
-> (because you've already pushed them and they pulled them), don't
-> rebase those commits!
+> Nếu bạn chỉ rebase các commit mà bạn chưa push, bạn sẽ không bao giờ
+> gặp rắc rối. Nhưng nếu một dev khác có bản sao commit của bạn (vì bạn đã
+> push và họ đã pull), đừng rebase những commit đó!
 
-## When Should I Do This?
+## Khi Nào Nên Làm Điều Này?
 
 [i[Rebase-->When to use]]
-There's no fixed rule about this. Sometimes a shop will have one, saying
-that everyone should rebase all the time so that the commit history has
-a cleaner look (no merge commits, no loops).
+Không có quy tắc cố định về điều này. Đôi khi một nhóm sẽ có quy tắc, nói rằng mọi người nên rebase mọi lúc để lịch sử commit trông sạch sẽ hơn (không có merge commit, không có vòng lặp).
 
-Other shops will say to merge all the time so that the complete history
-is preserved.
+Các nhóm khác sẽ nói luôn luôn merge để lịch sử đầy đủ được bảo toàn.
 
-## Pulling and Rebasing
+## Pull và Rebase
 
 [i[Rebase-->And pulling]<]
 
-If you might recall from way back when, doing a pull is actually a
-couple operations: [i[Fetch]] *fetch* and *merge*.
+Nếu bạn còn nhớ từ trước, pull thực sự là một vài thao tác: [i[Fetch]] *fetch* và *merge*.
 
-The fetch downloads all the new data from the remote, but doesn't
-actually merge anything into your branches or working tree. So you won't
-see any local changes after a fetch.
+Fetch tải xuống tất cả dữ liệu mới từ remote, nhưng không thực sự merge bất cứ thứ gì vào branch hay working tree của bạn. Vậy bạn sẽ không thấy bất kỳ thay đổi cục bộ nào sau fetch.
 
-But the pull follows it up with a standard merge so that you see the
-remote tracking branch's changes in your local branch.
+Nhưng pull theo sau nó bằng một merge tiêu chuẩn để bạn thấy các thay đổi của remote tracking branch trong branch cục bộ của mình.
 
-So, assuming you have everything set up and you're on your `main`
-branch, when you do this:
+Vậy, giả sử bạn đã thiết lập mọi thứ và đang ở branch `main`, khi bạn làm thế này:
 
 ``` {.default}
 $ git pull
 ```
 
-Git actually does something like this:
+Git thực sự làm điều gì đó như thế này:
 
 [i[Fetch]]
 
@@ -153,21 +99,17 @@ git fetch                # Get all the information from origin
 git merge origin/main    # Merge origin/main into main
 ```
 
-(Recall that `origin/main` is your remote-tracking branch—it's the
-version of `main` that's on `origin`, not the `main` on your local
-machine.)
+(Nhớ rằng `origin/main` là remote-tracking branch của bạn --- đó là phiên bản `main` trên `origin`, không phải `main` trên máy cục bộ của bạn.)
 
-But merging isn't the only thing you can do there. Given that this is
-the chapter on rebasing, you might correctly suspect that we can make it
-do a rebase instead.
+Nhưng merge không phải là thứ duy nhất bạn có thể làm ở đó. Vì đây là chương về rebase, bạn có thể đúng khi nghi ngờ rằng ta có thể làm nó thực hiện rebase thay thế.
 
-And here's how:
+Và đây là cách:
 
 ``` {.default}
 $ git pull --rebase
 ```
 
-That causes these two things to happen:
+Lệnh đó sẽ làm hai điều sau:
 
 [i[Fetch]]
 
@@ -176,21 +118,19 @@ git fetch                # Get all the information from origin
 git rebase origin/main   # Rebase main into origin/main
 ```
 
-If you want that to be the default behavior for the current repo, you
-can run this one-time command:
+Nếu bạn muốn đó là hành vi mặc định cho repo hiện tại, bạn có thể chạy lệnh một lần này:
 
 ``` {.default}
 $ git config pull.rebase true
 ```
 
-If you want it to be the default behavior for all repos, you can:
+Nếu bạn muốn nó là hành vi mặc định cho tất cả repo, bạn có thể:
 
 ``` {.default}
 $ git config --global pull.rebase true
 ```
 
-If you've configured your repo to always rebase on a pull, you can
-override that to force a merge (if you want) with:
+Nếu bạn đã cấu hình repo để luôn rebase khi pull, bạn có thể ghi đè điều đó để buộc merge (nếu muốn) với:
 
 ``` {.default}
 $ git pull --no-rebase  # Do a merge instead of a rebase
@@ -198,50 +138,41 @@ $ git pull --no-rebase  # Do a merge instead of a rebase
 
 [i[Rebase-->And pulling]>]
 
-## Conflicts {#rebasing-conflicts}
+## Conflict {#rebasing-conflicts}
 
 [i[Rebase-->Conflicts]<]
 
-When you do a merge, there's a chance that you might conflict with some
-of the changes in the other branch, and you have to resolve those, as
-we've seen.
+Khi bạn merge, có khả năng bạn sẽ conflict với một số thay đổi trong branch kia, và bạn phải giải quyết chúng, như ta đã thấy.
 
-Can the same thing happen with a rebase?
+Điều tương tự có thể xảy ra với rebase không?
 
-Of course! If the commit you're trying to rebase onto conflicts with
-your commit, you'll have the same trouble you'd have with a merge.
+Tất nhiên! Nếu commit bạn đang cố rebase lên conflict với commit của bạn, bạn sẽ gặp rắc rối tương tự như với merge.
 
-Luckily, Git will let you resolve the conflict in a way similar to the
-merge.
+May mắn thay, Git sẽ cho bạn giải quyết conflict theo cách tương tự như merge.
 
-Let's start with a simple example. I'm going to have a text file that
-contains the following:
+Hãy bắt đầu với một ví dụ đơn giản. Tôi sẽ có một file text chứa nội dung sau:
 
 ``` {.default}
 The magic number is 1.
 ```
 
-We'll have that in a commit on the `main` branch.
+Ta sẽ có nó trong một commit trên branch `main`.
 
-Then we'll make a new `topic` branch there.
+Sau đó ta sẽ tạo branch `topic` mới từ đó.
 
-Then on the `main` branch we'll change the number to `2` and commit.
+Trên branch `main` ta sẽ đổi số thành `2` và commit.
 
-And on the `topic` branch we'll change the number to `3` and commit.
+Và trên branch `topic` ta sẽ đổi số thành `3` và commit.
 
-So we'll have the scenario in Figure_#.4.
+Vậy ta sẽ có kịch bản trong Figure_#.4.
 
 ![Branches ready for conflict.](img_110_040.pdf "Branches ready for conflict")
 
-Finally, we'll try to rebase `topic` onto `main`.
+Cuối cùng, ta sẽ cố rebase `topic` lên `main`.
 
-At that point, Git will become confused. It knows the last commit on
-`main` has `2` and that `topic` is unaware of this (because it branched
-off before that change). And it knows the last commit on `topic` has
-`3`. So which one is right?
+Tại thời điểm đó, Git sẽ bị bối rối. Nó biết commit cuối trên `main` có `2` và `topic` không biết điều này (vì nó đã branch trước thay đổi đó). Và nó biết commit cuối trên `topic` có `3`. Vậy cái nào đúng?
 
-Let's try to rebase while we're on the `topic` branch and see what
-happens.
+Hãy thử rebase khi đang ở branch `topic` và xem điều gì xảy ra.
 
 ``` {.default}
 $ git rebase main
@@ -259,29 +190,26 @@ $ git rebase main
   Could not apply 9f19221... Update to 3
 ```
 
-Whoa, Nelly. OK, so it can't do that. It says we need to "Resolve all
-conflicts manually", and then add them, and then we'll run rebase again
-with the `--continue` flag to continue the rebase.
+Ôi trời. OK, vậy nó không thể làm điều đó. Nó bảo ta cần "Resolve all conflicts manually" (giải quyết tất cả conflict thủ công), rồi add chúng, rồi ta sẽ chạy rebase lại với flag `--continue` để tiếp tục rebase.
 
-> **If you keep reading the hints**, you'll see there is some more stuff in
-> there. We'll get to `--skip` later, but do note that if the conflict
-> is more than you want to take on right now, you can just run:
+> **Nếu bạn tiếp tục đọc các gợi ý**, bạn sẽ thấy còn có thêm thứ nữa.
+> Ta sẽ đến `--skip` sau, nhưng lưu ý rằng nếu conflict quá phức tạp để
+> xử lý ngay lúc này, bạn có thể chạy:
 >
 > ``` {.default}
 > $ git rebase --abort
 > ```
 >
 > <!-- ` -->
-> to pretend you never started it in the first place.
+> để giả vờ như bạn chưa bao giờ bắt đầu nó.
 
-This might sound a little familiar. It's basically the same process as
-we went through with the merge conflict.
+Điều này có thể nghe quen quen. Về cơ bản đó là quy trình tương tự như ta đã trải qua với merge conflict.
 
-1. Edit the conflicting file and make it *Right*.
-2. Add it.
-3. Continue the rebase.
+1. Chỉnh sửa file có conflict và làm cho nó *Đúng*.
+2. Add nó.
+3. Tiếp tục rebase.
 
-Let's do that. If I pop open that file `magic.txt` in my editor, I see:
+Hãy làm vậy. Nếu tôi mở file `magic.txt` trong editor, tôi thấy:
 
 ``` {.default .numberLines}
 <<<<<<< HEAD
@@ -291,19 +219,15 @@ The magic number is 3
 >>>>>>> 9f19221 (Update to 3)
 ```
 
-That's just like in a merge conflict—Git is showing us the two choices
-we have for this line. So we'll consult with the team and come to an
-agreement on what should be in the file, and we delete everything that
-shouldn't be there and we make it *Right*.
+Giống hệt như trong merge conflict --- Git đang hiển thị cho ta hai lựa chọn cho dòng này. Vậy ta sẽ tham khảo ý kiến nhóm và đi đến thống nhất về nội dung file, rồi xóa tất cả những gì không cần và làm cho nó *Đúng*.
 
 ``` {.default}
 The magic number is 3
 ```
 
-And I save that.
+Và tôi lưu lại.
 
-Now, what were we supposed to do at this point, again? If you've
-forgotten, it's fine. Just run `git status` to see where we're at.
+Bây giờ, ta cần làm gì ở thời điểm này nhỉ? Nếu bạn quên, không sao. Chỉ cần chạy `git status` để xem tình trạng.
 
 ``` {.default}
 $ git status
@@ -324,7 +248,7 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Oh yeah! `--continue`, right?
+À phải! `--continue` đấy nhỉ?
 
 ``` {.default}
 $ git rebase --continue
@@ -333,8 +257,7 @@ $ git rebase --continue
   mark them as resolved using git add
 ```
 
-What? Oh, we should have read more of the status message. It says to use
-`git add` to mark resolution of the file `magic.txt`. Let's do that.
+Sao vậy? Ồ, ta nên đọc thêm phần status. Nó bảo dùng `git add` để đánh dấu file `magic.txt` đã được giải quyết. Hãy làm vậy.
 
 ``` {.default}
 $ git add magic.txt
@@ -351,24 +274,17 @@ $ git status
 	  modified:   magic.txt
 ```
 
-That status looks nicer. (But note that Git's in a special "rebase"
-state similar to how it gets into a special "merge" state when merging.
-We have to either abort or continue before we can use Git normally
-again.)
+Status đó trông ổn hơn. (Nhưng lưu ý rằng Git đang ở trạng thái "rebase" đặc biệt tương tự như khi nó vào trạng thái "merge" đặc biệt khi merge. Ta phải hoặc là abort hoặc continue trước khi có thể dùng Git bình thường.)
 
-Now `--continue`.
+Bây giờ `--continue`.
 
 ``` {.default}
 $ git rebase --continue
 ```
 
-This pops me into my editor to edit the commit message. This is your
-opportunity to change the commit message if it no longer reflects the
-commit. (That is, if you changed the commit when resolving the conflict
-to be something entirely different, you might need to edit the message.)
-Edit it if necessary and save it.
+Lệnh này đưa tôi vào editor để chỉnh sửa commit message. Đây là cơ hội để bạn thay đổi commit message nếu nó không còn phản ánh commit nữa. (Nghĩa là nếu bạn thay đổi commit khi giải quyết conflict thành thứ gì đó hoàn toàn khác, bạn có thể cần sửa message.) Chỉnh sửa nếu cần và lưu lại.
 
-And Git says:
+Và Git báo:
 
 ``` {.default}
 [detached HEAD 443fa53] Update to 3
@@ -376,57 +292,51 @@ And Git says:
 Successfully rebased and updated refs/heads/topic.
 ```
 
-And `git status` shows we're all clear.
+Và `git status` cho thấy tất cả đã rõ ràng.
 
-After all that, we see our new commit graph in Figure_#.5.
+Sau tất cả những điều đó, ta thấy commit graph mới của mình trong Figure_#.5.
 
 ![After rebase conflict resolution.](img_110_050.pdf "After rebase conflict resolution.")
 
-One last note: if you find yourself resolving the same conflicts with a
-rebase over and over with every pull, you might check out [i[`git
-rerere`]] [fl[`git
-rerere`|https://git-scm.com/book/en/v2/Git-Tools-Rerere]] to help
-automate that process.
+Một lưu ý cuối: nếu bạn thấy mình giải quyết cùng các conflict khi rebase lần nào cũng vậy mỗi lần pull, bạn có thể xem xét [i[`git rerere`]] [fl[`git rerere`|https://git-scm.com/book/en/v2/Git-Tools-Rerere]] để giúp tự động hóa quá trình đó.
 
 [i[Rebase-->Conflicts]>]
 
-## Squashing Commits {#squashing-commits}
+## Squash Commit {#squashing-commits}
 
 [i[Rebase-->Squashing commits]<]
 
-This concept fits in with the notion of a clean commit history.
+Khái niệm này liên quan đến ý tưởng về lịch sử commit sạch sẽ.
 
-Let's say you were tasked with implementing a feature, namely adding an
-alert box saying that the storage limit was exceeded.
+Giả sử bạn được giao nhiệm vụ triển khai một tính năng, cụ thể là thêm hộp cảnh báo thông báo vượt giới hạn lưu trữ.
 
-No problem. You add it and commit with message "Added feature #121".
-(And you don't push yet.)
+Không vấn đề gì. Bạn thêm nó và commit với message "Added feature #121". (Và bạn chưa push.)
 
 ``` {.default}
 alert("Strrage limit exceeeded");
 ```
 
-Then after the commit, you notice a typo. Heck.
+Rồi sau khi commit, bạn nhận ra có lỗi đánh máy. Chết thật.
 
-So you fix it and commit with message "Fixed typo".
+Vậy bạn sửa và commit với message "Fixed typo" (Sửa lỗi đánh máy).
 
 ``` {.default}
 alert("Storage limit exceeeded");
 ```
 
-Done.
+Xong.
 
-Wait! There's another typo! Are you kidding me?
+Đợi đã! Còn một lỗi đánh máy nữa! Bạn đùa tôi à?
 
-So you fix it:
+Vậy bạn sửa nó:
 
 ``` {.default}
 alert("Storage limit exceeded");
 ```
 
-And add another commit saying "Fixed another typo".
+Và thêm một commit nữa với message "Fixed another typo" (Sửa thêm lỗi đánh máy).
 
-Now your local commit history reads:
+Bây giờ lịch sử commit cục bộ của bạn là:
 
 ``` {.default}
 Fixed another typo
@@ -434,18 +344,15 @@ Fixed a typo
 Added feature #121
 ```
 
-That's not super clean, right? Really this was supposed to be one commit
-that implemented feature #121.
+Không được sạch sẽ lắm phải không? Thực ra đây đáng lẽ phải là một commit duy nhất triển khai feature #121.
 
-But luckily you haven't pushed yet, which means you're still free to
-rewrite that history!
+Nhưng may mắn thay bạn chưa push, có nghĩa là bạn vẫn tự do viết lại lịch sử đó!
 
-You can use a feature of rebase called ***squashing*** to get this done.
+Bạn có thể dùng tính năng của rebase gọi là ***squashing*** (ép gộp) để thực hiện điều này.
 
-What you want to do is squash those two typo fixes into the previous
-commit, the one where you first tried to implement the feature.
+Những gì bạn muốn làm là squash hai commit sửa lỗi đánh máy đó vào commit trước, commit mà bạn lần đầu cố triển khai tính năng.
 
-First, let's look at the log.
+Đầu tiên, hãy xem log.
 
 ``` {.default}
 $ git log
@@ -474,19 +381,15 @@ Date:   Wed Jul 17 11:53:10 2024 -0700
     Added
 ```
 
-Since this is a rebase, we're going to rebase onto something, namely the
-commit _prior_ to the added feature commit, the commit ID starting with
-`a9585`.
+Vì đây là rebase, ta sẽ rebase lên thứ gì đó, cụ thể là commit _trước_ commit added feature, commit ID bắt đầu bằng `a9585`.
 
-And we want to do it _interactively_, which is a special rebase mode
-that lets us do the squashing, and we get there with the `-i` flag.
+Và ta muốn làm theo chế độ _interactive_ (tương tác), đây là chế độ rebase đặc biệt cho phép ta thực hiện squashing, và ta đến đó bằng flag `-i`.
 
 ``` {.default}
 $ git rebase -i a9585
 ```
 
-This brings us into an editor that has this information, and a huge
-comment block below it full of instructions.
+Lệnh này đưa ta vào editor với thông tin này, và một khối comment khổng lồ bên dưới chứa đầy hướng dẫn.
 
 ``` {.default .numberLines}
 pick ab84a42 Added feature #121
@@ -494,22 +397,15 @@ pick c62c0db Fixed typo
 pick c1820e6 Fixed another typo
 ```
 
-Notice that they're listed in forward order instead of the reverse log
-order we're used to.
+Lưu ý rằng chúng được liệt kê theo thứ tự tiến, thay vì thứ tự log ngược mà ta quen.
 
-Look at all those options shown in the comment block (and not shown here
-in the guide)! Pick, reword, edit, squash, fixup... so many things to
-choose from. As you might imagine we're in a pretty powerful history
-rewriting mode.
+Nhìn tất cả các tùy chọn được hiển thị trong khối comment (và không hiển thị ở đây trong hướng dẫn)! Pick, reword, edit, squash, fixup... quá nhiều thứ để chọn. Như bạn có thể tưởng tượng, ta đang ở chế độ viết lại lịch sử rất mạnh mẽ.
 
-For now, though, let's just look at "squash" and "fixup", which are
-almost the same thing.
+Nhưng bây giờ, hãy chỉ xem "squash" và "fixup", hai cái gần như giống nhau.
 
-Starting with "squash", what I want to do is take those typo fix commits
-and work them into the "Added feature" commit. We can use the squash
-mode to do this.
+Bắt đầu với "squash", điều tôi muốn làm là lấy các commit sửa lỗi đánh máy và gộp chúng vào commit "Added feature". Ta có thể dùng chế độ squash để làm điều này.
 
-I'll edit the file to look like this:
+Tôi sẽ chỉnh sửa file để trông như thế này:
 
 ``` {.default .numberLines}
 pick ab84a42 Added feature #121
@@ -517,16 +413,14 @@ squash c62c0db Fixed typo
 squash c1820e6 Fixed another typo
 ```
 
-That will squash "Fixed another typo" into "Fixed typo" and then squash
-that result into "Added feature #121".
+Lệnh đó sẽ squash "Fixed another typo" vào "Fixed typo" và sau đó squash kết quả đó vào "Added feature #121".
 
-And `pick` just means "use this commit as-is".
+Và `pick` chỉ có nghĩa là "dùng commit này như hiện tại".
 
-> **There are shorthand versions for all these commands.** I could have
-> used `s` instead of `squash`.
+> **Có các phiên bản viết tắt cho tất cả các lệnh này.** Tôi có thể dùng
+> `s` thay vì `squash`.
 
-After I save the file, I get launched right back into another editor
-that has this in it:
+Sau khi tôi lưu file, tôi ngay lập tức được đưa vào một editor khác có nội dung này:
 
 ``` {.default .numberLines}
 # This is a combination of 3 commits.
@@ -543,16 +437,13 @@ Fixed typo
 Fixed another typo
 ```
 
-We're making a new rebased commit here with the three commits squashed
-into one, and so we get to write a new commit message. Helpfully, Git
-has included all three commit messages. Let's hack it down to just have
-the commit message we want.
+Ta đang tạo một commit mới được rebase với ba commit được squash thành một, vì vậy ta được viết commit message mới. Hữu ích thay, Git đã đưa vào tất cả ba commit message. Hãy rút gọn nó xuống chỉ còn commit message ta muốn.
 
 ``` {.default .numberLines}
 Added feature #121
 ```
 
-And saving gets us back out with a message.
+Và lưu lại sẽ đưa ta ra với một thông báo.
 
 ``` {.default}
 [detached HEAD 4bc6bca] Added feature #121
@@ -562,12 +453,12 @@ And saving gets us back out with a message.
 Successfully rebased and updated refs/heads/main.
 ```
 
-Success is good. I like success.
+Thành công là tốt. Tôi thích thành công.
 
-> **What's that about detached HEAD?** Git detaches the `HEAD` briefly
-> when doing a rebase. Don't worry—it gets reattached for you.
+> **Cái gì đó về detached HEAD?** Git tạm thời tách `HEAD` khi thực hiện
+> rebase. Đừng lo --- nó sẽ được gắn lại cho bạn.
 
-Now my commit history is all cleaned up.
+Bây giờ lịch sử commit của tôi đã được dọn sạch.
 
 ``` {.default}
 commit 4bc6bca6870d124b3eebc9afd32486a5a23189fc (HEAD -> main)
@@ -583,23 +474,17 @@ Date:   Wed Jul 17 11:53:10 2024 -0700
     Added
 ```
 
-And you can see, if you look at the earlier log, that the "Added
-feature" commit ID has changed. We did a rebase, after all, so those old
-commits are gone, replaced by the new ones.
+Và bạn có thể thấy, nếu nhìn vào log trước đó, rằng commit ID của "Added feature" đã thay đổi. Ta đã rebase, sau cùng, vì vậy những commit cũ đó đã biến mất, được thay thế bởi những commit mới.
 
-Finally, after all this, *now* you can push. And always remember that
-since this is a history rewrite, you shouldn't do it after you've
-pushed.
+Cuối cùng, sau tất cả điều này, *bây giờ* bạn có thể push. Và luôn nhớ rằng vì đây là viết lại lịch sử, bạn không nên làm vậy sau khi đã push.
 
 [i[Rebase-->Squashing commits]>]
 
-### Squash versus Fixup
+### Squash vs Fixup
 
 [i[Rebase-->Fixup]]
 
-Now a quick note about `fixup` instead of `squash`. It's the same thing,
-except only the squashed-into commit message is kept by default. So if I
-ran this:
+Bây giờ một lưu ý nhanh về `fixup` thay vì `squash`. Nó giống nhau, ngoại trừ chỉ commit message của commit được squash vào được giữ theo mặc định. Vậy nếu tôi chạy thế này:
 
 ``` {.default .numberLines}
 pick fbc1075 Added feature #121
@@ -607,48 +492,35 @@ fixup fd4ca42 Fixed typo
 fixup 6a10e97 Fixed another typo
 ```
 
-Git instantly returns with:
+Git lập tức trả về:
 
 ``` {.default}
 Successfully rebased and updated refs/heads/main.
 ```
 
-And Git log only shows the "Added feature #121" commit. With `fixup`,
-Git automatically discards the squashed commit messages.
+Và git log chỉ hiển thị commit "Added feature #121". Với `fixup`, Git tự động bỏ các commit message đã được squash.
 
-## Multiple Conflicts in the Rebase
+## Nhiều Conflict trong Rebase
 
 [i[Rebase-->Conflicts]<]
 
-When you merge with commit and there are multiple conflicts, you resolve
-them all in one big merge commit and then you're done. You use `git
-commit` to wrap it all up.
+Khi bạn merge với commit và có nhiều conflict, bạn giải quyết tất cả trong một merge commit lớn rồi xong. Bạn dùng `git commit` để kết thúc.
 
-Rebase is a little different. Since rebase "replays" your commits onto
-the new base one at a time, each replay is a merge conflict opportunity.
-This means that *as you rebase, you might have to resolve multiple
-conflicts one after another*.
+Rebase thì khác một chút. Vì rebase "replay" (phát lại) các commit của bạn lên base mới từng cái một, mỗi lần replay là một cơ hội xảy ra merge conflict. Điều này có nghĩa là *khi bạn rebase, bạn có thể phải giải quyết nhiều conflict liên tiếp*.
 
-For example, let's say on your topic branch you made a commit that
-modified file `foo.txt`. And then you made *another commit* that
-modified file `bar.txt`.
+Ví dụ, giả sử trên branch topic của bạn bạn đã thực hiện một commit sửa đổi file `foo.txt`. Và sau đó bạn thực hiện *một commit khác* sửa đổi file `bar.txt`.
 
-But unbeknownst to you, someone on the `main` branch has also modified
-those two files, so they're bound to conflict when you rebase.
+Nhưng không biết rằng, ai đó trên branch `main` cũng đã sửa đổi hai file đó, vì vậy chúng sẽ conflict khi bạn rebase.
 
-And so you begin `git rebase main`, and we're in trouble right off the
-bat. It's telling us that `foo.txt` conflicts.
+Và vì vậy bạn bắt đầu `git rebase main`, và ta gặp rắc rối ngay từ đầu. Nó báo cho ta biết `foo.txt` có conflict.
 
-So you fix it up and then run `git rebase --continue` and edit the
-commit message, and get on with it.
+Vậy bạn sửa nó rồi chạy `git rebase --continue` và chỉnh sửa commit message, và tiếp tục.
 
-But all that does is move on to your *next* commit to `bar.txt` and try
-to rebase that. And it conflicts, too!
+Nhưng tất cả những điều đó chỉ chuyển sang *commit tiếp theo* của bạn cho `bar.txt` và cố rebase nó. Và nó cũng có conflict!
 
-So you fix it up and then run `git rebase --continue` and edit the
-commit message, and get on with it. Again.
+Vậy bạn sửa nó rồi chạy `git rebase --continue` và chỉnh sửa commit message, và tiếp tục. Lại một lần nữa.
 
-And finally you get the success message:
+Và cuối cùng bạn nhận được thông báo thành công:
 
 ``` {.default}
 [detached HEAD 31c3947] topic change bar
@@ -656,15 +528,11 @@ And finally you get the success message:
 Successfully rebased and updated refs/heads/topic.
 ```
 
-This is why you can conclude a merge with a simple commit, but you have
-to conclude a rebase by repeatedly running `git rebase --continue` until
-all commits have been rebased cleanly.
+Đây là lý do tại sao bạn có thể kết thúc merge bằng một commit đơn giản, nhưng bạn phải kết thúc rebase bằng cách chạy `git rebase --continue` nhiều lần cho đến khi tất cả commit được rebase sạch sẽ.
 
-Is this good or bad? It might be better in that you get a chance to
-merge each commit in isolation so it might be easier to reason about and
-avoid errors. But at the same time it's more legwork to get through it.
+Điều này tốt hay xấu? Có thể tốt hơn ở chỗ bạn có cơ hội merge từng commit một cách độc lập nên có thể dễ suy luận hơn và tránh lỗi. Nhưng đồng thời nó cũng nhiều công hơn để hoàn thành.
 
-As always, use the right tool for the job!
+Như thường lệ, hãy dùng công cụ phù hợp cho công việc!
 
 [i[Rebase-->Conflicts]>]
 
