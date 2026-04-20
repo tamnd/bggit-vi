@@ -1,271 +1,273 @@
-# Git Basics
+# Kiến Thức Cơ Bản về Git
 
-Welcome to the _Beej's Guide to Git_!
+Chào mừng đến với _Beej's Guide to Git_ (Hướng dẫn Git của Beej)!
 
-This guide has two goals, in no particular order:
+Tài liệu này có hai mục tiêu, không theo thứ tự ưu tiên nào:
 
-1. Help you get some familiarity with Git syntax on the command line.
-2. Help you get a mental model that describes how Git stores its
-   information.
+1. Giúp bạn làm quen với cú pháp Git trên command line (dòng lệnh).
+2. Giúp bạn xây dựng mental model (mô hình tư duy) mô tả cách Git lưu
+   trữ thông tin của nó.
 
-I feel the second of these is very important for becoming even remotely
-adept at using Git, which is why I spend so much time talking about it.
-Yes, you can get by with a cheat-sheet of common Git commands, but if
-you want to fearlessly use the tool to its full effectiveness, you gotta
-learn the internals!
+Mình cảm thấy mục tiêu thứ hai rất quan trọng để trở nên thành thạo dù
+chỉ ở mức tối thiểu khi dùng Git, đó là lý do mình dành nhiều thời gian
+nói về nó. Đúng là bạn có thể tồn tại với một cheat-sheet (bảng ghi nhớ)
+các lệnh Git phổ biến, nhưng nếu muốn dùng công cụ này một cách tự tin
+và hiệu quả tối đa, bạn cần học phần bên trong!
 
-And, yes, Git is complex. There's a *lot* to it. But like with many
-complex tools, there's a lot of power to be found there if you put in
-the time to get good at it.
+Và đúng, Git phức tạp. Có *rất nhiều* thứ trong đó. Nhưng giống như
+nhiều công cụ phức tạp khác, có rất nhiều sức mạnh tiềm ẩn ở đó nếu
+bạn bỏ thời gian để thành thạo.
 
-## What is Git?
+## Git là gì?
 
-Git is a _source code control system_, also known as a _version control
-system_.
+Git là một _source code control system_ (hệ thống quản lý mã nguồn),
+còn được gọi là _version control system_ (hệ thống kiểm soát phiên bản).
 
-Clear? Okay, not really? Let's dive in a bit more, then!
+Rõ chưa? Ừ, chưa hẳn? Vậy hãy đi sâu hơn một chút!
 
-Git's main job is to keep a log of _snapshots_ of the current state of
-all your source code in a particular directory tree. A snapshot is the
-current state of all tracked files at a particular time. If you wanted
-to see what your source code looked like last Wednesday, you could go
-back in time and see it.
+Công việc chính của Git là lưu giữ một log (nhật ký) các _snapshot_
+(ảnh chụp nhanh) về trạng thái hiện tại của toàn bộ mã nguồn trong một
+cây thư mục cụ thể. Snapshot là trạng thái hiện tại của tất cả các file
+được theo dõi tại một thời điểm nhất định. Nếu bạn muốn xem mã nguồn
+của mình trông như thế nào vào thứ Tư tuần trước, bạn có thể quay ngược
+thời gian và xem nó.
 
-The idea is that you'll make some changes (to implement a feature, for
-example), and then you'll _commit_ those changes to the _source code
-repo_ (repository) once the feature is ready. This saves the changes to
-the repo and allows other collaborators to see them.
+Ý tưởng là bạn sẽ thực hiện một số thay đổi (ví dụ để triển khai một
+tính năng), rồi _commit_ (xác nhận) những thay đổi đó vào _source code
+repo_ (repository --- kho mã nguồn) một khi tính năng đã sẵn sàng. Điều
+này lưu các thay đổi vào repo và cho phép các cộng tác viên khác xem chúng.
 
-And if you ever change something you didn't want to, or you want to see
-how things were implemented in the past, you can always check out a
-previous commit and take a look.
+Và nếu bạn thay đổi điều gì đó mà bạn không muốn, hay muốn xem cách
+mọi thứ được triển khai trong quá khứ, bạn luôn có thể check out
+(kiểm tra) một commit trước đó và nhìn lại.
 
-Git keeps a history of all the commits you've ever made. Assuming
-nothing criminal is happening, this should be a great relief to you; if
-you accidentally delete a bunch of code, you can look at a previous
-commit and get it all back.
+Git lưu giữ lịch sử của tất cả các commit bạn đã từng thực hiện. Giả
+sử không có gì phạm pháp đang xảy ra, điều này sẽ là một sự nhẹ nhõm
+lớn cho bạn; nếu bạn vô tình xóa một đống code, bạn có thể nhìn vào
+commit trước đó và lấy lại tất cả.
 
-But that's not all! As we'll see, Git also works well as a remote backup
-mechanism, and works wonderfully when cooperating with a team on the
-same codebase.
+Nhưng đó chưa phải tất cả! Như chúng ta sẽ thấy, Git cũng hoạt động
+tốt như một cơ chế backup (sao lưu) từ xa, và hoạt động tuyệt vời khi
+cộng tác với một nhóm trên cùng một codebase (cơ sở mã).
 
-### Definitions
+### Định Nghĩa
 
-* **Source Code Control System**/**Version Control System**: Software
-  that manages changes to a software project potentially consisting of
-  thousands of source files edited by potentially hundreds of
-  developers. Git is a source code control system. There are many
-  others.
+* **Source Code Control System** (Hệ thống kiểm soát mã nguồn)/**Version Control System** (Hệ thống kiểm soát phiên bản): Phần mềm
+  quản lý các thay đổi đối với một dự án phần mềm có thể bao gồm hàng
+  nghìn file nguồn được chỉnh sửa bởi hàng trăm developer. Git là một
+  source code control system. Có nhiều cái khác nữa.
 
-* [i[Commit]] **Commit**: An explicit moment in time where a snapshot of
-  the contents of all the source files are recorded in the source code
-  control system. Very, very typically the code is in a working state
-  when the commit is made; in other words, the commit represents in some
-  ways a seal of approval that the repo in this state is in working
-  order even if the changes aren't complete.
+* [i[Commit]] **Commit** (Xác nhận): Một thời điểm rõ ràng trong thời
+  gian khi snapshot của nội dung tất cả các file nguồn được ghi lại
+  trong source code control system. Rất, rất thường xuyên code đang ở
+  trạng thái hoạt động khi commit được thực hiện; nói cách khác, commit
+  đại diện theo một nghĩa nào đó là con dấu xác nhận rằng repo ở trạng
+  thái này đang hoạt động tốt dù các thay đổi chưa hoàn chỉnh.
   
-  Example commits might be:
+  Các ví dụ commit có thể là:
 
-  * "Add feature *X* to the codebase"
-  * "Fix bug *Y*"
-  * "Merge other contributor's changes into the codebase"
-  * "Partially complete the Spanish translation"
+  * "Add feature *X* to the codebase" (Thêm tính năng X vào codebase)
+  * "Fix bug *Y*" (Sửa lỗi Y)
+  * "Merge other contributor's changes into the codebase" (Gộp thay đổi
+    của cộng tác viên khác vào codebase)
+  * "Partially complete the Spanish translation" (Hoàn thành một phần
+    bản dịch tiếng Tây Ban Nha)
 
-* **Repo**/**Source Code Repository**: This is where a particular
-  software project is stored in the source code control system.
-  Typically each project has its own repo. For example, you might
-  "create a Git repo" to hold a new project you're working on.
+* **Repo**/**Source Code Repository** (Kho mã nguồn): Đây là nơi một
+  dự án phần mềm cụ thể được lưu trữ trong source code control system.
+  Thông thường mỗi dự án có repo riêng của nó. Ví dụ, bạn có thể "tạo
+  một Git repo" để lưu một dự án mới mà bạn đang làm.
 
-  Sometimes repos are local to your computer, and sometimes they're
-  stored on other, remote computers.
+  Đôi khi repo nằm local (cục bộ) trên máy tính của bạn, và đôi khi
+  chúng được lưu trữ trên các máy tính remote (từ xa) khác.
 
-## What is GitHub?
-
-[i[GitHub]]
-
-[fl[GitHub|https://github.com/]] is **not** Git.
-
-## What is GitHub?
+## GitHub là gì?
 
 [i[GitHub]]
 
-Oh, more?
+[fl[GitHub|https://github.com/]] **không phải** là Git.
 
-[GitHub](https://github.com/) is a website that provides a front end to
-a lot of Git features, and some additional GitHub-specific features, as
-well.
+## GitHub là gì?
 
-It also provides remote storage for your repo, which acts as a backup.
+[i[GitHub]]
 
-Takeaway: GitHub is a web-based front-end to Git (specifically one that
-works on the copy of your repo at GitHub—stay tuned for more on that
-later).
+Ồ, còn nữa à?
 
-> [i[GitLab]][i[Gitea]]**What about GitLab and Gitea?**
-> [fl[GitLab|https://gitlab.com]] is a competitor to GitHub.
-> [fl[Gitea|https://docs.gitea.com/]] is an open-source competitor that
-> allows you to basically run a GitHub-like front-end on your own
-> server. None of this information is immediately important.
+[GitHub](https://github.com/) là một website cung cấp giao diện frontend
+cho nhiều tính năng Git, và một số tính năng dành riêng cho GitHub nữa.
 
-Regardless of whatever repos you have on GitHub, you'll also have copies
-(known as _clones_) of those repos on your local system to work on.
-Periodically, in a common workflow, you'll sync your clone of the repo
-with GitHub.
+Nó cũng cung cấp bộ nhớ lưu trữ từ xa cho repo của bạn, hoạt động như
+một bản backup.
 
-> **You don't need GitHub.** Even though you might be commonly using
-> GitHub, there's no law that says you have to. You can just create and
-> destroy repos on your local system all you want, even if you're not
-> connected to the Internet. See [Appendix: Making a
-> Playground](#making-playground) for more information once you're more
-> comfortable with the basics.
+Tóm lại: GitHub là một web-based frontend (giao diện web) cho Git (cụ
+thể là một cái hoạt động trên bản sao repo của bạn tại GitHub --- chờ
+đợi chi tiết hơn về điều đó sau).
 
-## The Most Basic Git Workflow
+> [i[GitLab]][i[Gitea]]**Còn GitLab và Gitea thì sao?**
+> [fl[GitLab|https://gitlab.com]] là đối thủ cạnh tranh của GitHub.
+> [fl[Gitea|https://docs.gitea.com/]] là đối thủ mã nguồn mở cho phép
+> bạn về cơ bản chạy một frontend kiểu GitHub trên server của riêng bạn.
+> Không có thông tin nào trong số này là quan trọng ngay lúc này.
+
+Bất kể bạn có repo nào trên GitHub, bạn cũng sẽ có các bản sao (được
+gọi là _clone_) của những repo đó trên hệ thống local của bạn để làm
+việc. Định kỳ, trong một workflow (quy trình làm việc) phổ biến, bạn
+sẽ đồng bộ clone của repo với GitHub.
+
+> **Bạn không cần GitHub.** Dù bạn có thể thường xuyên dùng GitHub,
+> không có luật nào bắt bạn phải dùng. Bạn có thể thoải mái tạo và xóa
+> các repo trên hệ thống local ngay cả khi bạn không kết nối Internet.
+> Xem [Phụ lục: Tạo Sân Chơi](#making-playground) để biết thêm thông
+> tin khi bạn đã thoải mái hơn với những kiến thức cơ bản.
+
+## Workflow Git Cơ Bản Nhất
 
 [i[Workflow-->Basic]]
 
-There's a super-common workflow that you'll use repeatedly:
+Có một workflow cực kỳ phổ biến mà bạn sẽ dùng lặp đi lặp lại:
 
-1. _Clone_ a _remote_ repo. The remote repo is commonly on GitHub, but
-   not necessarily.
-2. Make some local changes in your _working tree_, where the project
-   files are on your computer.
-3. Add those changes to the _stage_ (AKA the _index_).
-4. _Commit_ those changes.
-5. _Push_ your commit back to the remote repo.
-6. Go back to Step 2.
+1. _Clone_ một _remote_ repo. Remote repo thường ở trên GitHub, nhưng
+   không nhất thiết.
+2. Thực hiện một số thay đổi local trong _working tree_ (cây làm việc)
+   của bạn, nơi các file dự án nằm trên máy tính của bạn.
+3. Thêm những thay đổi đó vào _stage_ (hay còn gọi là _index_).
+4. _Commit_ những thay đổi đó.
+5. _Push_ (đẩy) commit của bạn trở lại remote repo.
+6. Quay lại Bước 2.
 
-This is not the only workflow; there are others that are also not
-uncommon.
+Đây không phải là workflow duy nhất; có những workflow khác cũng không
+kém phổ biến.
 
-### Definitions
+### Định Nghĩa
 
-* **Clone** (verb): to make a copy of a remote repo locally.
+* **Clone** (động từ): tạo một bản sao của remote repo ở local.
 
-* **Clone** (noun): a local copy of a remote repo.
+* **Clone** (danh từ): một bản sao local của remote repo.
 
-* **Remote**: In Git, a clone of a repo in another location.
+* **Remote** (Từ xa): Trong Git, một bản sao của repo ở một vị trí khác.
 
-* **Working Tree**: The directory that you go into to edit and change
-  the files of the project. This is created when you clone.
+* **Working Tree** (Cây làm việc): Thư mục mà bạn vào để chỉnh sửa và
+  thay đổi các file của dự án. Nó được tạo khi bạn clone.
 
-* **Stage**: In Git, a place you add copies of files to in preparation
-  for a commit. The commit will include all the modified files that
-  you've placed on the stage. It will not include modified files you
-  haven't placed on the stage.
+* **Stage** (Khu chuẩn bị): Trong Git, một nơi bạn thêm các bản sao
+  của file vào để chuẩn bị cho commit. Commit sẽ bao gồm tất cả các
+  file đã sửa đổi mà bạn đã đặt lên stage. Nó sẽ không bao gồm các
+  file đã sửa đổi mà bạn chưa đặt lên stage.
 
-* **Index**: A less-common name for the stage.
+* **Index** (Chỉ mục): Một tên ít phổ biến hơn cho stage.
 
-## What is Cloning?
+## Cloning là gì?
 
 [i[Clone]<]
 
-First, some backstory.
+Trước hết, một chút lý lịch.
 
-Git is what's known as a _distributed_ version control system. This
-means that, unlike many version control systems, there's no one central
-authority for the data. (Though commonly Git users treat a site like
-GitHub in this regard, loosely.)
+Git là một loại _distributed_ version control system (hệ thống kiểm
+soát phiên bản phân tán). Điều này có nghĩa là, không giống nhiều hệ
+thống kiểm soát phiên bản khác, không có một cơ quan trung ương duy
+nhất cho dữ liệu. (Mặc dù thông thường người dùng Git coi một trang như
+GitHub theo nghĩa đó, một cách lỏng lẻo.)
 
-Instead, Git has _clones_ of repos. These are complete, standalone
-copies of the entire commit history of that repo. Any clone can be
-recreated from any other. None of them are more powerful than any
-others.
+Thay vào đó, Git có _clone_ của các repo. Đây là các bản sao hoàn chỉnh,
+độc lập của toàn bộ lịch sử commit của repo đó. Bất kỳ clone nào cũng
+có thể được tái tạo từ bất kỳ clone nào khác. Không cái nào mạnh hơn
+cái nào khác.
 
-Looking back at The Most Basic Git Workflow, above, we see that Step 1
-is to clone an existing repo.
+Nhìn lại Workflow Git Cơ Bản Nhất ở trên, chúng ta thấy Bước 1 là
+clone một repo hiện có.
 
-If you're doing this from GitHub, it means you're making a local copy of
-an entire, existing GitHub repo.
+Nếu bạn làm điều này từ GitHub, nghĩa là bạn đang tạo một bản sao
+local của toàn bộ một repo GitHub hiện có.
 
-Making a clone is a one time-process, typically (though you can make as
-many as you want).
+Tạo một clone là một quá trình một lần, thường là vậy (mặc dù bạn có
+thể tạo bao nhiêu cái tùy thích).
 
-### Definitions
+### Định Nghĩa
 
-* **Distributed Version Control System**: A VCS in which there is no
-  central authority of the data, and multiple clones of a repo exist.
+* **Distributed Version Control System** (Hệ thống kiểm soát phiên bản
+  phân tán): Một VCS không có cơ quan trung ương về dữ liệu, và nhiều
+  clone của một repo tồn tại.
 
-  This means after you clone a repo, there are two: one that is remote,
-  and one that is local to your computer.
+  Điều này có nghĩa là sau khi bạn clone một repo, có hai cái: một cái
+  ở remote, và một cái local trên máy tính của bạn.
 
-  These clones are completely separate and changes you make to your
-  local repo will not be reflected in the remote clone. Unless, that is,
-  you explicitly make them interact.
+  Những clone này hoàn toàn tách biệt và các thay đổi bạn thực hiện
+  trên repo local sẽ không được phản ánh trong remote clone. Trừ khi
+  bạn làm cho chúng tương tác một cách rõ ràng.
 
-## How Do Clones Interact?
+## Các Clone Tương Tác như Thế Nào?
 
-After you make a clone, there are two major operations you typically
-use:
+Sau khi bạn tạo một clone, có hai thao tác chính bạn thường dùng:
 
+* [i[Push]]**Push** (Đẩy): Lấy các commit local của bạn và upload
+  (tải lên) chúng lên remote repo.
 
-* [i[Push]]**Push**: This takes your local commits and uploads them to
-  the remote repo.
+* [i[Pull]]**Pull** (Kéo): Lấy các commit remote và download (tải
+  xuống) chúng về repo local của bạn.
 
-* [i[Pull]]**Pull**: This takes the remote commits and downloads them to
-  your local repo.
+Đằng sau hậu trường, có một quá trình đang diễn ra gọi là _merge_
+(gộp), nhưng chúng ta sẽ nói thêm về điều đó sau.
 
-Behind the scenes, there's a process going on called a _merge_, but
-we'll talk more about that later.
+Cho đến khi bạn push, các thay đổi local của bạn không hiển thị trên
+remote repo.
 
-Until you push, your local changes aren't visible on the remote repo.
-
-Until you pull, the changes on the remote repo aren't visible on your
-local repo.
+Cho đến khi bạn pull, các thay đổi trên remote repo không hiển thị
+trên repo local của bạn.
 
 [i[Clone]>]
 
-## Actual Git Usage
+## Sử Dụng Git Thực Tế
 
 [i[Workflow-->Basic]<]
 
-Let's put all this into play. This section assumes you have the
-command line Git tools installed. It also generally assumes you're
-running a Unix shell like Bash or Zsh.
+Hãy bắt tay vào thực hành. Phần này giả định bạn đã cài đặt các công
+cụ Git command line. Nó cũng thường giả định bạn đang chạy Unix shell
+như Bash hoặc Zsh.
 
-> **Where do you get these shells?** Linux/BSD/Unix and Mac users will
-> already have these shells. Yay!
+> **Lấy các shell này ở đâu?** Người dùng Linux/BSD/Unix và Mac đã có
+> sẵn các shell này. Hoan hô!
 >
-> Recommendation for Windows users is to [fl[install and run Ubuntu with
-> WSL|https://learn.microsoft.com/en-us/windows/wsl/]] to get a virtual
-> Linux installation. Or, if you don't want to jump down that particular
-> rabbit hole just yet, run Git Bash (included with Git).
+> Khuyến nghị cho người dùng Windows là [fl[cài đặt và chạy Ubuntu với
+> WSL|https://learn.microsoft.com/en-us/windows/wsl/]] để có cài đặt
+> Linux ảo. Hoặc, nếu bạn chưa muốn đi sâu vào cái hố thỏ đó, hãy
+> chạy Git Bash (đi kèm với Git).
 
-For this example, we'll assume we have a GitHub repo already in
-existence that we're going to clone.
+Cho ví dụ này, chúng ta sẽ giả định chúng ta đã có một GitHub repo tồn
+tại mà chúng ta sẽ clone.
 
-Recall the process in The Most Basic Git Workflow, above:
+Nhớ lại quy trình trong Workflow Git Cơ Bản Nhất, ở trên:
 
-1. _Clone_ a _remote_ repo. The remote repo is commonly on GitHub, but
-   not necessarily.
-2. Make some local changes.
-3. Add those changes to the _stage_.
-4. _Commit_ those changes.
-5. _Push_ your commit back to the remote repo.
-6. Go back to Step 2.
+1. _Clone_ một _remote_ repo. Remote repo thường ở trên GitHub, nhưng
+   không nhất thiết.
+2. Thực hiện một số thay đổi local.
+3. Thêm những thay đổi đó vào _stage_.
+4. _Commit_ những thay đổi đó.
+5. _Push_ commit của bạn trở lại remote repo.
+6. Quay lại Bước 2.
 
-### Step 0: One-time Setup {#initial-setup}
+### Bước 0: Thiết Lập Một Lần {#initial-setup}
 
 [i[Configuration]]
 
-"Wait! You didn't say there was a Step 0!"
+"Chờ đã! Bạn không nói có Bước 0!"
 
-Yes, one time, before you start using Git, you should tell it what your
-name and email address are. These will be attached to the commits
-you make to the repo.
+Đúng vậy, một lần, trước khi bạn bắt đầu dùng Git, bạn nên cho nó biết
+tên và địa chỉ email của bạn. Chúng sẽ được đính kèm vào các commit bạn
+thực hiện với repo.
 
-You can change them any time in the future, and you can even set them on
-a per-repo basis. But for now, let's set them globally so Git doesn't
-complain when you make a commit.
+Bạn có thể thay đổi chúng bất kỳ lúc nào trong tương lai, và bạn thậm
+chí có thể đặt chúng trên cơ sở từng repo. Nhưng bây giờ, hãy đặt chúng
+globally (toàn cục) để Git không phàn nàn khi bạn thực hiện commit.
 
-You just have to do this once then never again (unless you want to).
+Bạn chỉ cần làm điều này một lần rồi không bao giờ cần lại (trừ khi bạn
+muốn).
 
-Type both of these on the command line, filling in the appropriate
-information.
+Gõ cả hai lệnh này vào command line, điền thông tin phù hợp.
 
-> **In this guide, things you type at the shell prompt are indicated by
-> a prefaced `$`**. Don't type the `$`; just type what follows it. Your
-> actual shell prompt might be `%` or `$` or something else, but here we
-> use the `$` to indicate it.
+> **Trong tài liệu này, những gì bạn gõ tại shell prompt được chỉ định
+> bởi `$` ở đầu**. Đừng gõ `$`; chỉ gõ những gì theo sau nó. Shell
+> prompt thực tế của bạn có thể là `%` hay `$` hay thứ gì khác, nhưng
+> ở đây chúng ta dùng `$` để chỉ ra nó.
 
 [i[Configuration-->Name and email]]
 
@@ -274,15 +276,16 @@ $ git config set --global user.name "Your Name"
 $ git config set --global user.email "your-email@example.com"
 ```
 
-If you need to change them in the future, just run those commands again.
+Nếu bạn cần thay đổi chúng trong tương lai, chỉ cần chạy lại các lệnh
+đó.
 
-> **If you get an error with the above commands** you might be running
-> an older version of Git. Try them again, but leave out the word `set`.
-> Or, better yet, see if you can get a newer version of Git.
+> **Nếu bạn gặp lỗi với các lệnh trên** bạn có thể đang chạy phiên bản
+> Git cũ hơn. Hãy thử lại chúng nhưng bỏ từ `set`. Hoặc tốt hơn là
+> xem bạn có thể lấy phiên bản Git mới hơn không.
 
-Finally, let's set the default branch name. It's really too early to
-explain what that means, but let's run this command and set the name to
-`main`. This will keep Git from complaining when you create a repo.
+Cuối cùng, hãy đặt tên branch mặc định. Còn quá sớm để giải thích điều
+đó có nghĩa là gì, nhưng hãy chạy lệnh này và đặt tên là `main`. Điều
+này sẽ ngăn Git phàn nàn khi bạn tạo repo.
 
 [i[Configuration-->Default branch]]
 
@@ -290,41 +293,41 @@ explain what that means, but let's run this command and set the name to
 $ git config set --global init.defaultBranch main
 ```
 
-> **Some repos use `master` for the default branch name instead of
-> `main`.** It's actually an arbitrary choice, and repo creators can use
-> anything they want. Git itself hints, "Names commonly chosen instead
-> of 'master' are 'main', 'trunk' and 'development'."
+> **Một số repo dùng `master` cho tên branch mặc định thay vì `main`.**
+> Thực ra đó là lựa chọn tùy ý, và người tạo repo có thể dùng bất cứ
+> điều gì họ muốn. Chính Git gợi ý, "Các tên thường được chọn thay vì
+> 'master' là 'main', 'trunk' và 'development'."
 >
-> I'm suggesting using `main` for multiple reasons, not the least of
-> which is that's what GitHub uses, but it's up to you. In this guide
-> I'll use `main`.
+> Mình đề xuất dùng `main` vì nhiều lý do, không kém gì việc đó là
+> những gì GitHub dùng, nhưng tùy bạn. Trong tài liệu này mình sẽ dùng
+> `main`.
 
-### Step 1: Clone an Existing Repo
+### Bước 1: Clone một Repo Hiện Có
 
 [i[Clone]]
 
-Let's clone a repo! Here's an example repo you can actually use. Don't
-worry--you can't mess anything up on the remote repo even though (and
-because) you don't own it.
+Hãy clone một repo! Đây là một repo mẫu bạn thực sự có thể dùng. Đừng
+lo --- bạn không thể làm hỏng bất cứ điều gì trên remote repo ngay cả
+khi (và vì) bạn không sở hữu nó.
 
-> **Like we said before, this isn't the only workflow.** Sometimes
-> people make a local repo first, add some commits, then create a remote
-> repo and push those commits. But for this example, we'll assume the
-> remote repo exists first, though this isn't a requirement.
+> **Như đã nói trước, đây không phải là workflow duy nhất.** Đôi khi
+> người ta tạo repo local trước, thêm một số commit, sau đó tạo remote
+> repo và push những commit đó. Nhưng cho ví dụ này, chúng ta sẽ giả
+> định remote repo tồn tại trước, mặc dù đây không phải là yêu cầu bắt
+> buộc.
 
-Switch into a subdirectory where you want the clone created. This
-command will create a new subdirectory out of there that will hold all
-the repo files.
+Chuyển vào một thư mục con nơi bạn muốn clone được tạo. Lệnh này sẽ
+tạo một thư mục con mới từ đó để chứa tất cả các file repo.
 
-(In the example, anything that begins with `$` represents the shell
-prompt indicating this is input, not output. Don't type the `$`; just
-type in the part after it.)
+(Trong ví dụ, bất cứ thứ gì bắt đầu bằng `$` đại diện cho shell prompt
+cho biết đây là input (đầu vào), không phải output (đầu ra). Đừng gõ
+`$`; chỉ gõ phần sau nó.)
 
 ``` {.default}
 $ git clone https://github.com/beejjorgensen/git-example-repo.git
 ```
 
-You should see some output similar to this:
+Bạn sẽ thấy một số output tương tự như sau:
 
 ``` {.default}
 Cloning into 'git-example-repo'...
@@ -337,14 +340,14 @@ Receiving objects: 100% (10/10), done.
 Resolving deltas: 100% (2/2), done.
 ```
 
-Congratulations! You have a clone of the repo. Let's have a peek:
+Chúc mừng! Bạn có một clone của repo. Hãy nhìn qua:
 
 ``` {.default}
 $ cd git-example-repo
 $ ls -la
 ```
 
-And we see a number of files:
+Và chúng ta thấy một số file:
 
 ``` {.default}
 total 16
@@ -355,22 +358,23 @@ drwxr-xr-x   12 beej  staff   384 Jan 18 13:35 .git
 -rwxr-xr-x    1 beej  staff    75 Jan 18 13:35 hello.py
 ```
 
-There are two files in this repo: `README.md` and `hello.py`.
+Có hai file trong repo này: `README.md` và `hello.py`.
 
-> [i[`.git` directory]]**The directory `.git` has special meaning;**
-> it's the directory where Git keeps all its metadata and commits. You
-> can look in there, but you don't have to. If you do look, don't change
-> anything. The only thing that makes a directory a Git repo is the
-> presence of a valid `.git` directory within it.
+> [i[`.git` directory]]**Thư mục `.git` có ý nghĩa đặc biệt;**
+> đó là thư mục nơi Git lưu giữ tất cả metadata (siêu dữ liệu) và
+> commit của nó. Bạn có thể nhìn vào đó, nhưng bạn không cần phải làm
+> vậy. Nếu bạn nhìn vào, đừng thay đổi bất cứ điều gì. Điều duy nhất
+> làm cho một thư mục trở thành Git repo là sự hiện diện của một thư
+> mục `.git` hợp lệ bên trong nó.
 
 [i[Status]]
-Let's ask Git what it thinks the current status of the local repo is:
+Hãy hỏi Git trạng thái hiện tại của repo local là gì:
 
 ``` {.default}
 $ git status
 ```
 
-Gives us:
+Cho chúng ta:
 
 ``` {.default}
 On branch main
@@ -379,68 +383,72 @@ Your branch is up to date with 'origin/main'.
 nothing to commit, working tree clean
 ```
 
-There's a lot of information here, surprisingly.
+Có rất nhiều thông tin ở đây, thật ngạc nhiên.
 
-We haven't talked about branching yet, but this is letting us know we're
-on branch `main`. That's fine for now.
+Chúng ta chưa nói về branching (phân nhánh) nhưng điều này cho chúng ta
+biết chúng ta đang ở branch `main`. Ổn cho bây giờ.
 
-It also tells us this branch is up to date with a branch called
-[i[Remote-->`origin`]] `origin/main`. A branch in Git is just a
-reference to a certain commit that's been made, like a Post-It note
-attached to that commit. (Recall that a commit is a snapshot of the code
-repo at some time.)
+Nó cũng cho biết branch này đang up to date (cập nhật) với một branch
+có tên [i[Remote-->`origin`]] `origin/main`. Một branch trong Git chỉ
+là một tham chiếu đến một commit nhất định đã được thực hiện, như một
+tờ Post-It gắn vào commit đó. (Nhớ lại rằng commit là snapshot của code
+repo tại một thời điểm nào đó.)
 
-We don't want to get caught up in the intricacies of branching right
-now, but bear with me for a couple paragraphs.
+Chúng ta không muốn bị cuốn vào những chi tiết phức tạp của branching
+ngay bây giờ, nhưng hãy chịu đựng mình thêm vài đoạn văn.
 
-`origin` is an alias for the remote repository that we originally cloned
-from, so `origin/main` corresponds to "branch `main` on the repo you
-originally cloned from"[^a7cb].
+`origin` là alias (bí danh) cho remote repository mà chúng ta ban đầu
+clone từ đó, vì vậy `origin/main` tương ứng với "branch `main` trên repo
+bạn ban đầu clone từ đó"[^a7cb].
 
-[^a7cb]: We're glazing over an important topic here that we'll come back
-    to later called _remote tracking branches_.
+[^a7cb]: Chúng ta đang lướt qua một chủ đề quan trọng ở đây mà chúng ta
+    sẽ quay lại sau gọi là _remote tracking branches_ (các branch theo
+    dõi từ xa).
 
-There is one important thing to notice here: there are two `main`
-branches. There's the `main` branch on your local repo, and there's a
-corresponding `main` branch on the remote (`origin`) repo[^2d0c].
+Có một điều quan trọng cần chú ý ở đây: có hai branch `main`. Có branch
+`main` trên repo local của bạn, và có một branch `main` tương ứng trên
+remote repo (`origin`)[^2d0c].
 
-[^2d0c]: And again we're doing some hand-waving. There are actually
-    three branches. Two of them, `main` and `origin/main` are on your
-    local clone. And there's a third `main` on the remote `origin` that
-    your `origin/main` is _tracking_. Feel free to ignore this detail
-    until we get to the remote tracking branch chapter.
+[^2d0c]: Và một lần nữa chúng ta đang làm một số hand-waving (giải thích
+    qua loa). Thực ra có ba branch. Hai trong số chúng, `main` và
+    `origin/main` ở trên clone local của bạn. Và có một `main` thứ ba
+    trên remote `origin` mà `origin/main` của bạn đang _theo dõi_. Hãy
+    thoải mái bỏ qua chi tiết này cho đến khi chúng ta đến chương về
+    remote tracking branch.
 
-Remember how clones are separate? That is, changes you make on one clone
-aren't automatically visible on the other? This is an indication of
-that. You can make changes to your local `main` branch, and these won't
-affect the remote's `main` branch. (At least, not until you push those
-changes!)
+Nhớ cách các clone tách biệt nhau không? Nghĩa là, các thay đổi bạn
+thực hiện trên một clone không tự động hiển thị trên cái kia? Đây là
+dấu hiệu của điều đó. Bạn có thể thực hiện thay đổi cho branch `main`
+local của mình, và những điều này sẽ không ảnh hưởng đến branch `main`
+của remote. (Ít nhất là không cho đến khi bạn push những thay đổi đó!)
 
-Lastly, it mentions we're up-to-date with the latest version of `main`
-on `origin` (that we know of), and that there's nothing to commit
-because there are no local changes. We're not sure what that means yet,
-but it all sounds like vaguely good news.
+Cuối cùng, nó đề cập rằng chúng ta đang cập nhật với phiên bản mới nhất
+của `main` trên `origin` (mà chúng ta biết), và không có gì để commit
+vì không có thay đổi local. Chúng ta chưa biết điều đó có nghĩa là gì,
+nhưng tất cả nghe có vẻ là tin tốt mơ hồ.
 
-### Step 2: Make Some Local Changes
+### Bước 2: Thực Hiện Một Số Thay Đổi Local
 
-Let's edit a file and make some changes to it.
+Hãy chỉnh sửa một file và thực hiện một số thay đổi.
 
-> **Again, don't worry about messing up the remote repo**—you don't have
-> permissions to do that. Your safety is completely assured from a Git
-> perspective.
+> **Lần nữa, đừng lo về việc làm hỏng remote repo** --- bạn không có
+> quyền làm điều đó. Sự an toàn của bạn được đảm bảo hoàn toàn từ góc
+> độ Git.
 
-If you're using VS Code, you can run it in the current directory like so:
+Nếu bạn đang dùng VS Code, bạn có thể chạy nó trong thư mục hiện tại
+như sau:
 
 ``` {.default}
 $ code .
 ```
 
-Otherwise, open the code in your favorite editor, which, admit it, is
+Nếu không, hãy mở code trong editor (trình soạn thảo) yêu thích của
+bạn, mà thừa nhận đi, là
 [fl[Vim|https://www.vim.org/]].
 
-Let's change `hello.py`:
+Hãy thay đổi `hello.py`:
 
-It was:
+Trước đây là:
 
 ``` {.py .numberLines}
 #!/usr/bin/env python
@@ -449,7 +457,7 @@ print("Hello, world!")
 print("This is my program!")
 ```
 
-but let's add a line so it reads:
+nhưng hãy thêm một dòng để nó trở thành:
 
 ``` {.py .numberLines}
 #!/usr/bin/env python
@@ -459,10 +467,10 @@ print("This is my program!")
 print("And this is my modification!")
 ```
 
-And save that file.
+Và lưu file đó.
 
 [i[Status]]
-Let's ask Git what the status is now.
+Hãy hỏi Git trạng thái hiện tại là gì.
 
 ``` {.default}
 $ git status
@@ -478,30 +486,31 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-This is telling us a couple important things.
+Điều này cho chúng ta biết một vài điều quan trọng.
 
-First, Git has detected that we modified a file, namely `hello.py`,
-which we did.
+Đầu tiên, Git đã phát hiện ra rằng chúng ta đã sửa đổi một file, cụ thể
+là `hello.py`, mà chúng ta đã làm.
 
-But it also says there are `no changes added to commit` (i.e. "there is
-nothing to make a commit with"). What does that mean?
+Nhưng nó cũng nói rằng `no changes added to commit` (không có thay đổi
+nào được thêm vào commit, tức là "không có gì để tạo commit"). Điều đó
+có nghĩa là gì?
 
-It means we haven't added any modified files to the _stage_ yet. Recall
-that the stage is where we can place items that we wish to include in
-the next commit. Let's try that.
+Điều đó có nghĩa là chúng ta chưa thêm bất kỳ file nào đã sửa đổi vào
+_stage_ (khu chuẩn bị). Nhớ lại rằng stage là nơi chúng ta có thể đặt
+các mục mà chúng ta muốn đưa vào commit tiếp theo. Hãy thử điều đó.
 
-#### Step 2.1: Reviewing Your Changes
+#### Bước 2.1: Xem Lại Các Thay Đổi Của Bạn
 
 [i[Diff]]
-We're going to divert for just a moment to briefly introduce a new
-optional tool: `git diff` (short for "difference", though we still
-pronounce it "diff").
+Chúng ta sẽ tạm thời rẽ sang để giới thiệu ngắn gọn một công cụ tùy
+chọn mới: `git diff` (viết tắt của "difference" --- sự khác biệt, dù
+chúng ta vẫn đọc là "diff").
 
-If you make some changes to files and you need a refresher on all the
-things you've changed, you can run this command to see it. But, fair
-warning, the output is... *esoteric*.
+Nếu bạn thực hiện một số thay đổi đối với các file và cần nhắc nhở về
+tất cả những thứ bạn đã thay đổi, bạn có thể chạy lệnh này để xem. Tuy
+nhiên, hãy cảnh báo trước, output thì... *khó hiểu*.
 
-Let's try it.
+Hãy thử.
 
 ``` {.default}
 $ git diff
@@ -516,42 +525,41 @@ $ git diff
   +print("And this is my modification!")
 ```
 
-What the heck is this sorcery? If you're lucky, it got color-coded for
-you with (by convention) added lines in green and deleted lines in red.
+Ma thuật gì vậy trời? Nếu may mắn, nó được tô màu cho bạn theo (quy
+ước) các dòng được thêm màu xanh lá và các dòng bị xóa màu đỏ.
 
-For now, just notice a couple things:
+Bây giờ, chỉ cần chú ý một vài điều:
 
-1. The file name. We see this change was to `hello.py`.
-2. The line with the `+` at the front. This indicates an added line.
+1. Tên file. Chúng ta thấy thay đổi này là với `hello.py`.
+2. Dòng có `+` ở đầu. Điều này chỉ ra một dòng được thêm.
 
-A `-` at the front of a line would indicate the line was deleted. And
-changed lines are often shown as the old line being deleted and a new
-one added.
+Một `-` ở đầu dòng sẽ cho biết dòng đó bị xóa. Và các dòng đã thay đổi
+thường được hiển thị như dòng cũ bị xóa và dòng mới được thêm.
 
-Finally, if you want to see the diff for things you've added to the
-stage already (in the next step), you can run `git diff --staged`.
+Cuối cùng, nếu bạn muốn xem diff cho những thứ bạn đã thêm vào stage
+rồi (ở bước tiếp theo), bạn có thể chạy `git diff --staged`.
 
-We'll dive more into diff later, but I wanted to introduce it here since
-it's so useful.
+Chúng ta sẽ đi sâu hơn về diff sau, nhưng mình muốn giới thiệu nó ở đây
+vì nó hữu ích.
 
-### Step 3: Add Changes to the Stage
+### Bước 3: Thêm Thay Đổi vào Stage
 
 [i[Stage]<]
 [i[Add]<]
 
-The Git status message, above, is trying to help us out. It says:
+Thông báo trạng thái Git ở trên đang cố gắng giúp chúng ta. Nó nói:
 
 ``` {.default}
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-It's suggesting that `git add` will add things to the stage—and it will.
+Nó gợi ý rằng `git add` sẽ thêm thứ vào stage --- và đúng vậy.
 
-Now we, the developers, know that we modified `hello.py`, and that we'd
-like to make a commit that reflects the changes to that file. So we need
-to first add it to the stage so that we can make a commit.
+Bây giờ chúng ta, các developer, biết rằng chúng ta đã sửa đổi `hello.py`,
+và chúng ta muốn tạo một commit phản ánh các thay đổi đối với file đó.
+Vì vậy, chúng ta cần phải thêm nó vào stage trước để có thể tạo commit.
 
-Let's do it with `git add`:
+Hãy làm với `git add`:
 
 ``` {.default}
 $ git add hello.py
@@ -564,42 +572,41 @@ $ git status
 	  modified:   hello.py
 ```
 
-Now it's changed from saying "Changes not staged for commit" to saying
-"Changes to be committed", so we have successfully copied `hello.py` to
-the stage!
+Bây giờ nó đã thay đổi từ "Changes not staged for commit" sang "Changes
+to be committed", vì vậy chúng ta đã sao chép thành công `hello.py` vào
+stage!
 
-> **There's also a helpful message there about how to _unstage_ the
-> file.** Let's say you accidentally added it to the stage and you
-> changed your mind and wanted to not include it in the commit after
-> all. You can run
+> **Cũng có một thông báo hữu ích ở đó về cách _unstage_ file.** Giả
+> sử bạn vô tình thêm nó vào stage và bạn thay đổi ý định và không muốn
+> đưa nó vào commit nữa. Bạn có thể chạy
 >
 > ``` {.default}
 > $ git restore --staged hello.py
 > ```
 > <!-- ` vim markdown highlight bug workaround -->
 >
-> and that will change it back to the "Changes not staged for commit"
-> state.
+> và điều đó sẽ thay đổi nó trở lại trạng thái "Changes not staged for
+> commit".
 
 [i[Stage]>]
 [i[Add]>]
 
-### Step 4: Commit those Changes
+### Bước 4: Commit Những Thay Đổi Đó
 
 [i[Commit]<]
 
-Now that we have something copied to the stage, we can make a commit.
-Recall that a commit is just a snapshot of the state of the repo given
-the modified files on the stage. Modified files not on the stage will
-not be included in the snapshot. Unmodified files are automatically
-included in the snapshot.
+Bây giờ chúng ta đã có thứ gì đó được sao chép lên stage, chúng ta có
+thể tạo commit. Nhớ lại rằng commit chỉ là snapshot về trạng thái của
+repo với các file đã sửa đổi trên stage. Các file đã sửa đổi không có
+trên stage sẽ không được đưa vào snapshot. Các file chưa sửa đổi được
+tự động đưa vào snapshot.
 
-In short, the commit snapshot will contain all the unmodified files Git
-currently tracks **plus** the modified files that are on the stage. (Git
-just doesn't show all the unmodified files with `status` because the
-output would be completely unhelpful.)
+Nói ngắn gọn, snapshot commit sẽ chứa tất cả các file chưa sửa đổi mà
+Git hiện theo dõi **cộng với** các file đã sửa đổi đang trên stage.
+(Git chỉ không hiển thị tất cả các file chưa sửa đổi với `status` vì
+output sẽ hoàn toàn vô dụng.)
 
-Let's do it:
+Hãy làm:
 
 ``` {.default}
 $ git commit -m "Add another print line"
@@ -607,18 +614,17 @@ $ git commit -m "Add another print line"
    1 file changed, 1 insertion(+)
 ```
 
-> **The `-m` switch allows you to specify a commit message.** If you
-> don't use `-m`, you'll be popped into an editor, which will probably
-> be Nano or Vim, to edit the commit message. If you're not familiar
-> with those, see [Getting Out of Editors](#editor-get-out) for help.
+> **Flag `-m` cho phép bạn chỉ định commit message.** Nếu bạn không
+> dùng `-m`, bạn sẽ bị đẩy vào một editor, có thể là Nano hoặc Vim, để
+> chỉnh sửa commit message. Nếu bạn không quen với những cái đó, xem
+> [Thoát Khỏi Editor](#editor-get-out) để được giúp đỡ.
 >
-> **If you do get into the editor, know that every line in the commit
-> message that begins with `#` is a comment** that is ignored for the
-> purposes of the commit. It's a little weird that the commit message is
-> a comment about the commit, and then you can have commented-out lines
-> in the comment, but I don't make the rules!
+> **Nếu bạn vào editor, hãy biết rằng mỗi dòng trong commit message bắt
+> đầu bằng `#` là comment** bị bỏ qua cho mục đích của commit. Hơi kỳ
+> là commit message là comment về commit, rồi bạn có thể có các dòng
+> comment-out trong comment, nhưng mình không đặt ra quy tắc!
 
-And that's good news! Let's check the status:
+Và đó là tin tốt! Hãy kiểm tra trạng thái:
 
 ``` {.default}
 $ git status
@@ -629,60 +635,63 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-"Nothing to commit, working tree clean" means we have no local changes
-to our branch.
+"Nothing to commit, working tree clean" (Không có gì để commit, working
+tree sạch) có nghĩa là chúng ta không có thay đổi local nào trên branch
+của mình.
 
-> **Turns out there's an optional shortcut here.** If you've modified a
-> file, you can just commit it directly (without adding it to the
-> stage!) by naming it on the command line.
+> **Hóa ra có một shortcut (lối tắt) tùy chọn ở đây.** Nếu bạn đã sửa
+> đổi một file, bạn có thể commit nó trực tiếp (mà không cần thêm vào
+> stage!) bằng cách đặt tên nó trên command line.
 >
-> Let's say you modified `foo.txt` but didn't add it. You could:
+> Giả sử bạn đã sửa đổi `foo.txt` nhưng chưa thêm nó. Bạn có thể:
 >
 > ``` {.default}
 > $ git commit -m "jerbify the flurblux" foo.txt
 > ```
 > 
 > <!-- ` -->
-> And that would make the commit directly, bypassing the whole
-> add-it-to-the-stage step. But you can only do this with files that
-> the repo already is aware of, i.e. they aren't "untracked".
+> Và điều đó sẽ tạo commit trực tiếp, bỏ qua bước thêm-vào-stage.
+> Nhưng bạn chỉ có thể làm điều này với các file mà repo đã biết đến,
+> tức là chúng không phải là "untracked" (chưa được theo dõi).
 >
-> You can specify multiple files here, or a directory. Also, this
-> doesn't affect files that are already on the stage.
+> Bạn có thể chỉ định nhiều file ở đây, hoặc một thư mục. Ngoài ra, điều
+> này không ảnh hưởng đến các file đã có trên stage.
 
-But look! The status says we're "ahead of 'origin/main' by 1 commit"!
-This means our local commit history on the `main` branch has one commit
-that the remote commit history on its `main` branch does not have.
+Nhưng nhìn kìa! Trạng thái cho biết chúng ta đang "ahead of 'origin/main'
+by 1 commit" (đi trước 'origin/main' 1 commit)! Điều này có nghĩa là
+lịch sử commit local của chúng ta trên branch `main` có một commit mà
+lịch sử commit remote trên branch `main` của nó không có.
 
-Which makes sense—the remote repo is a clone and so it's independent of
-our local repo unless we explicitly try to sync them up. It doesn't
-magically know that we've made changes to our local repo.
+Điều đó có ý nghĩa --- remote repo là một clone và vì vậy nó độc lập
+với repo local của chúng ta trừ khi chúng ta cố tình cố gắng đồng bộ
+chúng. Nó không tự động biết rằng chúng ta đã thực hiện thay đổi cho
+repo local.
 
-And Git is helpfully telling us to run `git push` if we want to update
-the remote repo so that it also has our changes.
+Và Git đang hữu ích cho chúng ta biết để chạy `git push` nếu chúng ta
+muốn cập nhật remote repo để nó cũng có các thay đổi của chúng ta.
 
-So let's try to do that. Let's push our local changes to the remote
-repo.
+Vì vậy hãy thử làm điều đó. Hãy push các thay đổi local của chúng ta
+lên remote repo.
 
 [i[Commit]>]
 
-### Step 5: Push Your Changes to the Remote Repo
+### Bước 5: Push Thay Đổi Của Bạn lên Remote Repo
 
 [i[Push]<]
 
-Let's push our local changes to the remote repo:
+Hãy push các thay đổi local của chúng ta lên remote repo:
 
 ``` {.default}
 $ git push
 ```
 
-And that produces:
+Và điều đó tạo ra:
 
 ``` {.default}
 Username for 'https://github.com':
 ```
 
-Uh oh—trouble brewing. Let's try entering our credentials:
+Ối --- rắc rối đến rồi. Hãy thử nhập thông tin đăng nhập:
 
 ``` {.default}
 Username for 'https://github.com': my_username
@@ -697,17 +706,17 @@ fatal: Authentication failed for 'https://github.com/beejjorgensen/
        git-example-repo.git/'
 ```
 
-Well, that's all kinds of not-working. Largely this is because you don't
-have permission to write to that repo since you're not the owner. And,
-notably, support for authenticating with a password seems to have been
-removed in 2021 which, last I checked, was in the past.
+Ôi thôi, không hoạt động gì cả. Phần lớn là vì bạn không có quyền ghi
+vào repo đó vì bạn không phải là chủ sở hữu. Và đáng chú ý là hỗ trợ
+xác thực bằng mật khẩu dường như đã bị xóa vào năm 2021, mà theo kiểm
+tra cuối cùng của mình, là đã xảy ra trong quá khứ.
 
-So what do we do? Firstly, we should be the owner of the GitHub repo
-that we've cloned and that'll solve some of the permission problems.
-Secondly, we'd better find another way to authenticate ourselves to
-GitHub that's not plain password.
+Vậy chúng ta làm gì? Trước tiên, chúng ta nên là chủ sở hữu của GitHub
+repo mà chúng ta đã clone và điều đó sẽ giải quyết một số vấn đề về
+quyền. Thứ hai, chúng ta cần tìm cách khác để xác thực bản thân với
+GitHub mà không phải mật khẩu thông thường.
 
-Let's try that in the next section.
+Hãy thử điều đó trong phần tiếp theo.
 
 [i[Push]>]
 [i[Workflow-->Basic]>]
