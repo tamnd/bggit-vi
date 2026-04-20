@@ -1,87 +1,50 @@
-# Worktrees
+# Worktree (Cây Làm Việc)
 
 [i[Worktree]<]
 
-Let's say you have your code in one window and you're happily looking at
-`main`. And then you think, "It would be nice to look at some files on
-`foobranch` for a moment."
+Giả sử bạn có code ở một cửa sổ và đang vui vẻ nhìn vào `main`. Rồi bạn nghĩ, "Sẽ tốt nếu có thể nhìn vào một số file trên `foobranch` một lúc."
 
-But you're in the middle of something on `main`. So you go through the
-trouble of saving, stashing, switching to `foobranch`, looking at what
-you need, and then switching back, popping the stash, and editing your
-file.
+Nhưng bạn đang làm dở việc gì đó trên `main`. Vậy là bạn phải trải qua rắc rối khi lưu, stash, switch sang `foobranch`, nhìn vào thứ bạn cần, rồi switch lại, pop stash, và chỉnh sửa file.
 
-And then precisely 2.3 seconds later, you realize you need to look at
-`foobranch` again. Gah.
+Và sau đó chính xác 2.3 giây sau, bạn nhận ra bạn cần nhìn vào `foobranch` lại. Ugh.
 
-You can't have two branches checked out in the same working tree at the
-same time. So what are you supposed to do if you want to look at both at
-once?
+Bạn không thể checkout hai nhánh cùng lúc trong cùng một working tree. Vậy bạn phải làm gì nếu muốn nhìn vào cả hai cùng lúc?
 
-Sure, you can make another clone, but that might be prohibitive if the
-amount of data in the clone is large. You could do a shallow clone...
-but now it just feels hackish.
+Tất nhiên, bạn có thể tạo thêm một clone, nhưng điều đó có thể là cấm kỵ nếu lượng dữ liệu trong clone là lớn. Bạn có thể làm shallow clone... nhưng giờ nó trông có vẻ hacky rồi.
 
-Turns out *worktrees* give us a better way. With `git worktree`, you can
-make another, separate working tree at a different branch. And then
-looking at both of them is just a matter of `cd` or having two terminal
-windows open at the same time.
+Hóa ra *worktree* cho chúng ta một cách tốt hơn. Với `git worktree`, bạn có thể tạo một working tree riêng biệt khác ở một nhánh khác. Và sau đó nhìn vào cả hai chỉ là vấn đề `cd` hoặc có hai cửa sổ terminal mở cùng lúc.
 
-## Worktree Rules and Regulations
+## Quy Tắc Của Worktree
 
-Let's put a quick note here about some ground rules.
+Hãy ghi chú nhanh ở đây về một số quy tắc cơ bản.
 
-1. No two worktrees (on the same repo) may refer to the same branch at
-   the same time. That is, all worktrees must refer to different
-   branches. If you try to switch to, say, `main` on two worktrees
-   simultaneously, Git will stop you.
+1. Không có hai worktree nào (trong cùng một repo) được tham chiếu đến cùng một nhánh vào cùng một lúc. Tức là, tất cả worktree phải tham chiếu đến các nhánh khác nhau. Nếu bạn cố switch sang `main` trên hai worktree đồng thời, Git sẽ ngăn bạn.
 
-2. [i[Worktree-->Choosing location]]You can put the new worktree
-   anywhere you want. But my strong recommendation is that you place it
-   *outside* the existing working tree, as a sibling directory.
+2. [i[Worktree-->Choosing location]]Bạn có thể đặt worktree mới ở bất kỳ đâu bạn muốn. Nhưng khuyến nghị mạnh mẽ của tôi là đặt nó *bên ngoài* working tree hiện có, như một thư mục anh em.
 
-3. You can run all regular Git commands from any of the working trees,
-   including committing, pushing, and pulling.
+3. Bạn có thể chạy tất cả lệnh Git thông thường từ bất kỳ working tree nào, bao gồm commit, push, và pull.
 
-4. A worktree is **not** a clone. It's another view into the repo.
-   Commits made in one working tree are immediately available (but not
-   automatically switched to) in the other because both working trees
-   are looking at the same local repo! (Unlike a clone where two clones
-   would be associated with the same *remote* repo.)
+4. Worktree **không** phải là clone. Nó là một cách nhìn khác vào repo. Commit được tạo trong một working tree có sẵn ngay lập tức (nhưng không tự động switch) trong cái kia vì cả hai working tree đang nhìn vào cùng một repo cục bộ! (Không giống clone, nơi hai clone sẽ được liên kết với cùng một *remote* repo.)
 
-5. [i[Worktree-->`main` worktree]]Only one of the worktrees is the
-   *real* one (called the "main working tree", no relation to the `main`
-   branch). The others don't have a proper `.git` directory. Do not
-   delete the real one unless you want to lose all your git metadata!
-   Always use `git worktree remove` to remove worktrees because it'll
-   refuse to remove the main one if you foolishly try to do so.
+5. [i[Worktree-->`main` worktree]]Chỉ có một trong các worktree là *thực* (được gọi là "main working tree", không liên quan đến nhánh `main`). Các cái khác không có thư mục `.git` thực sự. Đừng xóa cái thực trừ khi bạn muốn mất tất cả metadata git! Luôn dùng `git worktree remove` để xóa worktree vì nó sẽ từ chối xóa cái chính nếu bạn dại dột thử làm vậy.
 
-With that boring legalese out of the way, let's get something going!
+Với đống legalese (lời lẽ pháp lý) nhàm chán đó xong rồi, hãy làm gì đó đi!
 
-## Making a New Worktree
+## Tạo một Worktree Mới
 
 [i[Worktree-->Creating]<]
 
-Let's say you're in the root of a repo called `wumpus` on branch `main`.
-And you want to look at another branch called `arrow` in a new working
-tree.
+Giả sử bạn đang ở root của một repo gọi là `wumpus` trên nhánh `main`. Và bạn muốn nhìn vào một nhánh khác gọi là `arrow` trong một working tree mới.
 
-We're going to use `git worktree add` and we're going to give it two
-things.
+Chúng ta sẽ dùng `git worktree add` và cho nó hai thứ.
 
-1. The directory name of where the worktree should go. Since I'm
-   checking out the `arrow` branch on the `wumpus` repo there, I'm going
-   to just call it `../wumpus-arrow`. You could call it anything,
-   though.
+1. Tên thư mục nơi worktree sẽ đặt. Vì tôi đang checkout nhánh `arrow` trên repo `wumpus` ở đó, tôi sẽ gọi nó là `../wumpus-arrow`. Bạn có thể gọi là gì cũng được.
 
-   Also note the `../`; that's to get us to the parent directory so that
-   `wumpus-arrow` will be created as a sibling directory to `wumpus`.
+   Cũng chú ý `../`; đó là để lên thư mục cha để `wumpus-arrow` sẽ được tạo như một thư mục anh em với `wumpus`.
 
-2. We also need to give it the branch to switch to in that worktree.
-   Again, this can't be a branch that's checked out in any other working
-   tree.
+2. Chúng ta cũng cần cho nó biết nhánh cần switch trong worktree đó. Một lần nữa, đây không thể là nhánh đang được checkout trong bất kỳ working tree nào khác.
 
-Let's do it!
+Hãy làm thôi!
 
 ``` {.default}
 $ git worktree add ../wumpus-arrow arrow 
@@ -89,7 +52,7 @@ $ git worktree add ../wumpus-arrow arrow
   HEAD is now at 7da9b7f fix arrow flight
 ```
 
-There we have it. We can now `cd` to that directory and look around.
+Đó rồi. Bây giờ chúng ta có thể `cd` đến thư mục đó và nhìn xung quanh.
 
 ``` {.default}
 $ cd ../wumpus-arrow
@@ -98,53 +61,42 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-Or you could have two windows open. One would be in the `wumpus/`
-directory to see branch `main`, and the other would be in the
-`wumpus-arrow/` directory to see branch `arrow`.
+Hoặc bạn có thể mở hai cửa sổ. Một ở thư mục `wumpus/` để xem nhánh `main`, và cái kia ở thư mục `wumpus-arrow/` để xem nhánh `arrow`.
 
 [i[Worktree-->Creating]>]
 
-## Removing a Worktree
+## Xóa một Worktree
 
 [i[Worktree-->Removing]<]
 
-First, make sure you don't have any uncommitted modifications in the
-condemned worktree. Then figure out the path to it. And then remove it.
+Trước tiên, hãy chắc chắn bạn không có bất kỳ sửa đổi chưa commit nào trong worktree sắp xóa. Sau đó xác định đường dẫn đến nó. Và sau đó xóa nó.
 
-Let's say we're in the `wumpus/` directory from the previous example.
-From there, I could delete the `wumpus-arrow/` worktree like so:
+Giả sử chúng ta đang ở thư mục `wumpus/` từ ví dụ trước. Từ đó, tôi có thể xóa worktree `wumpus-arrow/` như thế này:
 
 ``` {.default}
 $ git worktree remove ../wumpus-arrow
 ```
 
-And that would be that.
+Và thế là xong.
 
-Again, this doesn't delete any commits that you made from that worktree;
-the worktree is just a view onto the same repo as the main working tree,
-so the commits are already stored in the repo the instant you make them
-from any of the worktrees.
+Một lần nữa, điều này không xóa bất kỳ commit nào bạn đã tạo từ worktree đó; worktree chỉ là một cái nhìn vào cùng repo với main working tree, vì vậy commit đã được lưu trong repo ngay từ khi bạn tạo chúng từ bất kỳ worktree nào.
 
-The path you specify for `worktree remove` doesn't have to match
-character-for-character the one you specified with `worktree add`. It
-just has to refer to the same directory.
+Đường dẫn bạn chỉ định cho `worktree remove` không nhất thiết phải khớp ký tự-cho-ký tự với đường dẫn bạn đã dùng với `worktree add`. Nó chỉ cần tham chiếu đến cùng thư mục.
 
-For example, if I were in the `wumpus/` directory, this would accomplish
-the same thing as the first example:
+Ví dụ, nếu tôi đang ở thư mục `wumpus/`, điều này sẽ thực hiện tương tự như ví dụ đầu tiên:
 
 ``` {.default}
 $ cd ..
 $ git worktree remove wumpus-arrow
 ```
 
-You can even blow away the worktree you're in right now:
+Bạn thậm chí có thể xóa worktree bạn đang ở ngay lúc này:
 
 ``` {.default}
 $ git worktree remove .
 ```
 
-And, finally, if you try to remove the main working tree, you're stopped
-by the Git police.
+Và, cuối cùng, nếu bạn cố xóa main working tree, bạn sẽ bị cảnh sát Git ngăn lại.
 
 ``` {.default}
 $ git worktree remove wumpus
@@ -153,12 +105,11 @@ $ git worktree remove wumpus
 
 [i[Worktree-->Removing]>]
 
-## Listing Worktrees
+## Liệt Kê Worktree
 
 [i[Worktree-->Listing]<]
 
-You can see all your worktrees and determine which one is the main
-working tree with the `worktree list` command.
+Bạn có thể thấy tất cả worktree và xác định worktree nào là main working tree với lệnh `worktree list`.
 
 ``` {.default}
 $ git worktree list
@@ -166,29 +117,21 @@ $ git worktree list
   /home/user/wumpus-arrow  7da9b7f [arrow]
 ```
 
-That'll show you all the working trees with their directories on the
-left, their commit hashes in the middle, and the branch names on the
-right.
+Lệnh đó sẽ hiển thị tất cả working tree với thư mục ở bên trái, commit hash ở giữa, và tên nhánh ở bên phải.
 
-The first worktree listed is the main working tree, i.e. the one you
-can't remove.
+Worktree đầu tiên được liệt kê là main working tree, tức là cái bạn không thể xóa.
 
 [i[Worktree-->Listing]>]
 
-## Worktrees and Detached `HEAD`
+## Worktree và `HEAD` Bị Detach
 
 [i[Worktree-->Detached `HEAD`]<]
 
-You can't have the same branch checked out in two worktrees on the same
-repo because that would mean two worktrees would be fighting over the
-placement of a single branch reference.
+Bạn không thể có cùng một nhánh được checkout trong hai worktree trên cùng repo vì điều đó có nghĩa là hai worktree sẽ tranh giành nhau quyền đặt một tham chiếu nhánh duy nhất.
 
 [i[`HEAD`-->Detached]<]
 
-However, both worktrees do have their own `HEAD`! There's no conflict
-there. So you could have one worktree on `main` and the other with a
-detached `HEAD` on the same commit as `main`. Of course, any commits on
-the detached `HEAD` won't move `main` at all, so there's no conflict.
+Tuy nhiên, cả hai worktree đều có `HEAD` riêng của mình! Không có xung đột ở đó. Vì vậy bạn có thể có một worktree trên `main` và cái kia với `HEAD` bị detach tại cùng commit với `main`. Tất nhiên, bất kỳ commit nào trên `HEAD` bị detach sẽ không di chuyển `main` chút nào, vì vậy không có xung đột.
 
 ``` {.default}
 $ cd ../wumpus-arrow
@@ -201,19 +144,15 @@ $ git worktree list
   /home/user/wumpus-arrow  30d669a (detached HEAD)
 ```
 
-In that example, we see both worktrees are pointed at the same commit
-`30d669a` but we're OK since they're not checked out at the same branch.
+Trong ví dụ đó, chúng ta thấy cả hai worktree đang trỏ đến cùng commit `30d669a` nhưng không sao vì chúng không được checkout tại cùng nhánh.
 
-You can also add a new worktree with a detached `HEAD` like in the next
-example where we detach the new worktree's `HEAD` at the `main` commit.
+Bạn cũng có thể thêm worktree mới với `HEAD` bị detach như trong ví dụ tiếp theo, nơi chúng ta detach `HEAD` của worktree mới tại commit `main`.
 
 ``` {.default}
 $ git worktree add --detach ../wumpus-worktree main
 ```
 
-Finally, if you specify a commit hash instead of branch when creating a
-new worktree, it will be automatically be created with a detached
-`HEAD`.
+Cuối cùng, nếu bạn chỉ định commit hash thay vì nhánh khi tạo worktree mới, nó sẽ tự động được tạo với `HEAD` bị detach.
 
 [i[Worktree-->Detached `HEAD`]>]
 [i[`HEAD`-->Detached]>]
