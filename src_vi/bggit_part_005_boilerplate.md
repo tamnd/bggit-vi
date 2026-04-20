@@ -1,4 +1,4 @@
-# Foreword
+# Lời Mở Đầu
 <!-- Beej's guide to Git
 # vim: ts=4:sw=4:nosi:et:tw=72
 -->
@@ -54,154 +54,154 @@
 [is[`git tag`==>see Tag]]
 [is[`git worktree`==>see Worktree]]
 
-Hello again, everyone! In my role as an industry
-professional-turned-college instructor, I definitely see my fair share
-of students struggling with Git.
+Chào mọi người, lại là mình đây! Với vai trò là một người trong ngành
+chuyển sang làm giảng viên đại học, mình thường xuyên thấy sinh viên
+vật lộn với Git.
 
-And who can blame 'em? It's a seemingly-overcomplicated system with lots
-of pitfalls and merge conflicts and detached heads and remotes and
-cherrypicks and rebases and an endless array of other commands that do
-who-knows-what.
+Mà ai trách họ được chứ? Đây là một hệ thống trông có vẻ cực kỳ phức
+tạp với đủ loại cạm bẫy: merge conflict (xung đột khi gộp), detached
+head (đầu bị tách), remote (kho từ xa), cherrypick, rebase và vô số
+lệnh khác mà chẳng ai biết chúng làm gì.
 
-Which leads us directly to the goal: let's make sense of all this and go
-from complete Git novice up to intermediate! We'll start off easy
-(allegedly) with commands mixed in with some theory of operation. And
-we'll see that understanding what Git does under the hood is critical to
-using it correctly.
+Và đó chính xác là lý do tồn tại của tài liệu này: hãy cùng nhau hiểu
+cho rõ và đi từ người mới hoàn toàn đến trình độ trung cấp! Mình sẽ bắt
+đầu từ những thứ dễ (theo kế hoạch) với các lệnh xen kẽ cùng một số lý
+thuyết hoạt động. Và chúng ta sẽ thấy rằng hiểu Git làm gì bên dưới
+mui xe là điều cốt lõi để dùng nó đúng cách.
 
-And I *promise* there's definitely a chance that after you get through
-some of this guide, you might actually start to appreciate Git and like
-using it.
+Và mình *hứa* là sau khi đọc xong một phần của tài liệu này, bạn có thể
+thực sự bắt đầu thích Git và thích dùng nó.
 
-I've been using it for years (I'm using it for the source code for this
-guide right now) and I can certainly vouch for it becoming easier over
-time, and then, even, second nature.
+Mình đã dùng Git nhiều năm rồi (ngay lúc này mình đang dùng nó cho
+source code của tài liệu này đây) và hoàn toàn có thể xác nhận rằng
+nó sẽ ngày càng dễ hơn theo thời gian, rồi thậm chí trở thành phản xạ.
 
-But first, some boilerplate!
+Nhưng trước tiên, mấy chuyện bắt buộc phải nói!
 
-## Audience
+## Đối Tượng Độc Giả
 
-The initial draft of this guide was put online for the university
-students where I worked (or maybe still work, depending on when you're
-reading this) as an instructor. So it's pretty natural to assume that's
-the audience I had in mind.
+Bản thảo đầu tiên của tài liệu này được đưa lên mạng cho sinh viên của
+trường đại học nơi mình làm (hay có thể vẫn đang làm, tùy lúc bạn đọc
+cái này) giảng viên. Vì vậy khá tự nhiên khi nghĩ đó là đối tượng mà
+mình nhắm đến.
 
-But I'm also hoping that there are enough other folks out there who
-might get something of use from the guide as well, and I've written it
-in a more general sense with all you non-college students in mind.
+Nhưng mình cũng hy vọng có đủ nhiều người ngoài đó có thể nhận được gì
+đó hữu ích từ tài liệu này, và mình đã viết nó theo nghĩa chung hơn với
+tất cả các bạn không phải sinh viên đại học trong đầu.
 
-This guide assumes that you have basic POSIX shell (i.e. Bash, Zsh,
-etc.) usage skills, i.e.:
+Tài liệu này giả định bạn có kỹ năng cơ bản về POSIX shell (tức là
+Bash, Zsh, v.v.), cụ thể:
 
-* You know basic commands like `cd`, `ls`, `mkdir`, `cp`, etc.
-* You can install more software.
+* Bạn biết các lệnh cơ bản như `cd`, `ls`, `mkdir`, `cp`, v.v.
+* Bạn có thể cài thêm phần mềm.
 
-It also assumes you're in a Unix-like environment, e.g. Linux, BSD,
-Unix, macOS, WSL, etc. with a POSIX shell. The farther you are away from
-that (e.g. PowerShell, Commodore 64), the more manual translation you'll
-have to do.
+Nó cũng giả định bạn đang ở môi trường Unix-like (kiểu Unix), ví dụ
+Linux, BSD, Unix, macOS, WSL, v.v. với POSIX shell. Bạn càng xa với môi
+trường đó (ví dụ PowerShell, Commodore 64), bạn sẽ càng phải dịch thủ
+công nhiều hơn.
 
-Windows is naturally the sticking point, there. Luckily Git for Windows
-comes with a Bash shell variant called Git Bash. You can also install
-[fl[WSL|https://learn.microsoft.com/en-us/windows/wsl/]] to get a Linux
-environment running on your Windows box. I wholeheartedly recommend this
-for hacker types, since Unix-like systems are hacker-awesome, and
-additionally I recommend you all become hacker types.
+Windows là điểm khó khăn tự nhiên ở đây. May mắn thay, Git for Windows
+đi kèm với một biến thể Bash shell gọi là Git Bash. Bạn cũng có thể
+cài
+[fl[WSL|https://learn.microsoft.com/en-us/windows/wsl/]] để có môi
+trường Linux chạy trên máy Windows của bạn. Mình hoàn toàn khuyến nghị
+cách này cho những bạn thích hack, vì hệ thống Unix-like rất tuyệt cho
+hacker, và thêm nữa mình khuyến nghị tất cả các bạn hãy trở thành hacker.
 
-## Official Homepage
+## Trang Chủ Chính Thức
 
-This official location of this document is (currently)
+Vị trí chính thức của tài liệu này (hiện tại) là
 [fl[https://beej.us/guide/bggit/|https://beej.us/guide/bggit/]].
 
-## Email Policy
+## Chính Sách Email
 
-I'm generally available to help out with email questions so feel free to
-write in, but I can't guarantee a response. I lead a pretty busy life
-and there are times when I just can't answer a question you have. When
-that's the case, I usually just delete the message. It's nothing
-personal; I just won't ever have the time to give the detailed answer
-you require.
+Mình thường sẵn sàng giúp đỡ qua email nên cứ thoải mái viết, nhưng
+mình không đảm bảo sẽ trả lời. Cuộc sống của mình khá bận rộn và đôi
+khi mình không có thời gian trả lời câu hỏi của bạn. Khi đó, mình
+thường chỉ xóa tin nhắn. Không phải vì lý do cá nhân; chỉ là mình sẽ
+không bao giờ có thời gian để đưa ra câu trả lời chi tiết mà bạn cần.
 
-As a rule, the more complex the question, the less likely I am to
-respond. If you can narrow down your question before mailing it and be
-sure to include any pertinent information (like platform, compiler,
-error messages you're getting, and anything else you think might help me
-troubleshoot), you're much more likely to get a response.
+Theo nguyên tắc, câu hỏi càng phức tạp, khả năng mình trả lời càng
+thấp. Nếu bạn có thể thu hẹp câu hỏi trước khi gửi và chắc chắn đưa
+vào bất kỳ thông tin liên quan nào (như nền tảng, trình biên dịch, thông
+báo lỗi bạn đang gặp, và bất cứ điều gì khác bạn nghĩ có thể giúp mình
+xử lý sự cố), bạn sẽ có nhiều khả năng nhận được phản hồi hơn.
 
-If you don't get a response, hack on it some more, try to find the
-answer, and if it's still elusive, then write me again with the
-information you've found and hopefully it will be enough for me to help
-out.
+Nếu bạn không nhận được phản hồi, hãy tiếp tục tìm hiểu, cố tìm câu
+trả lời, và nếu vẫn còn mơ hồ, hãy viết lại cho mình với thông tin bạn
+đã tìm được và hy vọng nó đủ để mình có thể giúp.
 
-Now that I've badgered you about how to write and not write me, I'd just
-like to let you know that I _fully_ appreciate all the praise the guide
-has received over the years. It's a real morale boost, and it gladdens
-me to hear that it is being used for good! `:-)` Thank you!
+Sau khi đã dặn dò bạn về cách viết và không viết cho mình như vậy, mình
+chỉ muốn cho bạn biết rằng mình _hoàn toàn_ trân trọng tất cả những lời
+khen ngợi mà tài liệu đã nhận được qua nhiều năm. Đó là nguồn động lực
+thực sự, và mình rất vui khi biết nó đang được sử dụng cho mục đích
+tốt! `:-)` Cảm ơn bạn!
 
-## Mirroring
+## Nhân Bản Trang Web
 
-You are more than welcome to mirror this site, whether publicly or
-privately. If you publicly mirror the site and want me to link to it
-from the main page, drop me a line at
+Bạn hoàn toàn được hoan nghênh nhân bản trang web này, dù công khai hay
+riêng tư. Nếu bạn nhân bản trang web công khai và muốn mình đặt liên
+kết đến nó từ trang chính, hãy gửi email cho mình tại
 [`beej@beej.us`](mailto:beej@beej.us).
 
-## Note for Translators
+## Ghi Chú cho Người Dịch
 
 [i[Translations]<]
-If you want to translate the guide into another language, write me at
-[`beej@beej.us`](mailto:beej@beej.us) and I'll link to your translation
-from the main page. Feel free to add your name and contact info to the
-translation.
+Nếu bạn muốn dịch tài liệu sang ngôn ngữ khác, hãy viết cho mình tại
+[`beej@beej.us`](mailto:beej@beej.us) và mình sẽ đặt liên kết đến bản
+dịch của bạn từ trang chính. Hãy thêm tên và thông tin liên hệ của bạn
+vào bản dịch.
 
-Please note the license restrictions in the Copyright and Distribution
-section, below.
+Hãy lưu ý các hạn chế giấy phép trong phần Bản Quyền và Phân Phối,
+bên dưới.
 [i[Translations]>]
 
-## Copyright and Distribution
+## Bản Quyền và Phân Phối
 
-Beej's Guide to Git is Copyright © 2024 Brian "Beej Jorgensen" Hall.
+Beej's Guide to Git là Copyright © 2024 Brian "Beej Jorgensen" Hall.
 
-With specific exceptions for source code and translations, below, this
-work is licensed under the Creative Commons Attribution-Noncommercial-No
-Derivative Works 3.0 License. To view a copy of this license, visit
+Với các ngoại lệ cụ thể cho source code (mã nguồn) và các bản dịch,
+như bên dưới, tác phẩm này được cấp phép theo Creative Commons
+Attribution-Noncommercial-No Derivative Works 3.0 License. Để xem bản
+sao của giấy phép này, hãy truy cập
 [`https://creativecommons.org/licenses/by-nc-nd/3.0/`](https://creativecommons.org/licenses/by-nc-nd/3.0/)
-or send a letter to Creative Commons, 171 Second Street, Suite 300, San
+hoặc gửi thư đến Creative Commons, 171 Second Street, Suite 300, San
 Francisco, California, 94105, USA.
 
-One specific exception to the "No Derivative Works" portion of the
-license is as follows: this guide may be freely translated into any
-language, provided the translation is accurate, and the guide is
-reprinted in its entirety. The same license restrictions apply to the
-translation as to the original guide. The translation may also include
-the name and contact information for the translator.
+Một ngoại lệ cụ thể cho phần "No Derivative Works" của giấy phép là
+như sau: tài liệu này có thể được tự do dịch sang bất kỳ ngôn ngữ nào,
+miễn là bản dịch chính xác và tài liệu được in lại đầy đủ. Các hạn chế
+giấy phép tương tự áp dụng cho bản dịch như đối với tài liệu gốc. Bản
+dịch cũng có thể bao gồm tên và thông tin liên hệ của người dịch.
 
-The programming source code presented in this document is hereby granted
-to the public domain, and is completely free of any license restriction.
+Source code lập trình được trình bày trong tài liệu này được cấp cho
+public domain (miền công cộng) và hoàn toàn không có hạn chế giấy phép.
 
-Educators are freely encouraged to recommend or supply copies of this
-guide to their students.
+Các nhà giáo dục được khuyến khích tự do giới thiệu hoặc cung cấp bản
+sao của tài liệu này cho sinh viên của họ.
 
-Contact [`beej@beej.us`](mailto:beej@beej.us) for more information.
+Liên hệ [`beej@beej.us`](mailto:beej@beej.us) để biết thêm thông tin.
 
-## Dedication
+## Lời Cảm Ơn
 
-The hardest things about writing these guides are:
+Những điều khó khăn nhất khi viết các tài liệu này là:
 
-* Learning the material in enough detail to be able to explain it
-* Figuring out the best way to explain it clearly, a seemingly-endless
-  iterative process
-* Putting myself out there as a so-called _authority_, when really
-  I'm just a regular human trying to make sense of it all, just like
-  everyone else
-* Keeping at it when so many other things draw my attention
+* Học tài liệu đủ chi tiết để có thể giải thích nó
+* Tìm ra cách tốt nhất để giải thích nó rõ ràng, một quá trình lặp đi
+  lặp lại có vẻ vô tận
+* Đặt mình ra như một _chuyên gia_ được gọi như vậy, khi thực ra mình
+  chỉ là một con người bình thường đang cố hiểu mọi thứ, giống như mọi
+  người khác
+* Kiên trì khi có quá nhiều thứ khác thu hút sự chú ý của mình
 
-A lot of people have helped me through this process, and I want to
-acknowledge those who have made this book possible:
+Nhiều người đã giúp mình trong suốt quá trình này, và mình muốn ghi
+nhận những người đã làm cho cuốn sách này trở thành hiện thực:
 
-* Everyone on the Internet who decided to help share their knowledge in
-  one form or another. The free sharing of instructive information is
-  what makes the Internet the great place that it is.
-* Everyone who submitted corrections and pull-requests on everything
-  from misleading instructions to typos.
+* Tất cả mọi người trên Internet đã quyết định chia sẻ kiến thức của
+  họ dưới hình thức này hay hình thức khác. Việc chia sẻ tự do thông
+  tin hướng dẫn là điều làm cho Internet trở thành nơi tuyệt vời như
+  vậy.
+* Tất cả những người đã gửi các bản sửa lỗi và pull request về mọi
+  thứ, từ hướng dẫn gây hiểu nhầm đến lỗi đánh máy.
 
-Thank you! ♥
+Cảm ơn! ♥
