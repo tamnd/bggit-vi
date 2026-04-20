@@ -1,39 +1,30 @@
-# Stashing: Temporarily Set Changes Aside {#stash}
+# Stash: Tạm Thời Cất Thay Đổi Sang Một Bên {#stash}
 
 [i[Stash]<]
 
-If you're in the middle of working on something and you realize you want
-to pull some changes in, but you're not ready to make a commit because
-your stuff is still completely broken, `git stash` is your friend. It
-takes the stuff you're working on and stashes it away on the side,
-returning your working tree to the state of the last commit.
+Nếu bạn đang giữa chừng làm gì đó và nhận ra bạn muốn pull một số thay đổi về, nhưng bạn chưa sẵn sàng commit vì code của mình vẫn đang chạy không được, `git stash` là bạn của bạn. Nó lấy những thứ bạn đang làm việc và cất chúng sang một bên, đưa working tree về trạng thái của commit cuối.
 
-So your changes will look like they're gone—but don't worry, they're
-safely stashed away and you can bring them back later.
+Vậy các thay đổi của bạn sẽ trông như biến mất --- nhưng đừng lo, chúng đang được cất an toàn và bạn có thể mang chúng trở lại sau.
 
-Then you can pull the new stuff down so you're up-to-date, and then
-unstash your stuff on top of it.
+Sau đó bạn có thể pull những thứ mới về để cập nhật, rồi unstash (lấy lại từ stash) những thứ của mình lên trên đó.
 
-It's kind of like a mini rebase in spirit.
+Về mặt tinh thần, nó giống như một mini rebase.
 
-## Example
+## Ví Dụ
 
-Let's say we're all caught up to the latest.
+Giả sử ta đã cập nhật theo phiên bản mới nhất.
 
 ``` {.default}
 $ git pull
 ```
 
-Great. And we start hacking. We open an existing file `foo.rs` and add
-some code to it as per usual.
+Tốt. Và ta bắt đầu làm việc. Ta mở file `foo.rs` có sẵn và thêm một số code vào theo thường lệ.
 
-Then Chris calls from the next desk over and says, "Hey wait—I just made
-a critical update to `main` and you should use that!"
+Rồi Chris gọi từ bàn bên cạnh và nói, "Ê chờ đã --- tôi vừa cập nhật quan trọng vào `main` và bạn nên dùng nó!"
 
-And you think, "Well, heck, I was in the middle of something." You're
-not ready to commit, but you want Chris's changes.
+Và bạn nghĩ, "Ồ chết, tôi đang giữa chừng làm gì đây." Bạn chưa sẵn sàng commit, nhưng bạn muốn có thay đổi của Chris.
 
-So you save your files and then run this:
+Vậy bạn lưu file rồi chạy lệnh này:
 
 ``` {.default}
 $ git stash
@@ -41,11 +32,9 @@ $ git stash
                                 some very descriptive commit message
 ```
 
-And, if you were watching, you might have seen your file in your editor
-change back to what it used to be! Your changes have been undone and
-stashed away!
+Và nếu bạn để ý, bạn có thể đã thấy file trong editor của mình thay đổi trở lại như trước đây! Các thay đổi của bạn đã được hoàn tác và cất đi!
 
-If you git status at this point, you'll see:
+Nếu bạn git status tại thời điểm này, bạn sẽ thấy:
 
 ``` {.default}
 $ git status
@@ -55,8 +44,7 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-It's all clean, which means now you can pull and get the latest `main`.
-So you do that.
+Mọi thứ đã sạch sẽ, nghĩa là bây giờ bạn có thể pull và lấy `main` mới nhất. Vậy bạn làm vậy.
 
 ``` {.default}
 $ git pull
@@ -73,10 +61,9 @@ $ git pull
    1 file changed, 1 insertion(+)
 ```
 
-And now you're up to date.
+Và bây giờ bạn đã cập nhật.
 
-Oh, wait. What was it we were working on? Oh yeah! We stashed it! Let's
-unstash those changes with `pop`:
+Ô khoan đã. Ta đang làm gì thế nhỉ? À đúng rồi! Ta đã stash nó! Hãy unstash những thay đổi đó với `pop`:
 
 ``` {.default}
 $ git stash pop
@@ -94,30 +81,22 @@ $ git stash pop
   Dropped refs/stash@{0} (046ac112f8c02c3dc02984ad71d353a3e5be9a7a)
 ```
 
-Auto-merging sounds good. Looks like things went well. And if we look at
-our file now we'll see our changes brought out of the stash and
-reapplied. Our file `foo.rs` is in "modified" state and ready for us to
-work on, or add and commit.
+Auto-merging nghe có vẻ tốt. Trông như mọi thứ diễn ra suôn sẻ. Và nếu bây giờ ta xem file, ta sẽ thấy các thay đổi được lấy ra từ stash và áp dụng lại. File `foo.rs` của ta đang ở trạng thái "modified" và sẵn sàng để làm việc tiếp, hoặc add và commit.
 
-## The Stash Stack
+## Stack Stash
 
 [i[Stash-->The stack]<]
 
-If you're familiar with the [flw[stack abstract data
-type|Stack_(abstract_data_type)]], your ears might have perked up when
-you read `git stash pop`.
+Nếu bạn quen với [flw[kiểu dữ liệu trừu tượng stack|Stack_(abstract_data_type)]], tai bạn có thể vểnh lên khi đọc `git stash pop`.
 
-Yes, Git tracks stashes in a stack. If you're not familiar with a stack,
-read up on it first.
+Đúng vậy, Git theo dõi các stash trong một stack. Nếu bạn không quen với stack, hãy đọc về nó trước.
 
-* `git stash` pushes the working tree on the stash stack.
-* `git stash pop` pops the top of the stash stack and applies it to the
-  working tree.
-* `git stash list` shows you the current stash stack.
-* `git stash drop` deletes a particular stash stack entry.
+* `git stash` push working tree lên stash stack.
+* `git stash pop` pop đỉnh stash stack và áp dụng nó vào working tree.
+* `git stash list` hiển thị stash stack hiện tại.
+* `git stash drop` xóa một entry cụ thể trong stash stack.
 
-Because of this, I could `stash`, then do something else, then `stash`
-again, and we'll have two stashes on the stack.
+Do vậy, tôi có thể `stash`, rồi làm gì đó khác, rồi `stash` lại, và ta sẽ có hai stash trên stack.
 
 ``` {.default}
 $ git stash list
@@ -125,41 +104,34 @@ $ git stash list
   stash@{1}: WIP on main: 659b132 added repo1 another line
 ```
 
-The top of the stack is `stash@{0}`.
+Đỉnh stack là `stash@{0}`.
 
-If I ran just plain `git stash pop`, it would take the stash at the top,
-which is index `0`, removing it from the stack and applying it to the
-working tree.
+Nếu tôi chạy `git stash pop` đơn giản, nó sẽ lấy stash ở đỉnh, là index `0`, xóa nó khỏi stack và áp dụng vào working tree.
 
-But you can also pop by stash name if you want to pop something from the
-middle of the stack.
+Nhưng bạn cũng có thể pop theo tên stash nếu muốn pop thứ gì đó từ giữa stack.
 
 ``` {.default}
 $ git stash pop 'stash@{1}'
 $ git stash pop --index 1       # same thing
 ```
 
-Similarly `stash drop` will pop the top of the stack and **not** apply
-the changes to the working tree, discarding them instead.
+Tương tự `stash drop` sẽ pop đỉnh stack và **không** áp dụng các thay đổi vào working tree, loại bỏ chúng.
 
-And `stash drop` can also operate on a particular stash by name if you
-want to drop something from the middle of the stack.
+Và `stash drop` cũng có thể hoạt động trên một stash cụ thể theo tên nếu bạn muốn bỏ thứ gì đó từ giữa stack.
 
 [i[Stash-->The stack]>]
 
-## Conflicts
+## Conflict
 
 [i[Stash-->Conflicts]<]
 
-Now that you've spent so much time reading about conflicts during merge
-and rebase, you might start to get a little worried here.
+Bây giờ sau khi bạn đã dành nhiều thời gian đọc về conflict khi merge và rebase, bạn có thể bắt đầu lo lắng ở đây.
 
-What if I stash then pull, but then popping the stash does something
-that conflicts with the changes I pulled? Can that happen?
+Nếu tôi stash rồi pull, nhưng khi pop stash lại làm thứ gì đó conflict với các thay đổi tôi đã pull thì sao? Điều đó có thể xảy ra không?
 
-Of course it can. Hooray.
+Tất nhiên là có thể. Tuyệt vời thay.
 
-When it happens, it looks like this:
+Khi điều đó xảy ra, nó trông như thế này:
 
 ``` {.default}
 $ git stash pop
@@ -177,7 +149,7 @@ $ git stash pop
   The stash entry is kept in case you need it again.
 ```
 
-Sure looks like a merge conflict, and it looks doubly so in the editor.
+Trông giống hệt một merge conflict, và trong editor cũng y chang.
 
 ``` {.rs .numberLines}
 fn main() {
@@ -189,11 +161,9 @@ fn main() {
 }
 ```
 
-You can see our stashed changes below where we tried to fix it, but
-then we see that conflicts with Chris's fix from upstream.
+Bạn có thể thấy các thay đổi đã stash của ta bên dưới chỗ ta đã cố sửa, nhưng sau đó ta thấy nó conflict với sửa của Chris từ upstream.
 
-So we do the merge thing and make it *Right*, editing it to look the way
-we want, and we save it. Our status is still not clean, though.
+Vậy ta làm chuyện merge và làm cho nó *Đúng*, chỉnh sửa theo cách ta muốn, rồi lưu lại. Status của ta vẫn chưa sạch sẽ.
 
 ``` {.default}
 $ git status
@@ -208,41 +178,29 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Let's add it with `git add` to mark it resolved.
+Hãy add nó với `git add` để đánh dấu đã giải quyết.
 
-A couple things can happen at this point.
+Lúc này có thể xảy ra một số điều.
 
-1. If you just accepted the pulled version (i.e. discarding your
-   conflicting changes), nothing new will happen. After all, there's
-   already a commit in your repo with their version, so Git it smart
-   enough to just call it a day. `git status` reports clean.
+1. Nếu bạn chỉ chấp nhận phiên bản đã pull về (nghĩa là loại bỏ các thay đổi xung đột của bạn), sẽ không có gì mới xảy ra. Xét cho cùng, đã có commit trong repo của bạn với phiên bản đó, vì vậy Git đủ thông minh để coi là xong. `git status` báo sạch sẽ.
 
-2. If you accepted a version different than the one you pulled (i.e. you
-   kept some or all of your changes), then `git status` will report that
-   file as modified and staged to be committed.
+2. Nếu bạn chấp nhận phiên bản khác với phiên bản đã pull về (nghĩa là bạn giữ một phần hoặc tất cả thay đổi của mình), thì `git status` sẽ báo file đó là modified và staged để commit.
 
-   If you're not ready to commit at this point, use `git restore
-   --staged` to unstage the file. That will change it to just be
-   modified and you can work on it more before you commit it.
+   Nếu bạn chưa sẵn sàng commit lúc này, hãy dùng `git restore --staged` để unstage file. Nó sẽ thay đổi trạng thái về chỉ là modified và bạn có thể tiếp tục làm việc trên nó trước khi commit.
 
-**In both conflict cases the stashed changes are still in the stash!**
-Yes, you ran `stash pop`, but when there's a conflict, the stash remains
-untouched and doesn't actually pop.
+**Trong cả hai trường hợp conflict, stash vẫn còn trong stash!**
+Đúng vậy, bạn đã chạy `stash pop`, nhưng khi có conflict, stash vẫn nguyên vẹn và không thực sự được pop.
 
-If you're done with it (and you probably are), you can use `git stash
-drop` to discard the particular stash from the stack and get all cleaned
-up.
+Nếu bạn xong với nó (và có lẽ là vậy), bạn có thể dùng `git stash drop` để xóa stash cụ thể đó khỏi stack và dọn sạch tất cả.
 
 [i[Stash-->Conflicts]>]
 
-## Stashing New Files
+## Stash File Mới
 
 [i[Stash-->New files]]
 
-What if you've added a new file to your working tree but it's currently
-untracked? Can stash see it?
+Nếu bạn đã thêm một file mới vào working tree nhưng nó hiện đang untracked thì sao? Stash có thấy nó không?
 
-No. You have to add it first. So do a `git add` (but not a commit!) then
-stash it. The new file should disappear from the working tree.
+Không. Bạn phải add nó trước. Vậy hãy `git add` (nhưng không commit!) rồi stash nó. File mới sẽ biến mất khỏi working tree.
 
 [i[Stash]>]
