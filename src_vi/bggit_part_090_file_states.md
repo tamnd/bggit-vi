@@ -1,96 +1,66 @@
-# File States {#file-states}
+# Trạng Thái File {#file-states}
 
 [i[File States]<]
 
-We've talked about this quite a bit in passing already.
+Ta đã nói nhiều về điều này trong các chương trước.
 
-If you create a new file, you have to `git add` it to the stage before
-you commit.
+Nếu bạn tạo một file mới, bạn phải `git add` nó lên stage (vùng chuẩn bị) trước khi commit.
 
-If you modify a file, you should `git add` it to the stage before you
-commit.
+Nếu bạn sửa đổi một file, bạn nên `git add` nó lên stage trước khi commit.
 
-If you add a file `foo.txt` to the stage, you can remove it from the
-stage before you commit with `git restore --staged foo.txt`.
+Nếu bạn thêm file `foo.txt` vào stage, bạn có thể đưa nó ra khỏi stage trước khi commit bằng `git restore --staged foo.txt`.
 
-So clearly files can exist in a variety of "states" and we can move them
-around between those states.
+Vậy rõ ràng file có thể tồn tại ở nhiều "trạng thái" khác nhau và ta có thể di chuyển chúng giữa các trạng thái đó.
 
-To figure out what state a file is in and get a hint on how to "undo" it
-from that state, `git status` is your best friend (except in the case of
-renaming, but more on that mess soon).
+Để biết file đang ở trạng thái nào và gợi ý cách "hoàn tác" từ trạng thái đó, `git status` là người bạn tốt nhất của bạn (ngoại trừ trường hợp đổi tên, nhưng ta sẽ bàn thêm về cái mớ rắc rối đó sau).
 
-## What States Can Files in Git Be In?
+## Các File trong Git Có Thể Ở Những Trạng Thái Nào?
 
-There are four of them: **Untracked**, **Unmodified**, **Modified**, and
-**Staged**.
+Có bốn trạng thái: **Untracked** (chưa được theo dõi), **Unmodified** (chưa sửa đổi), **Modified** (đã sửa đổi), và **Staged** (đã staging).
 
-* [i[File States-->Untracked]] **Untracked**: Git does not know anything
-  about this file (e.g. you just created it in the working tree and
-  haven't added it). Git will ignore it, but you'll see it in the
-  status.
+* [i[File States-->Untracked]] **Untracked**: Git không biết gì về file này (ví dụ bạn vừa tạo nó trong working tree và chưa add). Git sẽ bỏ qua nó, nhưng bạn sẽ thấy nó trong status.
 
-  You can make Git aware of this file by moving it to Staged State with
-  `git add`.
+  Bạn có thể để Git nhận biết file này bằng cách đưa nó sang Staged State với `git add`.
 
-  Or you can simply remove the file if you don't want it to exist, or
-  you can add it to your `.gitignore` if you want to leave it in place
-  but still have Git ignore it.
+  Hoặc bạn có thể đơn giản xóa file nếu không muốn nó tồn tại, hoặc thêm nó vào `.gitignore` nếu muốn để file ở đó nhưng vẫn muốn Git bỏ qua nó.
 
-* [i[File States-->Unmodified]] **Unmodified**: Git knows about this
-  file and it's in the repo. But you haven't made any changes to it
-  since it was last committed.
+* [i[File States-->Unmodified]] **Unmodified**: Git biết về file này và nó nằm trong repo. Nhưng bạn chưa thực hiện thay đổi gì kể từ lần commit cuối.
 
-  You can move this file to Modified State by making changes to the file
-  (and saving).
+  Bạn có thể chuyển file này sang Modified State bằng cách thực hiện thay đổi trong file (và lưu).
 
-  You can remove this file with `git rm`, which changes the removed file
-  to the Staged State. (Wait—removing the file puts it on the stage?
-  Yes! More on that later.)
+  Bạn có thể xóa file này bằng `git rm`, lệnh này sẽ chuyển file đã xóa sang Staged State. (Đợi đã --- xóa file thì lại đưa lên stage? Đúng vậy! Ta sẽ bàn thêm sau.)
 
-* [i[File States-->Modified]] **Modified**: Git knows about this file
-  and knows that you've changed it. It's ready for you to stage those
-  changes or to undo them.
+* [i[File States-->Modified]] **Modified**: Git biết về file này và biết rằng bạn đã thay đổi nó. File đã sẵn sàng để bạn staging những thay đổi đó hoặc hoàn tác chúng.
 
-  You can change the file to Staged State with `git add`.
+  Bạn có thể chuyển file sang Staged State bằng `git add`.
 
-  You can change the file to Unmodified State (throwing away your
-  changes) with `git restore`.
+  Bạn có thể chuyển file sang Unmodified State (bỏ qua những thay đổi của bạn) bằng `git restore`.
 
-* [i[File States-->Staged]] **Staged**: The file is ready to be included
-  in the next commit.
+* [i[File States-->Staged]] **Staged**: File đã sẵn sàng để đưa vào commit tiếp theo.
 
-  You can change to Unmodified State by making a commit with `git
-  commit`.
+  Bạn có thể chuyển sang Unmodified State bằng cách thực hiện commit với `git commit`.
 
-  You can remove the file from the stage and back to Modified State with
-  `git restore --staged`.
+  Bạn có thể đưa file ra khỏi stage và trở về Modified State bằng `git restore --staged`.
 
-[i[Workflow-->File states]] A file typically goes through this process
-to be added to a repo:
+[i[Workflow-->File states]] Một file thường đi qua quá trình này để được thêm vào repo:
 
-1. The user creates a new file and saves it. This file is **Untracked**.
+1. Người dùng tạo một file mới và lưu nó. File này ở trạng thái **Untracked**.
 
-2. The user adds the file with `git add`. The file is now **Staged**.
+2. Người dùng add file bằng `git add`. File bây giờ ở trạng thái **Staged**.
 
-3. The user commits the file with `git commit`. The file is now
-   **Unmodified** and is part of the repo and ready to go.
+3. Người dùng commit file bằng `git commit`. File bây giờ ở trạng thái **Unmodified** và là một phần của repo, sẵn sàng để dùng.
 
-After it's in the repo, the typical file life cycle only differs by the
-first step:
+Sau khi file đã vào repo, vòng đời điển hình của file chỉ khác ở bước đầu tiên:
 
-1. The user changes the file and saves it. The file is now **Modified**.
+1. Người dùng thay đổi file và lưu. File bây giờ ở trạng thái **Modified**.
 
-2. The user adds the file with `git add`. The file is now **Staged**.
+2. Người dùng add file bằng `git add`. File bây giờ ở trạng thái **Staged**.
 
-3. The user commits the file with `git commit`. The file is now
-   **Unmodified** and is part of the repo and ready to go.
+3. Người dùng commit file bằng `git commit`. File bây giờ ở trạng thái **Unmodified** và là một phần của repo, sẵn sàng để dùng.
 
-Keep in mind that often a commit is a bundle of different changes to
-different files. All those files would be added to the stage before the
-single commit.
+Hãy nhớ rằng một commit thường là một gói các thay đổi khác nhau cho các file khác nhau. Tất cả những file đó sẽ được add vào stage trước một commit duy nhất.
 
-Here's a partial list of ways to change state:
+Dưới đây là danh sách một phần các cách thay đổi trạng thái:
 
 * **Untracked** → `git add foo.txt` → **Staged** (as "new file")
 * **Modified** → `git add foo.txt` → **Staged**
@@ -99,21 +69,17 @@ Here's a partial list of ways to change state:
 * **Staged** → `git commit` → **Unmodified**
 * **Staged** → `git restore --staged` → **Modified**
 
-Again, `git status` will often give you advice of how to undo a state
-change.
+Một lần nữa, `git status` thường sẽ cho bạn lời khuyên về cách hoàn tác một thay đổi trạng thái.
 
-## Unmodified to Untracked
+## Từ Unmodified sang Untracked
 
 [i[Untracking files]]
 
-A variation of `git rm` tells Git to remove the file from the repo but
-leave it intact in the working tree. Maybe you want to keep the file
-around but don't want Git to track it any longer.
+Một biến thể của `git rm` bảo Git xóa file khỏi repo nhưng vẫn giữ nguyên file trong working tree. Có thể bạn muốn giữ file đó nhưng không muốn Git theo dõi nó nữa.
 
-To make this happen, you use the `--cached` switch.
+Để làm điều này, bạn dùng tùy chọn `--cached`.
 
-Here's an example where we remove the file `foo.txt` from the repo but
-keep it around in our working tree:
+Đây là một ví dụ xóa file `foo.txt` khỏi repo nhưng vẫn giữ nó trong working tree:
 
 ``` {.default}
 $ ls
@@ -136,30 +102,16 @@ $ ls
   foo.txt
 ```
 
-There you see in the `status` output that Git has staged the file for
-deletion, but it's also mentioning that the file exists and is
-untracked. And a subsequent `ls` shows that the file still exists.
+Bạn thấy trong đầu ra `status` rằng Git đã staging file để xóa, nhưng cũng đề cập rằng file tồn tại và đang ở trạng thái untracked. Và lệnh `ls` tiếp theo cho thấy file vẫn còn đó.
 
-At this point, you can commit and the file would then be in Untracked
-state.
+Tại thời điểm này, bạn có thể commit và file sẽ ở trạng thái Untracked.
 
-## Files In Multiple States
+## File Ở Nhiều Trạng Thái Cùng Lúc
 
 [i[File States-->Multiple]]
-A file can actually sort of exist in multiple states at once. To be more
-technically accurate, there can be copies of files which are in
-different states than one another. For instance, you might have one
-version of a file on the stage, and another version of that file, with
-different modifications, in your working tree *at the same time*.
-Technically these are actually different files since they don't contain
-the same data.
+Thực ra file có thể tồn tại ở nhiều trạng thái cùng lúc. Nói cho chính xác hơn, có thể có các bản sao của file ở các trạng thái khác nhau cùng một lúc. Chẳng hạn, bạn có thể có một phiên bản file trên stage, và một phiên bản khác của file đó, với những sửa đổi khác nhau, trong working tree *cùng một lúc*. Về mặt kỹ thuật đây thực sự là những file khác nhau vì chúng không chứa cùng dữ liệu.
 
-Just remember that when you stage a file, it effectively stages a
-**copy** of that file as it exists right then. There is nothing stopping
-you from making another modification to the file in the working tree and
-ending up like this, where one version of the file is on the stage ready
-to commit, and another one is in the working tree with additional
-changes not-yet-staged:
+Chỉ cần nhớ rằng khi bạn stage một file, nó thực sự stage một **bản sao** của file đó tại thời điểm đó. Không có gì ngăn bạn thực hiện sửa đổi khác vào file trong working tree và kết thúc như thế này, khi một phiên bản file trên stage sẵn sàng để commit, và một phiên bản khác ở trong working tree với những thay đổi bổ sung chưa được stage:
 
 ``` {.default}
 $ git status
@@ -175,11 +127,8 @@ $ git status
 	  modified:   foo.txt
 ```
 
-You can overwrite the version on the stage by adding it again. And
-various incantations of `restore` can change the files in different
-ways. Look up the `--staged` and `--worktree` options for `git restore`.
+Bạn có thể ghi đè phiên bản trên stage bằng cách add lại. Và các biến thể khác nhau của `restore` có thể thay đổi file theo nhiều cách. Hãy tra cứu các tùy chọn `--staged` và `--worktree` của `git restore`.
 
-I'll leave how to move files around in these simultaneous states as an
-exercise to the reader, but I wanted you to at least be aware of it.
+Tôi sẽ để việc di chuyển file giữa các trạng thái đồng thời này như một bài tập cho bạn đọc, nhưng tôi muốn bạn ít nhất biết đến điều này.
 
 [i[File States]>]
