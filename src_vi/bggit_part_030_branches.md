@@ -1,12 +1,12 @@
-# Branches and Fast-Forward Merges
+# Branches và Fast-Forward Merges
 
-## What is a Branch?
+## Branch là gì?
 
 [i[Branch]<]
 
-Normally you think of writing code as a linear sequence of changes. You
-start with an empty file, add some things, test them, add some more,
-test some more, and eventually the code is complete.
+Thông thường bạn nghĩ về việc viết code như một chuỗi thay đổi tuyến
+tính. Bạn bắt đầu với một file trống, thêm vào một số thứ, kiểm tra
+chúng, thêm nữa, kiểm tra thêm, và cuối cùng code hoàn chỉnh.
 
 ![A simple commit graph.](img_030_010.pdf "[A simple commit graph.]")
 
@@ -16,25 +16,25 @@ test some more, and eventually the code is complete.
 ```
 -->
 
-In Git we might think of this as a sequence of commits. Let's look at a
-graph (Figure_#.1) where I've numbered commits 1-5. There, `(1)` was the
-first commit we made on the repo, `(2)` is some changes we made on top
-of `(1)`, and `(3)` is some changes we made on top of `(2)`, etc.
+Trong Git chúng ta có thể nghĩ về điều này như một chuỗi các commit.
+Hãy nhìn vào một đồ thị (Figure_#.1) trong đó mình đã đánh số các commit
+từ 1-5. Ở đó, `(1)` là commit đầu tiên chúng ta thực hiện trên repo,
+`(2)` là một số thay đổi chúng ta thực hiện trên `(1)`, và `(3)` là một
+số thay đổi chúng ta thực hiện trên `(2)`, v.v.
 
-Git always keeps track of the parent commit for any particular commit,
-e.g. it knows the parent commit of `(3)` is `(2)` in the above graph. In
-this graph, the parent relationship is indicated by an arrow. "The
-parent of commit 3 is commit 2", etc. It's a little confusing because
-clearly commit 3 came _after_ commit 2 in terms of time, but the arrow
-points to the parent, which is the opposite of the nodes' temporal
-relationship.
+Git luôn theo dõi commit parent (cha) cho bất kỳ commit cụ thể nào,
+ví dụ nó biết commit parent của `(3)` là `(2)` trong đồ thị trên. Trong
+đồ thị này, quan hệ parent được chỉ ra bởi một mũi tên. "Parent của
+commit 3 là commit 2", v.v. Hơi khó hiểu vì rõ ràng commit 3 đến _sau_
+commit 2 về mặt thời gian, nhưng mũi tên trỏ đến parent, điều này ngược
+với quan hệ thời gian của các node.
 
-A _branch_ is like a name tag stuck on one **specific** commit. You can
-move the name tag around with various Git operations.
+Một _branch_ (nhánh) giống như một nhãn tên gắn vào một **cụ thể** commit.
+Bạn có thể di chuyển nhãn tên xung quanh bằng các thao tác Git khác nhau.
 
-We're assuming the default branch is called [i[Branch-->`main`]] `main`.
-If you haven't done so already, configure your default branch as shown
-in the [Git Basics](#initial-setup) chapter.
+Chúng ta giả định branch mặc định được gọi là [i[Branch-->`main`]] `main`.
+Nếu bạn chưa làm vậy, hãy cấu hình branch mặc định của bạn như được
+trình bày trong chương [Git Basics](#initial-setup).
 
 ![The main branch on a commit.](img_030_020.pdf "[The main branch on a commit.]")
 
@@ -47,17 +47,17 @@ in the [Git Basics](#initial-setup) chapter.
 ```
 -->
 
-So to make it a little more complete, we can show that branch in
-Figure_#.2. There's our `main` branch attached to the commit labeled
-`(5)`.
+Vì vậy để làm nó đầy đủ hơn một chút, chúng ta có thể hiển thị branch
+đó trong Figure_#.2. Đó là branch `main` của chúng ta được gắn vào
+commit được gán nhãn `(5)`.
 
-> **It's tempting to think of the whole sequence of commits as "the
-> branch", but this author recommends against it.** Better to keep in
-> mind that the branch is just a name tag for a single commit, and that
-> we can move that name tag around.
+> **Thật hấp dẫn khi nghĩ về toàn bộ chuỗi commit là "branch", nhưng
+> tác giả này khuyến nghị chống lại điều đó.** Tốt hơn là nhớ trong
+> đầu rằng branch chỉ là một nhãn tên cho một commit duy nhất, và chúng
+> ta có thể di chuyển nhãn tên đó xung quanh.
 
-But Git offers something more powerful, allowing you (or collaborators)
-to pursue multiple branches simultaneously.
+Nhưng Git cung cấp thứ gì đó mạnh mẽ hơn, cho phép bạn (hoặc các cộng
+tác viên) theo đuổi nhiều branch đồng thời.
 
 ![Lots of branches.](img_030_030.pdf "[Lots of branches.]")
 
@@ -77,12 +77,13 @@ to pursue multiple branches simultaneously.
 ```
 -->
 
-So there might be multiple collaborators working on the project at the
-same time.
+Vì vậy có thể có nhiều cộng tác viên đang làm việc trên dự án cùng một
+lúc.
 
-And then, when you're ready, you can [i[Merge]] _merge_ those branches
-back together. In Figure_#.4, we've merged commit 6 and 7 into a new
-commit, commit 9. Commit 9 contains the changes of both commits 7 and 6.
+Và sau đó, khi bạn sẵn sàng, bạn có thể [i[Merge]] _merge_ (gộp) những
+branch đó lại với nhau. Trong Figure_#.4, chúng ta đã merge commit 6 và
+7 thành một commit mới, commit 9. Commit 9 chứa các thay đổi của cả
+commit 7 và 6.
 
 ![After merging `somebranch` and `anotherbranch`.](img_030_040.pdf "[After merging somebranch and anotherbranch.]")
 
@@ -99,18 +100,18 @@ commit, commit 9. Commit 9 contains the changes of both commits 7 and 6.
 ```
 -->
 
-In that case, `somebranch` and `anotherbranch` both point to the same
-commit. There's no problem with this.
+Trong trường hợp đó, `somebranch` và `anotherbranch` đều trỏ đến cùng
+một commit. Không có vấn đề gì với điều này.
 
-> **I'm actually oversimplifying this a little.** When you merge a
-> branch into another, really only the branch you're merging *into*
-> moves, not both of them. So to get the two branches to point to the
-> same commit, you'd have to do two merges: `somebranch` into
-> `anotherbranch` and then `anotherbranch` into `somebranch`. (Or the
-> other way around.) And *then* they'd point to the same commit.
+> **Mình thực ra đơn giản hóa điều này một chút.** Khi bạn merge một
+> branch vào branch khác, thực ra chỉ có branch bạn đang merge *vào*
+> di chuyển, không phải cả hai. Vì vậy để hai branch trỏ đến cùng một
+> commit, bạn sẽ phải làm hai lần merge: `somebranch` vào `anotherbranch`
+> và sau đó `anotherbranch` vào `somebranch`. (Hoặc ngược lại.) Và *sau
+> đó* chúng sẽ trỏ đến cùng một commit.
 
-And then we can keep merging if we want, until all the branches are
-pointing at the same commit (Figure_#.5).
+Và sau đó chúng ta có thể tiếp tục merge nếu muốn, cho đến khi tất cả
+các branch đều trỏ vào cùng một commit (Figure_#.5).
 
 ![After merging all branches.](img_030_050.pdf "[After merging all branches.]")
 
@@ -127,9 +128,10 @@ pointing at the same commit (Figure_#.5).
 ```
 -->
 
-And maybe after all this we decide to delete `somebranch` and
-`anotherbranch`; we can do this safely because they're fully merged, and
-can do this without affecting `main` or any commits (Figure_#.6).
+Và có thể sau tất cả những điều này chúng ta quyết định xóa `somebranch`
+và `anotherbranch`; chúng ta có thể làm điều này một cách an toàn vì
+chúng đã được merge đầy đủ, và có thể làm điều này mà không ảnh hưởng
+đến `main` hay bất kỳ commit nào (Figure_#.6).
 
 ![After deleting merged branches.](img_030_060.pdf "[After deleting merged branches.]")
 
@@ -146,56 +148,57 @@ can do this without affecting `main` or any commits (Figure_#.6).
 ```
 -->
 
-This chapter is all about getting good with branching and partially
-good with merging.
+Chương này là về việc thành thạo với branching và một phần với merging.
 
-If you like interactive tutorials, Peter Cottle has put together a great
-website called [fl[Learn Git
-Branching|https://learngitbranching.js.org/]]. I highly recommend it
-before, during, and/or after reading this chapter.
+Nếu bạn thích các tutorial tương tác, Peter Cottle đã tạo ra một trang
+web tuyệt vời gọi là [fl[Learn Git
+Branching|https://learngitbranching.js.org/]]. Mình rất khuyến nghị nó
+trước, trong và/hoặc sau khi đọc chương này.
 
-## A Quick Note about `git pull`
+## Ghi Chú Nhanh về `git pull`
 
 [i[Pull-->Force rebase or merge]]
 
-When you do a pull, it actually does two things: [i[Fetch]] (a) _fetch_
-all the changes from the remote repo and (b) _merge_ those changes.
+Khi bạn thực hiện pull, nó thực sự làm hai việc: [i[Fetch]] (a) _fetch_
+(lấy) tất cả các thay đổi từ remote repo và (b) _merge_ những thay đổi
+đó.
 
-If two or more people are committing to the same branch, eventually `git
-pull` is going to have to merge. And it turns out there are a few ways
-it can do this.
+Nếu hai hoặc nhiều người đang commit vào cùng một branch, cuối cùng
+`git pull` sẽ phải merge. Và hóa ra có một vài cách nó có thể làm điều
+này.
 
-For now, we're going to tell `git pull` to always classically merge
-divergent branches, and you can do that with this one-time command:
+Bây giờ, chúng ta sẽ yêu cầu `git pull` luôn merge các branch phân kỳ
+theo cách cổ điển, và bạn có thể làm điều đó với lệnh một lần này:
 
 ``` {.default}
 $ git config set --global pull.rebase false
 ```
 
-If you don't do that, Git will pop up an error message complaining about
-it the first time it has to merge on a pull. And you'll have to do it
-then. (Leave the word `set` out of that command if it fails on older
-Gits.)
+Nếu bạn không làm điều đó, Git sẽ bật lên thông báo lỗi phàn nàn về
+nó lần đầu tiên nó phải merge khi pull. Và bạn sẽ phải làm điều đó
+khi đó. (Bỏ từ `set` ra khỏi lệnh đó nếu nó thất bại trên các Git cũ
+hơn.)
 
-When we talk about [rebasing](#rebase) later, this will make more sense.
+Khi chúng ta nói về [rebasing](#rebase) sau, điều này sẽ có ý nghĩa hơn.
 
-## `HEAD` and Branches
+## `HEAD` và Branches
 
 [i[`HEAD`-->With branches]]
 
-We said earlier that `HEAD` refers to a specific commit, namely the
-commit you're looking at right now in your unmodified working tree.
+Trước đây chúng ta đã nói rằng `HEAD` tham chiếu đến một commit cụ thể,
+cụ thể là commit bạn đang nhìn vào ngay bây giờ trong working tree chưa
+sửa đổi của bạn.
 
-And we also said that was a bit of a lie.
+Và chúng ta cũng nói rằng đó là một lời nói không hoàn toàn đúng.
 
 [i[`HEAD`-->Detached]<]
 
-In normal usage, `HEAD` points to a branch, not to a commit. Only in
-detached head state does `HEAD` point directly to a commit (i.e. when
-it's detached from all branches).
+Trong sử dụng thông thường, `HEAD` trỏ đến một branch, không phải một
+commit. Chỉ trong trạng thái detached head thì `HEAD` mới trỏ trực tiếp
+đến một commit (tức là khi nó bị tách khỏi tất cả các branch).
 
-If we look at Figure_#.7, we see `HEAD` is pointing to a branch as per
-normal.
+Nếu chúng ta nhìn vào Figure_#.7, chúng ta thấy `HEAD` đang trỏ đến
+một branch theo bình thường.
 
 ![`HEAD` pointing to a branch.](img_030_070.pdf "[HEAD pointing to a branch.]")
 
@@ -208,9 +211,8 @@ normal.
 ```
 -->
 
-But if we check out an earlier commit that doesn't have a branch, we end
-up in detached head state, and it looks like
-Figure_#.8.
+Nhưng nếu chúng ta check out một commit trước đó không có branch, chúng
+ta kết thúc ở trạng thái detached head, và nó trông như Figure_#.8.
 
 ![`HEAD` pointing to a commit.](img_030_080.pdf "[HEAD pointing to a commit.]")
 
@@ -223,17 +225,17 @@ Figure_#.8.
 ```
 -->
 
-So far, we've been making commits on the `main` branch without really
-even thinking about branching. Recalling that the `main` branch is just
-a label for a specific commit, how does the `main` branch know to
-"follow" our `HEAD` from commit to commit?
+Cho đến nay, chúng ta đã tạo commit trên branch `main` mà không thực sự
+nghĩ về branching. Nhớ lại rằng branch `main` chỉ là một nhãn cho một
+commit cụ thể, làm thế nào branch `main` biết để "theo" `HEAD` của chúng
+ta từ commit sang commit?
 
-It does it like this: the branch that `HEAD` points to follows the
-current commit. That is, when you make a commit, the branch `HEAD`
-points to moves along to that next commit.
+Nó làm như thế này: branch mà `HEAD` trỏ đến theo commit hiện tại. Tức
+là, khi bạn tạo commit, branch mà `HEAD` trỏ đến di chuyển đến commit
+tiếp theo đó.
 
-If we were here back at Figure_#.7, when `HEAD` was pointing to the
-`main` branch, we could make one more commit and get us to Figure_#.9.
+Nếu chúng ta ở đây tại Figure_#.7, khi `HEAD` đang trỏ đến branch
+`main`, chúng ta có thể tạo thêm một commit và đến Figure_#.9.
 
 ![`HEAD` moving with a branch.](img_030_090.pdf "[HEAD moving with a branch.]")
 
@@ -246,8 +248,8 @@ If we were here back at Figure_#.7, when `HEAD` was pointing to the
 ```
 -->
 
-Contrast that to detached head state, back in Figure_#.8. If we were
-there, a new commit would get us to Figure_#.10, leaving `main` alone.
+So sánh với trạng thái detached head, tại Figure_#.8. Nếu chúng ta ở
+đó, một commit mới sẽ đưa chúng ta đến Figure_#.10, để `main` yên.
 
 ![A commit with detached `HEAD`.](img_030_100.pdf "[A commit with detached HEAD.]")
 
@@ -265,32 +267,32 @@ there, a new commit would get us to Figure_#.10, leaving `main` alone.
 ```
 -->
 
-At this point, there's nothing stopping you from creating a new branch
-at the same commit as `HEAD`, if you want to do that. Or maybe you are
-just messing around and decide to switch back to `main` later,
-abandoning the commits you've made in detached `HEAD` state.
+Tại đây, không có gì ngăn bạn tạo một branch mới tại commit giống như
+`HEAD`, nếu bạn muốn làm vậy. Hoặc có thể bạn chỉ đang nghịch và quyết
+định switch lại `main` sau, từ bỏ các commit bạn đã tạo ở trạng thái
+detached `HEAD`.
 
 [i[`HEAD`-->Detached]>]
 
-Now that we have the abstract theory stuff laid out, let's talk
-specifics.
+Bây giờ chúng ta đã trình bày những thứ lý thuyết trừu tượng, hãy nói
+cụ thể.
 
-## Listing All Your Branches
+## Liệt Kê Tất Cả Branches Của Bạn
 
 [i[Branch-->Listing]<]
 
-Before we start, let's see how to list branches.
+Trước khi bắt đầu, hãy xem cách liệt kê các branch.
 
 ``` {.default}
 $ git branch
   * main
 ```
 
-This is telling you there's one branch, and you have it checked out (the
-`*` lets you know that).
+Điều này cho bạn biết có một branch, và bạn đã check out nó (`*` cho
+bạn biết điều đó).
 
-If I make a new branch called `foobranch` and switch to that, I'll see
-this:
+Nếu mình tạo một branch mới gọi là `foobranch` và switch sang đó, mình
+sẽ thấy điều này:
 
 ``` {.default}
 % git branch
@@ -298,7 +300,7 @@ this:
     main
 ```
 
-If I then detach the `HEAD`, I end up here:
+Nếu sau đó mình detach `HEAD`, mình kết thúc ở đây:
 
 ``` {.default}
 % git branch              
@@ -307,60 +309,58 @@ If I then detach the `HEAD`, I end up here:
     main
 ```
 
-But you can always see what branch you're on with `git branch` or `git
-status`.
+Nhưng bạn luôn có thể thấy mình đang ở branch nào với `git branch` hay
+`git status`.
 
 [i[Branch-->Listing]>]
 
-## Creating a Branch
+## Tạo Một Branch
 
 [i[Branch-->Creating]<]
 
-When you make the first commit to a new repo, the `main` branch is
-automatically created for you at that commit.
+Khi bạn thực hiện commit đầu tiên vào một repo mới, branch `main` được
+tự động tạo cho bạn tại commit đó.
 
-But what about new branches we want to make?
+Nhưng còn các branch mới mà chúng ta muốn tạo thì sao?
 
-> **Why make a branch?** A common case is that you want to work on your
-> own commits without impacting the work of others. (In this case you're
-> really just putting off the work until you merge your branch with
-> theirs, but it's a good workflow.)
+> **Tại sao lại tạo một branch?** Một trường hợp phổ biến là bạn muốn
+> làm việc trên các commit của mình mà không ảnh hưởng đến công việc
+> của người khác. (Trong trường hợp này bạn thực sự chỉ trì hoãn công
+> việc cho đến khi bạn merge branch với của họ, nhưng đó là một workflow
+> tốt.)
 >
-> Another case is that you want to mess around with some changes but
-> you're not sure if they'll work. If they end up not working, you can
-> just delete the branch. If they do work, you can merge your changes
-> back into the non-messing-around branch.
+> Một trường hợp khác là bạn muốn nghịch với một số thay đổi nhưng bạn
+> không chắc chúng có hoạt động không. Nếu chúng không hoạt động, bạn
+> có thể chỉ cần xóa branch. Nếu chúng hoạt động, bạn có thể merge các
+> thay đổi của mình trở lại branch không-nghịch.
 
-The most common way to make new branches is this:
+Cách phổ biến nhất để tạo branch mới là như sau:
 
-1. Switch to the commit or branch from which you want to make the new
-   branch.
+1. Switch sang commit hoặc branch từ đó bạn muốn tạo branch mới.
 
-2. Make the new branch there and switch `HEAD` to point to the new
-   branch.
+2. Tạo branch mới ở đó và switch `HEAD` để trỏ đến branch mới.
 
-Let's try it. Let's branch off `main`.
+Hãy thử. Hãy tạo branch từ `main`.
 
-You might already have `main` checked out (i.e. `HEAD` points to
-`main`), but let's do it again to be safe, and then we'll create a
-branch with `git switch`:
+Bạn có thể đã check out `main` rồi (tức là `HEAD` trỏ đến `main`), nhưng
+hãy làm lại để an toàn, rồi chúng ta sẽ tạo một branch với `git switch`:
 
 ``` {.default}
 $ git switch main
 $ git switch -c newbranch
 ```
 
-Normally you can just switch to another branch (i.e. have `HEAD` point
-to that branch) with `git switch branchname`. But if the branch doesn't
-exist, you need to use the `-c` switch to create the branch before
-switching to it.
+Thông thường bạn có thể chỉ switch sang một branch khác (tức là có
+`HEAD` trỏ đến branch đó) với `git switch branchname`. Nhưng nếu branch
+không tồn tại, bạn cần dùng flag `-c` để tạo branch trước khi switch
+sang nó.
 
-> **Make sure all your local changes are committed before switching
-> branches!** If you `git status` it should say "working tree clean"
-> before you switch. Later we'll learn about another option when we talk
-> about [stashing](#stash).
+> **Hãy chắc chắn tất cả các thay đổi local của bạn đã được commit
+> trước khi switch branches!** Nếu bạn `git status` nó phải nói "working
+> tree clean" trước khi bạn switch. Sau này chúng ta sẽ học về một tùy
+> chọn khác khi nói về [stashing](#stash).
 
-So after checking out `main`, we have Figure_#.11.
+Vì vậy sau khi check out `main`, chúng ta có Figure_#.11.
 
 ![`HEAD` pointing to `main`.](img_030_070.pdf "[HEAD pointing to main.]")
 
@@ -373,8 +373,8 @@ So after checking out `main`, we have Figure_#.11.
 ```
 -->
 
-And then with `git switch -c newbranch`,  we create and switch to
-`newbranch`, and that gets us to Figure_#.12.
+Và sau đó với `git switch -c newbranch`, chúng ta tạo và switch sang
+`newbranch`, và điều đó đưa chúng ta đến Figure_#.12.
 
 ![`HEAD` pointing to `newbranch`.](img_030_110.pdf "[HEAD pointing to newbranch.]")
 
@@ -390,41 +390,40 @@ And then with `git switch -c newbranch`,  we create and switch to
 ```
 -->
 
-That's not super exciting, since we're still looking at the same commit,
-but let's see what happens when we make some new commits on this new
-branch.
+Không quá thú vị, vì chúng ta vẫn đang nhìn vào cùng một commit, nhưng
+hãy xem điều gì xảy ra khi chúng ta tạo một số commit mới trên branch
+mới này.
 
-> **The branches we're making here exist only on your local clone**;
-> they're not automagically propagated back to wherever you cloned the
-> repo from.
+> **Các branch chúng ta đang tạo ở đây chỉ tồn tại trên clone local của
+> bạn**; chúng không được tự động truyền lại đến nơi bạn đã clone repo.
 >
-> The upshot is that if you accidentally (or deliberately) delete your
-> local repo, when you `git clone` again, all your local branches will
-> be gone (along with any commits that aren't part of `main` or any
-> other branches pushed to the server).
+> Điều đó có nghĩa là nếu bạn vô tình (hoặc cố ý) xóa repo local của
+> mình, khi bạn `git clone` lại, tất cả các branch local của bạn sẽ
+> biến mất (cùng với bất kỳ commit nào không phải là một phần của `main`
+> hay bất kỳ branch nào khác đã được push lên server).
 >
-> There is a way to set up that connection where your local branches are
-> uploaded when you push, called [_remote-tracking
-> branches_](#remote-tracking-branch). `main` is connected to a remote
-> tracking branch (usually called `origin/main`) which is why `git push`
-> from `main` works while `git push` from `newbranch`, which is not by
-> default connected to a remote tracking branch, gives an error. But
-> we'll talk about all this later.
+> Có một cách để thiết lập kết nối đó nơi các branch local của bạn được
+> upload khi bạn push, được gọi là [_remote-tracking
+> branches_](#remote-tracking-branch). `main` được kết nối với remote
+> tracking branch (thường gọi là `origin/main`) đó là lý do tại sao
+> `git push` từ `main` hoạt động trong khi `git push` từ `newbranch`,
+> không được kết nối mặc định với remote tracking branch, báo lỗi. Nhưng
+> chúng ta sẽ nói tất cả điều này sau.
 
 [i[Branch-->Creating]>]
 
-## Make Some Commits on a Branch
+## Tạo Một Số Commits Trên Một Branch
 
-This is not really that different than what we were doing with our
-commits before. Before we made a branch, we had `HEAD` pointing to
-branch `main`, and we were making commits on `main`.
+Điều này không thực sự khác với những gì chúng ta đã làm với các commit
+của mình trước đây. Trước khi chúng ta tạo branch, chúng ta có `HEAD`
+trỏ đến branch `main`, và chúng ta đã tạo commit trên `main`.
 
-Now we have `HEAD` pointing to `newbranch` and our commits will go
-there, instead.
+Bây giờ chúng ta có `HEAD` trỏ đến `newbranch` và các commit của chúng
+ta sẽ đến đó, thay thế.
 
-Right after creating `newbranch`, we had the situation in Figure_#.12.
-Now let's edit something in the working tree and make a new commit. With
-that, we'll have the scenario in Figure_#.13.
+Ngay sau khi tạo `newbranch`, chúng ta có tình huống trong Figure_#.12.
+Bây giờ hãy chỉnh sửa thứ gì đó trong working tree và tạo một commit
+mới. Với điều đó, chúng ta sẽ có tình huống trong Figure_#.13.
 
 ![Adding a new commit to `newbranch`.](img_030_120.pdf "[Adding a new commit to newbranch.]")
 
@@ -450,7 +449,7 @@ that, we'll have the scenario in Figure_#.13.
 ```
 -->
 
-Right? Let's make another commit and get to Figure_#.14.
+Đúng không? Hãy tạo thêm một commit và đến Figure_#.14.
 
 ![Adding another commit to `newbranch`.](img_030_130.pdf "[Adding another commit to newbranch.]")
 
@@ -466,35 +465,35 @@ Right? Let's make another commit and get to Figure_#.14.
 ```
 -->
 
-We can see that `newbranch` and `main` are pointing at different
-commits.
+Chúng ta có thể thấy rằng `newbranch` và `main` đang trỏ đến các commit
+khác nhau.
 
-> **If we wanted to see the state of the repo from `main`'s perspective,
-> what would we have to do?** We'd have to `git switch main` to look at
-> that branch.
+> **Nếu chúng ta muốn thấy trạng thái của repo từ góc nhìn của `main`,
+> chúng ta phải làm gì?** Chúng ta sẽ phải `git switch main` để nhìn
+> vào branch đó.
 
-Now for another question. Let's say we've decided that we're happy with
-the changes on `newbranch`, and we want to merge them into the code in
-the `main` branch. How would we do that?
+Bây giờ có một câu hỏi khác. Giả sử chúng ta quyết định hài lòng với
+các thay đổi trên `newbranch`, và chúng ta muốn merge chúng vào code
+trong branch `main`. Chúng ta sẽ làm điều đó như thế nào?
 
 ## Merging: Fast-Forward
 
 [i[Merge]<]
 [i[Merge-->Fast-forward]<]
 
-Bringing two branches back into sync is called _merging_.
+Đưa hai branch trở lại đồng bộ được gọi là _merging_ (gộp).
 
-The branch you're on is the branch you're bringing other changes _into_.
-That is, if you're on Branch A, and you tell git to "merge Branch B",
-Branch B's changes will be applied onto Branch A. (Branch B remains
-unchanged in this scenario.)
+Branch bạn đang ở là branch bạn đang đưa các thay đổi khác _vào_. Tức
+là, nếu bạn đang ở Branch A, và bạn nói với git để "merge Branch B",
+các thay đổi của Branch B sẽ được áp dụng vào Branch A. (Branch B vẫn
+không thay đổi trong tình huống này.)
 
-But in this section we're going to be talking about a specific kind of
-merge: the _fast-forward_. This occurs when the branch you're merging
-from is a direct descendant of the branch you're merging into.
+Nhưng trong phần này chúng ta sẽ nói về một loại merge cụ thể: _fast-forward_
+(tua nhanh). Điều này xảy ra khi branch bạn đang merge từ là một
+descendant (hậu duệ) trực tiếp của branch bạn đang merge vào.
 
-Let's say we have `newbranch` checked out, like from the previous
-example in Figure_#.14.
+Giả sử chúng ta có `newbranch` được check out, như từ ví dụ trước trong
+Figure_#.14.
 
 <!--
 ``` {.default}
@@ -508,29 +507,30 @@ example in Figure_#.14.
 ```
 -->
 
-I decide I want to merge `main`'s changes into `newbranch`, so (again,
-with `newbranch` currently checked out):
+Mình quyết định muốn merge các thay đổi của `main` vào `newbranch`, vì
+vậy (một lần nữa, với `newbranch` hiện đang được check out):
 
 ``` {.default}
 $ git merge main
   Already up to date.
 ```
 
-Nothing happened? What's that mean? Well, if we look at the commit
-graph, above, all of `main`'s changes are already in `newbranch`, since
-`newbranch` is a direct descendant.
+Không có gì xảy ra? Điều đó có nghĩa là gì? Vâng, nếu chúng ta nhìn vào
+đồ thị commit ở trên, tất cả các thay đổi của `main` đã có trong
+`newbranch`, vì `newbranch` là hậu duệ trực tiếp.
 
-Git is saying, "Hey, you already have all the commits up to `main` in
-your branch, so there's nothing for me to do."
+Git đang nói, "Này, bạn đã có tất cả các commit đến `main` trong branch
+của bạn rồi, vì vậy không có gì để mình làm."
 
-But let's reverse it. Let's check out `main` and then merge `newbranch`
-into it.
+Nhưng hãy đảo ngược lại. Hãy check out `main` rồi merge `newbranch`
+vào nó.
 
 ``` {.default}
 $ git switch main
 ```
 
-Now we've moved `HEAD` to track `main`, as shown in Figure_#.15.
+Bây giờ chúng ta đã di chuyển `HEAD` để theo dõi `main`, như được hiển
+thị trong Figure_#.15.
 
 ![Checking out `main` again.](img_030_140.pdf "[Checking out `main` again.]")
 
@@ -546,11 +546,12 @@ Now we've moved `HEAD` to track `main`, as shown in Figure_#.15.
 ```
 -->
 
-And `newbranch` is **not** a direct ancestor of `main` (it's a
-descendant). So `newbranch`'s changes are **not** yet in `main`.
+Và `newbranch` **không** phải là ancestor (tổ tiên) trực tiếp của `main`
+(nó là descendant). Vì vậy các thay đổi của `newbranch` **chưa** ở trong
+`main`.
 
-So let's merge them in and see what happens (your output may vary
-depending on what files are included in the merge):
+Vì vậy hãy merge chúng vào và xem điều gì xảy ra (output của bạn có
+thể khác nhau tùy thuộc vào file nào được đưa vào merge):
 
 ``` {.default}
 $ git merge newbranch
@@ -560,7 +561,7 @@ $ git merge newbranch
    1 file changed, 3 insertions(+), 1 deletion(-)
 ```
 
-And now we're at Figure_#.16.
+Và bây giờ chúng ta đang ở Figure_#.16.
 
 ![After merging `newbranch` into `main`.](img_030_150.pdf "[After merging newbranch into main.]")
 
@@ -576,48 +577,47 @@ And now we're at Figure_#.16.
 ```
 -->
 
-Wait a second—didn't we say to merge `newbranch` into `main`, like take
-those changes and fold them into the `main` branch? Why did `main`
-move, then?
+Chờ một chút --- chúng ta không nói là merge `newbranch` vào `main`, như
+là lấy những thay đổi đó và gấp chúng vào branch `main` đó sao? Tại sao
+`main` di chuyển?
 
-We did say that! But let's stop and think about how this can happen in
-the special case where the branch you're merging _into_ is a direct
-ancestor of the branch you're merging _from_.
+Chúng ta đã nói vậy! Nhưng hãy dừng lại và suy nghĩ về cách điều này
+có thể xảy ra trong trường hợp đặc biệt khi branch bạn đang merge _vào_
+là ancestor trực tiếp của branch bạn đang merge _từ_.
 
-It used to be that `main` didn't have commits `(5)` or `(6)` in the
-graph, above. But `newbranch` has already done the work of adding `(5)`
-and `(6)`!
+Trước đây `main` không có commit `(5)` hay `(6)` trong đồ thị ở trên.
+Nhưng `newbranch` đã làm công việc thêm `(5)` và `(6)` rồi!
 
-The easiest way to get those commits "into" `main` is to simply
-_fast-forward_ `main` up to `newbranch`'s commit!
+Cách dễ nhất để đưa những commit đó "vào" `main` là đơn giản _fast-forward_
+`main` lên đến commit của `newbranch`!
 
-Again, this only works when the branch you're merging into is a direct
-ancestor of the branch you're merging from.
+Lại nữa, điều này chỉ hoạt động khi branch bạn đang merge vào là
+ancestor trực tiếp của branch bạn đang merge từ.
 
-That said, you certainly can merge branches that are not directly
-related like that, e.g. branches that share a common ancestor but have
-both since diverged.
+Mà thôi, bạn hoàn toàn có thể merge các branch không liên quan trực
+tiếp như vậy, ví dụ các branch chia sẻ một ancestor chung nhưng cả hai
+đều đã phân kỳ từ đó.
 
-Git will automatically fast-forward if it can. Otherwise it does a
-"real" merge. And while fast-forward merges can never lead to _merge
-conflicts_, regular merges certainly can.
+Git sẽ tự động fast-forward nếu có thể. Nếu không, nó thực hiện merge
+"thực". Và trong khi fast-forward merge không bao giờ dẫn đến _merge
+conflict_ (xung đột merge), các merge thông thường thì có thể.
 
-But that's another story we'll get into in the [Merging and
-Conflicts](#merge) chapter.
+Nhưng đó là một câu chuyện khác chúng ta sẽ đi vào trong chương [Merging
+and Conflicts](#merge).
 
 [i[Merge-->Fast-forward]>]
 [i[Merge]>]
 
-## Deleting a Branch
+## Xóa Một Branch
 
 [i[Branch-->Deleting]]
 
-If you're done merging your branch, it's easy to delete it. **Importantly,
-this doesn't delete any commits; it just deletes the branch "label"
-so you can't use it any longer**. You can still use all the commits.
+Nếu bạn đã merge xong branch của mình, thật dễ để xóa nó. **Quan trọng
+là, điều này không xóa bất kỳ commit nào; nó chỉ xóa "nhãn" branch để
+bạn không thể dùng nó nữa**. Bạn vẫn có thể dùng tất cả các commit.
 
-Let's say we've finished the work on our `topic1` branch and we
-want to merge it into `main`. No problem:
+Giả sử chúng ta đã hoàn thành công việc trên branch `topic1` và chúng
+ta muốn merge nó vào `main`. Không vấn đề gì:
 
 ``` {.default}
 $ git commit -m "finished with topic1"   # on topic1 branch
@@ -625,34 +625,34 @@ $ git switch main
 $ git merge topic1                       # merge topic1 into main
 ```
 
-At this point, assuming a completed merge, we can delete the `topic1`
-branch:
+Tại thời điểm này, giả sử merge đã hoàn chỉnh, chúng ta có thể xóa
+branch `topic1`:
 
 ``` {.default}
 $ git branch -d topic1
   Deleted branch topic1 (was 3be2ad2).
 ```
 
-Done!
+Xong!
 
-> [i[Branch-->Topic]]**A *topic* branch is what we call a local branch
-> made for a single topic like a feature, bug fix, etc.** In this guide
-> I'll name branches literally `topic` to indicate that it's just an
-> arbitrary branch. But in real life you'd name the topic branch after
-> what it is you're doing, like `bugfix37`, `newfeature`, `experiment`,
-> etc.
+> [i[Branch-->Topic]]**Một *topic branch* (branch chủ đề) là cái chúng
+> ta gọi là branch local được tạo cho một chủ đề duy nhất như tính năng,
+> sửa lỗi, v.v.** Trong tài liệu này mình sẽ đặt tên các branch là
+> `topic` theo nghĩa đen để chỉ ra rằng đó chỉ là một branch tùy ý.
+> Nhưng trong thực tế bạn sẽ đặt tên topic branch theo tên của những
+> gì bạn đang làm, như `bugfix37`, `newfeature`, `experiment`, v.v.
 
-But what if you were working on a branch and wanted to abandon it before
-you merge it into something? For that, we have the more imperative
-Capital `D` option, which means, "I _really_ mean it. Delete this
-unmerged branch!"
+Nhưng nếu bạn đang làm việc trên một branch và muốn từ bỏ nó trước khi
+merge nó vào thứ gì đó thì sao? Cho điều đó, chúng ta có tùy chọn chữ
+hoa `D` mang tính mệnh lệnh hơn, có nghĩa là "Mình _thực sự_ muốn. Xóa
+branch chưa được merge này!"
 
 ``` {.default}
 $ git branch -D topic1
 ```
 
-Use lowercase `-d` unless you have reason to do otherwise. It'll at
-least tell you if you're about to lose your reference to your unmerged
-commits, and then you can override with `-D` if you really want to.
+Dùng chữ thường `-d` trừ khi bạn có lý do để làm khác. Ít nhất nó sẽ
+cho bạn biết nếu bạn sắp mất tham chiếu đến các commit chưa được merge
+của mình, và sau đó bạn có thể ghi đè với `-D` nếu bạn thực sự muốn.
 
 [i[Branch]>]
