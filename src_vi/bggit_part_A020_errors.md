@@ -1,4 +1,4 @@
-# Appendix: Errors and Scary Messages
+# Phụ lục: Lỗi và Những Thông Báo Đáng Sợ
 
 [i[Errors]<]
 
@@ -7,7 +7,7 @@
 [i[`HEAD`-->Detached]<]
 [i[Errors-->Detached `HEAD`]<]
 
-Did you get this alarmingly guillotinesque message?
+Bạn có nhận được thông báo đáng sợ kiểu máy chém này không?
 
 ``` {.default}
 You are in 'detached HEAD' state. You can look around, make
@@ -31,52 +31,52 @@ to false
 HEAD is now at 0da5af9 line 1
 ```
 
-This means that you've checked out a commit directly instead of checking
-out a branch. That is, your `HEAD` is no longer attached to a branch,
-i.e. it is "detached".
+Điều này có nghĩa bạn đã checkout (chuyển đến) một commit trực tiếp thay
+vì checkout một branch (nhánh). Tức là `HEAD` của bạn không còn gắn với
+branch nào nữa --- nó đang ở trạng thái "detached" (tách rời).
 
-To get out of this, you can:
+Để thoát khỏi tình trạng này, bạn có thể:
 
-1. Undo the checkout that got you detached:
+1. Hoàn tác lệnh checkout đã khiến bạn bị tách rời:
 
    ``` {.default}
    git switch -
    ```
 
-2. Switch to another branch entirely:
+2. Chuyển sang branch khác hoàn toàn:
 
    ``` {.default}
    git switch main
    ```
 
-3. Make a new branch here and check it out:
+3. Tạo branch mới tại đây và checkout nó:
 
    ``` {.default}
    git switch -c newbranch
    ```
 
-And now your `HEAD` is no longer detached.
+Và giờ `HEAD` của bạn không còn bị tách rời nữa.
 
 [i[`HEAD`-->Detached]>]
 [i[Errors-->Detached `HEAD`]>]
 
-## Upstream Branch Name Doesn't Match Current
+## Tên Branch Upstream Không Khớp Branch Hiện Tại
 
 [i[Errors-->Branch name doesn't match]<]
 
-What if you ran:
+Điều gì xảy ra nếu bạn chạy:
 
 ``` {.default}
 git branch -c newbranch
 ```
 
-when you meant to run:
+trong khi thực ra muốn chạy:
 
 ``` {.default}
 git switch -c newbranch
 ```
 
-Because if you did, it could land you here:
+Vì nếu vậy, bạn có thể rơi vào đây:
 
 ``` {.default}
 fatal: The upstream branch of your current branch does not match
@@ -97,7 +97,7 @@ won't match the local branch, see option 'simple' of
 branch.autoSetupMerge in 'git help config'.
 ```
 
-Let's check our branch names to see what's going on:
+Hãy kiểm tra tên các branch để hiểu chuyện gì đang xảy ra:
 
 ``` {.default}
 $ git branch -vv
@@ -105,33 +105,31 @@ $ git branch -vv
 * newbranch 7c21054 [origin/main: behind 1] line 1
 ```
 
-That tells us our local branch names and, in brackets, the corresponding
-remote-tracking branch. Notice anything fishy?
+Lệnh đó cho ta biết tên branch local và, trong ngoặc vuông, remote-tracking
+branch (nhánh theo dõi remote) tương ứng. Có gì lạ không?
 
-It seems `main` corresponds with `origin/main`.
+Có vẻ `main` ứng với `origin/main`.
 
-And that `newbranch` **also** corresponds with `origin/main`! How?!
+Và `newbranch` **cũng** ứng với `origin/main`! Sao vậy?!
 
-Well, when you did `git branch -c newbranch`, that _copies_ the current
-branch (`main` in this example) into the other branch, _including its
-remote-tracking branch_. Bad news, since you really want `newbranch` to
-correlate to `origin/newbranch`, if anything.
+À, khi bạn chạy `git branch -c newbranch`, lệnh đó *sao chép* branch hiện
+tại (`main` trong ví dụ này) sang branch kia, *kể cả remote-tracking branch
+của nó*. Tin xấu đây, vì bạn thực sự muốn `newbranch` liên kết với
+`origin/newbranch` mới đúng.
 
-You have a few options.
+Bạn có vài lựa chọn.
 
-1. You want to push `newbranch` up to the `origin` and track it as
-   `origin/newbranch`.
+1. Bạn muốn push `newbranch` lên `origin` và theo dõi nó là `origin/newbranch`.
 
-   Just do this to push and change the remote-tracking branch name:
+   Làm như này để push và đổi tên remote-tracking branch:
 
    ``` {.default}
    $ git push -u origin newbranch
    ```
 
-2. You just want this to be a local branch and don't need it on the
-   remote.
+2. Bạn chỉ muốn đây là branch local và không cần đẩy lên remote.
 
-   In this case, just unset the upstream:
+   Trong trường hợp này, chỉ cần bỏ thiết lập upstream:
 
    ``` {.default}
    $ git branch --unset-upstream newbranch
@@ -139,11 +137,11 @@ You have a few options.
 
 [i[Errors-->Branch name doesn't match]>]
 
-## Current Branch Has No Upstream Branch
+## Branch Hiện Tại Không Có Upstream Branch
 
 [i[Errors-->No upstream branch]<]
 
-Trying to push and getting this message?
+Đang cố push mà nhận được thông báo này?
 
 ``` {.default}
 fatal: The current branch topic1 has no upstream branch.
@@ -155,14 +153,12 @@ To have this happen automatically for branches without a tracking
 upstream, see 'push.autoSetupRemote' in 'git help config'
 ```
 
-This just means there's no upstream tracking branch for `topic1`—it's
-just a local branch.
+Điều này chỉ có nghĩa là không có upstream tracking branch (nhánh theo dõi
+upstream) nào cho `topic1` --- nó chỉ là branch local.
 
-If you do want to push this branch, just follow the suggested
-instruction.
+Nếu bạn muốn push branch này, chỉ cần làm theo hướng dẫn được gợi ý.
 
-If you are pushing from the wrong branch by accident, switch to the
-right one first.
+Nếu bạn đang push nhầm branch, hãy chuyển sang đúng branch trước.
 
 [i[Errors-->No upstream branch]>]
 
