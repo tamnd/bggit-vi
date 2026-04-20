@@ -1,19 +1,19 @@
-# Cherry-Pick: Bringing in Specific Commits
+# Cherry-Pick: Mang Vào Commit Cụ Thể
 
 [i[Cherry-pick]<]
 
-Let's say you're working on `branch1` and you have made a bug fix to
-`branch2`. You're not ready to merge _all_ the changes in from `branch2`
-into `branch1`, but you really want just that bug fixed.
+Giả sử bạn đang làm việc trên `branch1` và bạn đã thực hiện sửa lỗi trên
+`branch2`. Bạn chưa sẵn sàng merge _toàn bộ_ thay đổi từ `branch2` vào
+`branch1`, nhưng bạn thực sự chỉ muốn lỗi đó được sửa.
 
-Luckily, there's a way to do that! You can merge a single commit into
-your branch with `git cherry-pick`. You just have to tell it which
-commit to bring in.
+May thay, có một cách để làm điều đó! Bạn có thể merge một commit duy nhất vào
+nhánh của mình với `git cherry-pick`. Bạn chỉ cần cho nó biết commit nào cần
+mang vào.
 
-## Cherry-Pick Example
+## Ví Dụ Cherry-Pick
 
-Let's have a file on the `main` branch called `foo.txt` that has the
-following contents stored in an initial commit:
+Hãy có một file trên nhánh `main` gọi là `foo.txt` với nội dung sau được lưu
+trong commit ban đầu:
 
 ``` {.default}
 Line 1
@@ -28,12 +28,12 @@ Line 9
 Line 10
 ```
 
-Very exciting file, that.
+File thú vị lắm đấy.
 
-Now let's switch to another branch, call it `branch`, inspirationally.
+Giờ hãy chuyển sang nhánh khác, gọi nó là `branch`, đặt tên thật sáng tạo.
 
-And on this branch, we do some things. First, we add a couple lines to
-the end and commit.
+Và trên nhánh này, chúng ta làm vài thứ. Đầu tiên, chúng ta thêm vài dòng vào
+cuối và commit.
 
 ``` {.default}
 Line 1
@@ -50,7 +50,7 @@ Branch: Line 101
 Branch: Line 102
 ```
 
-And then we add a line to the middle, and commit again.
+Và sau đó chúng ta thêm một dòng vào giữa, và commit lại.
 
 ``` {.default}
 Line 1
@@ -68,22 +68,21 @@ Branch: Line 101
 Branch: Line 102
 ```
 
-**Additionally** let's create a branch here called `checkpoint` to make
-this demo a little easier. You don't *have* to do this, but it'll enable
-us to cherry-pick this commit by its branch name instead of by its
-commit hash. Or you could skip this step and just use the hash.
+**Ngoài ra** hãy tạo nhánh tại đây gọi là `checkpoint` để demo này dễ hơn. Bạn
+không *bắt buộc* phải làm điều này, nhưng nó sẽ cho phép chúng ta cherry-pick
+commit này bằng tên nhánh thay vì bằng commit hash. Hoặc bạn có thể bỏ qua
+bước này và chỉ dùng hash.
 
 ``` {.default}
 $ git branch checkpoint
 ```
 
-> **This doesn't switch branches.** It just makes a new branch on this
-> commit. `HEAD` is still pointing to `branch` like before.
+> **Thao tác này không chuyển nhánh.** Nó chỉ tạo nhánh mới trên commit này.
+> `HEAD` vẫn trỏ đến `branch` như trước.
 
-Lastly, let's add a couple more lines to the end, and commit one last
-time.
+Cuối cùng, hãy thêm vài dòng nữa vào cuối, và commit lần cuối.
 
-So here's the file as it exists on `branch`:
+Vậy đây là file như nó tồn tại trên `branch`:
 
 ``` {.default}
 Line 1
@@ -103,7 +102,7 @@ Branch: Line 103
 Branch: Line 104
 ```
 
-And let's look at the log to see what we have:
+Và hãy nhìn vào log để xem chúng ta có gì:
 
 ``` {.default}
 commit 9336292f73b4ace717644336f72458681c1bb761 (HEAD -> branch)
@@ -131,14 +130,14 @@ Date:   Sun Oct 20 13:08:30 2024 -0700
     added
 ```
 
-Okay—that's the set-up part of the demo. Now it's time to cherry-pick!
+Được rồi---đó là phần setup (thiết lập) của demo. Giờ là lúc cherry-pick!
 
-What we're going to want to do for the demo is switch back to `main` and
-then cherry-pick the one commit that inserts line 5 in the middle. You
-can always use its commit hash (`407f2`) for this, but we left behind
-that branch `checkpoint` there we can use instead.
+Điều chúng ta muốn làm cho demo là chuyển lại về `main` rồi cherry-pick commit
+duy nhất chèn dòng 5 vào giữa. Bạn luôn có thể dùng commit hash của nó (`407f2`)
+cho điều này, nhưng chúng ta đã để lại nhánh `checkpoint` đó mà chúng ta có thể
+dùng thay thế.
 
-Let's do it.
+Hãy làm vậy.
 
 ``` {.default}
 $ git switch main
@@ -151,8 +150,8 @@ $ git cherry-pick checkpoint
    1 file changed, 1 insertion(+)
 ```
 
-What that *should* have done is bring in that newly-inserted line 5, and
-none of the other changes. Let's look at `foo.txt` from `main`:
+Điều đó *lẽ ra* đã mang vào dòng 5 được chèn mới đó, và không có thay đổi nào
+khác. Hãy nhìn vào `foo.txt` từ `main`:
 
 ``` {.default}
 Line 1
@@ -168,15 +167,15 @@ Line 9
 Line 10
 ```
 
-And there it is!
+Và đây rồi!
 
-> **Wait—wasn't that just a merge?** Not quite! Notice that we had added
-> lines 101-102 in `branch` *before* we inserted line 5. And yet that
-> earlier commit is not reflected in `main`. We *cherry-picked* that
-> single commit with line 5 out of the stream of commits, ignoring the
-> other ones before and after it!
+> **Khoan---đó không chỉ là merge thôi à?** Không hẳn! Lưu ý rằng chúng ta đã
+> thêm dòng 101-102 trong `branch` *trước khi* chúng ta chèn dòng 5. Vậy mà
+> commit trước đó không được phản ánh trong `main`. Chúng ta đã *cherry-pick*
+> commit đơn lẻ đó với dòng 5 ra khỏi dòng chảy commit, bỏ qua các commit
+> trước và sau nó!
 
-Now let's look at `git log` on `main`:
+Giờ hãy nhìn vào `git log` trên `main`:
 
 ``` {.default}
 commit 92546636d05fa85218ca18a0cd705ddc14fa8b64 (HEAD -> main)
@@ -192,42 +191,39 @@ Date:   Sun Oct 20 13:08:30 2024 -0700
     added
 ```
 
-There are two amazing things to notice here:
+Có hai điều tuyệt vời cần lưu ý ở đây:
 
-1. The author information was preserved in the log message. Notice it's
-   `branch-user@example.com` and not `user@example.com`, even though it
-   was the latter who did the cherry-pick. This might not be entirely
-   surprising, except...
+1. Thông tin tác giả được bảo tồn trong commit message. Lưu ý nó là
+   `branch-user@example.com` chứ không phải `user@example.com`, mặc dù người
+   sau đã thực hiện cherry-pick. Điều này có thể không hoàn toàn ngạc nhiên,
+   ngoại trừ...
 
-2. The cherry-picked commit hash is different in `main` than in
-   `branch`! In `branch`, it's `407f2`, and here it's `92546`. But it
-   **has** to be that way because it's got all new content. That is,
-   there's no other commit anywhere in the commit graph where `foo.txt`
-   looks like this, so it has to have a unique commit hash[^5472].
+2. Commit hash của cherry-pick khác nhau trong `main` so với trong `branch`!
+   Trong `branch`, nó là `407f2`, và ở đây là `92546`. Nhưng nó **phải** như vậy
+   vì nó có toàn bộ nội dung mới. Tức là, không có commit nào khác trong commit
+   graph nơi `foo.txt` trông như thế này, vì vậy nó phải có commit hash
+   duy nhất[^5472].
 
-[^5472]: Even if the changes were identical, the commit hash would still
-    be different because the hash takes all kinds of other metadata into
-    account.
+[^5472]: Ngay cả khi các thay đổi giống hệt nhau, commit hash vẫn sẽ khác vì
+    hash tính đến tất cả các loại metadata khác.
 
-But not every cherry-pick will go as smoothly as that!
+Nhưng không phải mọi cherry-pick đều diễn ra suôn sẻ như vậy!
 
-## Cherry-Pick Conflicts
+## Xung Đột khi Cherry-Pick
 
 [i[Cherry-pick-->Conflicts]<]
 
-Yes, you can get conflicts with a cherry-pick, of course. This might
-happen because you've changed some of the same lines as the commit
-you're cherry-picking, or maybe because the cherry-picked commit has
-some contextual lines of code that you don't have.
+Vâng, bạn có thể có xung đột với cherry-pick, tất nhiên rồi. Điều này có thể
+xảy ra vì bạn đã thay đổi một số dòng giống với commit bạn đang cherry-pick, hoặc
+có thể vì commit được cherry-pick có một số dòng code ngữ cảnh mà bạn không có.
 
-In any case, conflict resolution happens in the much the same way as
-with `merge` or `rebase`. If you need to, refamiliarize yourself with
-the content from those chapters.
+Dù sao, việc giải quyết xung đột diễn ra theo cách rất giống với `merge` hay
+`rebase`. Nếu cần, hãy làm quen lại với nội dung từ những chương đó.
 
-But by now I hope the process seems familiar. First, make the file
-_Right_, then add it, and then you'll _continue_ (like with a `rebase`)
-with `git cherry-pick --continue`. Keep doing that until everything's
-merged together cleanly.
+Nhưng đến giờ tôi hy vọng quy trình đã quen thuộc. Đầu tiên, làm cho file
+_Đúng_, sau đó add nó, và sau đó bạn sẽ _continue_ (tiếp tục, giống như với
+`rebase`) bằng `git cherry-pick --continue`. Cứ làm vậy cho đến khi mọi thứ
+được merge sạch sẽ.
 
 [i[Cherry-pick-->Conflicts]>]
 
