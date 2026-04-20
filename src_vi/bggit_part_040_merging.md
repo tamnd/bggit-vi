@@ -1,20 +1,21 @@
-# Merging and Conflicts {#merge}
+# Merging và Conflicts {#merge}
 
 [i[Merge]<]
 
-We've seen how a fast-forward merge can bring two branches into sync with
-no possibility of conflict.
+Chúng ta đã thấy cách fast-forward merge có thể đưa hai branch đồng bộ
+mà không có khả năng xung đột.
 
-But what if we can't fast-forward because two branches are not direct
-ancestors? In other words, what if the branches have _diverged_? What if
-a change in one branch _conflicts_ with a change in the other?
+Nhưng nếu chúng ta không thể fast-forward vì hai branch không phải là
+ancestor trực tiếp thì sao? Nói cách khác, nếu các branch đã _phân kỳ_
+thì sao? Nếu một thay đổi trong một branch _xung đột_ với một thay đổi
+trong branch kia thì sao?
 
-## An Example of Divergent Branches
+## Một Ví Dụ về Các Branch Phân Kỳ
 
 [i[Branch-->Divergent]]
 
-Let's look at a commit graph where things are still OK to fast-forward
-in Figure_#.1.
+Hãy nhìn vào một đồ thị commit nơi mọi thứ vẫn còn OK để fast-forward
+trong Figure_#.1.
 
 ![A direct ancestor branch.](img_040_010.pdf "[A direct ancestor branch.]")
 
@@ -29,12 +30,12 @@ in Figure_#.1.
 ```
 -->
 
-Yes, I've bent the graph a bit there, but we can merge `somebranch`
-into `main` as a fast-forward because `main` is a direct ancestor and
-`somebranch` is therefore a direct descendant.
+Vâng, mình đã uốn cong đồ thị một chút ở đó, nhưng chúng ta có thể
+merge `somebranch` vào `main` như fast-forward vì `main` là ancestor
+trực tiếp và `somebranch` do đó là descendant trực tiếp.
 
-But what if, **before** we merged, someone made another commit on the
-`main` branch? And now it looks like it does in Figure_#.2.
+Nhưng nếu, **trước khi** chúng ta merge, ai đó tạo thêm một commit trên
+branch `main` thì sao? Và bây giờ nó trông như Figure_#.2.
 
 <!--
 ``` {.default}
@@ -49,47 +50,46 @@ But what if, **before** we merged, someone made another commit on the
 
 ![Not a direct ancestor branch.](img_040_020.pdf "[Not a direct ancestor branch.]")
 
-There's a common ancestor at commit `(2)`, but there's no direct line of
-descent. `main` and `somebranch` have diverged.
+Có một ancestor chung tại commit `(2)`, nhưng không có đường xuống trực
+tiếp. `main` và `somebranch` đã phân kỳ.
 
-Is all hope lost? How can we merge?
+Còn hy vọng không? Làm thế nào chúng ta có thể merge?
 
-## Merging Divergent Branches
+## Merging Các Branch Phân Kỳ
 
-Turns out you do it the exact same way as always.
+Hóa ra bạn làm theo cách y hệt như trước.
 
-1. Check out the branch you want to merge _into_.
-2. `git merge` the branch you want to merge _from_.
+1. Check out branch bạn muốn merge _vào_.
+2. `git merge` branch bạn muốn merge _từ_.
 
-In our Figure_#.2 example above, let's say we've done this:
+Trong ví dụ Figure_#.2 ở trên, giả sử chúng ta đã làm điều này:
 
 ``` {.default}
 $ git switch main
 $ git merge somebranch    # into main
 ```
 
-> The `#` is a shell comment delimiter. You can paste that in if you
-> want, but it does nothing.
+> Ký tự `#` là shell comment delimiter (dấu phân cách comment). Bạn có
+> thể paste cái đó vào nếu muốn, nhưng nó không làm gì cả.
 
-The difference here is that Git can't simply fast-forward. It has to
-somehow, magically, bring together the changes from commit `(6)` **and**
-commit `(7)` even if they're radically different than one other.
+Sự khác biệt ở đây là Git không thể đơn giản fast-forward. Nó phải kết
+hợp, một cách thần kỳ, các thay đổi từ commit `(6)` **và** commit `(7)`
+ngay cả khi chúng hoàn toàn khác nhau.
 
-This means that after we bring those two commits together, the code will
-look like it's never looked before, a combination of two sets of
-changes.
+Điều này có nghĩa là sau khi chúng ta kết hợp hai commit đó, code sẽ
+trông như chưa bao giờ có trước đây, một sự kết hợp của hai bộ thay đổi.
 
-And because it looks like it hasn't before, we need _another commit_
-(another snapshot of the working tree) to represent the joining of both
-sets of changes.
+Và vì nó trông như chưa có trước, chúng ta cần _thêm một commit_ (thêm
+một snapshot của working tree) để đại diện cho việc kết hợp cả hai bộ
+thay đổi.
 
-We call this the _merge commit_, and Git will automatically make it for
-you. (When this happens, you'll see an editor pop up with some text in
-it. This text is the commit message. Edit it (or just accept it as-is)
-and save the file and exit the editor. See [Getting Out of
-Editors](#editor-get-out) if you need help with this.)
+Chúng ta gọi đây là _merge commit_, và Git sẽ tự động tạo nó cho bạn.
+(Khi điều này xảy ra, bạn sẽ thấy một editor pop up (bật lên) với một
+số văn bản trong đó. Văn bản này là commit message. Chỉnh sửa nó (hoặc
+chỉ chấp nhận như vậy) và lưu file rồi thoát khỏi editor. Xem [Thoát
+Khỏi Editor](#editor-get-out) nếu bạn cần giúp đỡ về điều này.)
 
-So after our merge, we end up with Figure_#.3.
+Vì vậy sau merge, chúng ta kết thúc với Figure_#.3.
 
 ![Creating a merge commit.](img_040_030.pdf "[Creating a merge commit.]")
 
@@ -108,55 +108,54 @@ So after our merge, we end up with Figure_#.3.
 ```
 -->
 
-Commit labeled `(8)` is the merge commit. It contains both the changes
-from `(7)` and `(6)`. And has the commit message you saved in the
-editor.
+Commit được gán nhãn `(8)` là merge commit. Nó chứa cả các thay đổi
+từ `(7)` và `(6)`. Và có commit message bạn đã lưu trong editor.
 
-And we see `main` has been updated to point to it. And that `somebranch`
-is unaffected.
+Và chúng ta thấy `main` đã được cập nhật để trỏ đến nó. Và `somebranch`
+không bị ảnh hưởng.
 
-Importantly, we see that commit `(8)` has **two parents**, the commits
-that were merged together to make it.
+Quan trọng là, chúng ta thấy rằng commit `(8)` có **hai parent**, là
+các commit đã được merge lại với nhau để tạo ra nó.
 
-And look! If we want, we can now fast-forward `somebranch` to `main`
-because it's now a direct ancestor!
+Và nhìn kìa! Nếu chúng ta muốn, chúng ta bây giờ có thể fast-forward
+`somebranch` lên `main` vì nó bây giờ là ancestor trực tiếp!
 
-In this example, Git was able to determine how to do the merge
-automatically. But there are some cases where it cannot, and this
-results in a _merge conflict_ that requires manual intervention. By you.
+Trong ví dụ này, Git đã có thể xác định cách thực hiện merge tự động.
+Nhưng có một số trường hợp nó không thể, và điều này dẫn đến _merge
+conflict_ (xung đột merge) đòi hỏi can thiệp thủ công. Bởi bạn.
 
 ## Merge Conflicts
 
 [i[Merge-->Conflicts]<]
 
-If two branches have changes that are "far apart" from one another, Git
-can figure it out. If I edit line 20 of a file in one branch, and you
-edit line 3490 of the same file in another, Git can bring both edits in
-automatically.
+Nếu hai branch có các thay đổi "cách xa" nhau, Git có thể tìm ra. Nếu
+mình chỉnh sửa dòng 20 của một file trong một branch, và bạn chỉnh sửa
+dòng 3490 của cùng file trong branch khác, Git có thể tự động đưa cả
+hai chỉnh sửa vào.
 
-But let's say I edit line 20 in one commit, and you edit line 20 (the
-same line) in another commit.
+Nhưng giả sử mình chỉnh sửa dòng 20 trong một commit, và bạn chỉnh sửa
+dòng 20 (cùng dòng) trong một commit khác.
 
-Which one is "right"? Git has no idea because it's just dumb software
-and doesn't know our business needs.
+Cái nào "đúng"? Git không có ý kiến vì nó chỉ là phần mềm ngu ngốc và
+không biết nhu cầu kinh doanh của chúng ta.
 
-So it asks us, during the merge, to fix it. After we fix it, Git can
-complete the merge.
+Vì vậy nó hỏi chúng ta, trong quá trình merge, để sửa nó. Sau khi chúng
+ta sửa, Git có thể hoàn thành merge.
 
-> **When you're merging, if a conflict occurs, _you're still merging_**.
-> Git is in the "merge" state, waiting for more merge-specific commands.
+> **Khi bạn đang merging, nếu xung đột xảy ra, _bạn vẫn đang merging_**.
+> Git đang ở trạng thái "merge", chờ đợi thêm các lệnh cụ thể cho merge.
 >
-> You can resolve the conflict then commit the changes to complete the
-> merge. Or you can back out of the merge making as if you'd never
-> started it in the first place.
+> Bạn có thể giải quyết xung đột rồi commit các thay đổi để hoàn thành
+> merge. Hoặc bạn có thể rút lui khỏi merge như thể bạn chưa bao giờ
+> bắt đầu nó.
 >
-> The important point is that you're aware Git is in a special state and
-> you have to either complete or abort the merge to get back to normal
-> before you continue to use it. 
+> Điều quan trọng là bạn nhận thức được Git đang ở trạng thái đặc biệt
+> và bạn phải hoàn thành hoặc hủy bỏ merge để trở lại bình thường trước
+> khi tiếp tục dùng nó.
 
-Let's have an example where both `main` and `newbranch` have added a
-line to end of file, i.e. they both added line 4. Git doesn't know which
-one is correct, so there's a conflict.
+Hãy có một ví dụ nơi cả `main` và `newbranch` đều thêm một dòng vào
+cuối file, tức là cả hai đều thêm dòng 4. Git không biết cái nào là
+đúng, vì vậy có xung đột.
 
 ``` {.default}
 $ git merge newbranch
@@ -165,9 +164,10 @@ $ git merge newbranch
   Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-Now if I look at my status, I see we're in merge state, as noted by `You
-have unmerged paths`. We're in the middle of merge; we have to either go
-out the front or back out the back to get back to normal.
+Bây giờ nếu mình nhìn vào trạng thái, mình thấy chúng ta đang ở trạng
+thái merge, như được ghi chú bởi `You have unmerged paths`. Chúng ta
+đang ở giữa merge; chúng ta phải đi ra phía trước hoặc lùi lại phía sau
+để trở lại bình thường.
 
 ``` {.default}
 $ git status
@@ -183,47 +183,47 @@ $ git status
   no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-It's also hinting that I can do one of two things:
+Nó cũng gợi ý rằng mình có thể làm một trong hai điều:
 
-1. Fix conflicts and run `git commit`.
-2. Use `git merge --abort` to abort the merge.
+1. Sửa các xung đột và chạy `git commit`.
+2. Dùng `git merge --abort` để hủy bỏ merge.
 
-The second just rolls back the merge making it as if I hadn't run `git
-merge` in the first place.
+Cái thứ hai chỉ rollback (cuộn lại) merge như thể mình chưa bao giờ
+chạy `git merge`.
 
-So let's focus on the first. What are these conflicts and how do I
-resolve them?
+Vì vậy hãy tập trung vào cái đầu tiên. Những xung đột này là gì và làm
+thế nào để mình giải quyết chúng?
 
-## What a Conflict Looks Like
+## Một Xung Đột Trông Như Thế Nào
 
-My error message above is telling me that `foo.py` has unmerged paths.
-So look at what's happened with that file.
+Thông báo lỗi của mình ở trên đang nói với mình rằng `foo.py` có unmerged
+paths (đường dẫn chưa được merge). Vì vậy hãy nhìn vào những gì đã xảy
+ra với file đó.
 
-Before I started any of this, the file `foo.py` only had this in it on
-branch `main`:
+Trước khi mình bắt đầu bất kỳ điều gì trong số này, file `foo.py` chỉ
+có thế này trong nó trên branch `main`:
 
 ``` {.default}
 print("Commit 1")
 ```
 
-And I added a line so it looked like this:
+Và mình đã thêm một dòng để nó trông như thế này:
 
 ``` {.default}
 print("Commit 1")
 print("Commit 4")
 ```
 
-And committed it.
+Và đã commit nó.
 
-But what I didn't realize was that my teammate had also made another
-commit on `newbranch` that added different lines to the bottom of the
-file.
+Nhưng điều mình không nhận ra là teammate (đồng đội) của mình cũng đã
+tạo một commit khác trên `newbranch` thêm các dòng khác vào cuối file.
 
-So when I went to merge `newbranch` into `main`, I got this conflict.
-Git doesn't know which additional lines are correct.
+Vì vậy khi mình đi merge `newbranch` vào `main`, mình gặp xung đột này.
+Git không biết những dòng bổ sung nào là đúng.
 
-**Here's where the fun begins.** Let's edit `foo.py` here in the middle
-of the merge and see what it looks like:
+**Đây là nơi bắt đầu vui.** Hãy chỉnh sửa `foo.py` ở đây ở giữa merge
+và xem nó trông như thế nào:
 
 ``` {.default}
 print("Commit 1")
@@ -235,36 +235,35 @@ print("Commit 3")
 >>>>>>> newbranch
 ```
 
-What the giblets is all that? Git has totally screwed with the contents
-of my file!
+Cái quỷ gì vậy? Git đã hoàn toàn làm loạn nội dung file của mình!
 
-Yes, it has! But not for no reason; let's examine what's in there.
+Đúng vậy! Nhưng không phải vô lý; hãy xem những gì ở trong đó.
 
-We have three delimiters: `<<<<<<`, `======`, and `>>>>>>`.
+Chúng ta có ba delimiter (dấu phân cách): `<<<<<<`, `======` và `>>>>>>`.
 
-Everything from the top delimiter to the middle one is what's in `HEAD`
-(the branch you're on and merging _into_).
+Tất cả mọi thứ từ delimiter trên cùng đến dấu giữa là những gì ở trong
+`HEAD` (branch bạn đang ở và merging _vào_).
 
-Everything from the middle delimiter to the bottom one is what's in
-`newbranch` (the branch you're merging _from_).
+Tất cả mọi thứ từ delimiter giữa đến dưới cùng là những gì ở trong
+`newbranch` (branch bạn đang merging _từ_).
 
-So Git has "helpfully" given us the information we need to make a
-semi-informed decision about what to do.
+Vì vậy Git đã "hữu ích" cung cấp cho chúng ta thông tin chúng ta cần
+để đưa ra một quyết định có cơ sở hơn về phải làm gì.
 
-And here's exactly the steps we must follow:
+Và đây chính xác là các bước chúng ta phải làm theo:
 
-1. Edit the conflicting file(s), remove all those extra lines, and
-   **make the file(s) Right**.
-2. Do a `git add` to add the file(s).
-3. Do a `git commit` to finalize the merge.
+1. Chỉnh sửa (các) file có xung đột, xóa tất cả những dòng thêm đó,
+   và **làm cho (các) file đúng** (Right).
+2. `git add` để thêm (các) file.
+3. `git commit` để hoàn tất merge.
 
-Now, when I say "make the file *Right*", what does that mean? It means
-that I need to have a chat with my teammate and figure out what this
-code is supposed to do. We clearly have different ideas, and only one of
-them is right.
+Bây giờ, khi mình nói "làm cho file *Right* (đúng)", điều đó có nghĩa
+là gì? Điều đó có nghĩa là mình cần trò chuyện với teammate và tìm hiểu
+code này phải làm gì. Chúng ta rõ ràng có những ý tưởng khác nhau, và
+chỉ một trong số đó là đúng.
 
-So we have a chat and hash it out. We finally decide the file should
-look like this:
+Vì vậy chúng ta trò chuyện và giải quyết. Cuối cùng chúng ta quyết định
+file nên trông như thế này:
 
 ``` {.default}
 print("Commit 1")
@@ -272,11 +271,11 @@ print("Commit 4")
 print("Commit 3")
 ```
 
-And then I (since I'm the one doing the merge), edit `foo.py` and remove
-all the merge delimiters and everything else, and make it look exactly
-like we agreed upon. I make it look *Right*.
+Và sau đó mình (vì mình là người đang merge), chỉnh sửa `foo.py` và xóa
+tất cả merge delimiters và mọi thứ khác, và làm cho nó trông chính xác
+như chúng ta đã đồng ý. Mình làm cho nó trông *Right* (đúng).
 
-Then I add the file to the stage:
+Sau đó mình thêm file vào stage:
 
 ``` {.default}
 $ git add foo.py
@@ -289,35 +288,35 @@ $ git status
 	  modified:   foo.py
 ```
 
-Notice that `git status` is telling me we're still in the merging state,
-but I've resolved the conflicts. It tells me to `git commit` to finish
-the merge.
+Lưu ý rằng `git status` đang nói với mình chúng ta vẫn đang ở trạng
+thái merging, nhưng mình đã giải quyết các xung đột. Nó nói với mình
+`git commit` để kết thúc merge.
 
-> **What if I added the conflict file too soon?** For example, what if
-> you add it but then you realize there are still unresolved conflicts
-> or the file isn't _Right_? If you haven't committed yet, you have a
-> couple options. (If you have committed, all you can do is
-> [reset](#reset) or [revert](#revert).)
+> **Nếu mình thêm file xung đột quá sớm thì sao?** Ví dụ, nếu bạn thêm
+> nó nhưng sau đó bạn nhận ra vẫn còn các xung đột chưa được giải quyết
+> hoặc file chưa đúng thì sao? Nếu bạn chưa commit, bạn có một vài tùy
+> chọn. (Nếu bạn đã commit, tất cả những gì bạn có thể làm là
+> [reset](#reset) hoặc [revert](#revert).)
 >
-> One option is to just edit the file again, and re-add it when it's
-> done. (After editing the file will show up as a "change not staged for
-> commit" until you add it again.)
+> Một tùy chọn là chỉ chỉnh sửa file lại, và re-add (thêm lại) khi nó
+> hoàn tất. (Sau khi chỉnh sửa file sẽ hiển thị dưới dạng "change not
+> staged for commit" cho đến khi bạn thêm lại.)
 >
-> Another option is to move the file off the stage with `git checkout
-> --merge` on the file to get it back to the "both modified" state.
-> Helpfully, this won't delete the changes you already added. This is
-> especially useful if you're using a [merge tool](#mergetool).
+> Một tùy chọn khác là di chuyển file ra khỏi stage với `git checkout
+> --merge` trên file để đưa nó về trạng thái "both modified". Hữu ích
+> là điều này sẽ không xóa các thay đổi bạn đã thêm. Điều này đặc biệt
+> hữu ích nếu bạn đang dùng [merge tool](#mergetool).
 
-So now that we've added the file, let's make the merge commit. Here
-we're manually making the merge commit, unlike above where Git was able
-to automatically make it.
+Vì vậy bây giờ chúng ta đã thêm file, hãy tạo merge commit. Ở đây
+chúng ta đang tạo merge commit thủ công, không giống như ở trên nơi Git
+đã có thể tạo tự động.
 
 ``` {.default}
 $ git commit -m "Merged with newbranch"
   [main 668b506] Merged with newbranch
 ```
 
-And that's it! Let's check status just to be sure:
+Và đó là xong! Hãy kiểm tra trạng thái chỉ để chắc chắn:
 
 ``` {.default}
 $ git status
@@ -325,9 +324,9 @@ $ git status
   nothing to commit, working tree clean
 ```
 
-Success!
+Thành công!
 
-Just to wrap up, let's take a look at the log at this point:
+Chỉ để kết thúc, hãy nhìn vào log tại thời điểm này:
 
 ``` {.default}
 $ git log
@@ -357,49 +356,49 @@ $ git log
       Commit 1
 ```
 
-We see a few things. One is that our merge commit is pointed to by
-`main` (and `HEAD`). And looking down a couple commits, we see our
-now-direct ancestor, `newbranch` back on Commit 3.
+Chúng ta thấy một vài điều. Một là merge commit của chúng ta được trỏ
+bởi `main` (và `HEAD`). Và nhìn xuống vài commit, chúng ta thấy ancestor
+trực tiếp bây giờ của mình, `newbranch` tại Commit 3.
 
-We also see a `Merge:` line on that top commit. It lists the commit
-hashes for the two commits that it came from (the first 7 digits,
-anyway), since the merge commit has two parents.
+Chúng ta cũng thấy một dòng `Merge:` trên commit đầu đó. Nó liệt kê
+commit hash cho hai commit mà nó đến từ (7 chữ số đầu, dù sao), vì
+merge commit có hai parent.
 
-## Why Merge Conflicts Happen
+## Tại Sao Merge Conflicts Xảy Ra
 
-Generally, it's because you haven't coordinated with your team about who
-is responsible for which pieces of code. Generally two people shouldn't
-be editing the same lines of code in the same file at once.
+Nhìn chung, đó là vì bạn chưa phối hợp với nhóm về ai chịu trách nhiệm
+cho những phần code nào. Nhìn chung hai người không nên chỉnh sửa cùng
+các dòng code trong cùng một file cùng một lúc.
 
-That said, there are absolutely cases where it does happen and is
-expected. The key is to communicate with your team when resolving the
-conflict if you don't know what is _Right_.
+Tuy nhiên, có những trường hợp hoàn toàn nó xảy ra và được mong đợi.
+Điều quan trọng là giao tiếp với nhóm của bạn khi giải quyết xung đột
+nếu bạn không biết điều gì là *Right* (đúng).
 
-## Merging with IDEs or other Merge Tools
+## Merging với IDE hoặc Merge Tools Khác
 
-IDEs like VS Code might have a special merge mode where you can choose
-one set of changes or another, or both. Likely "both" is what you want,
-but make an informed decision on the matter.
+Các IDE như VS Code có thể có một chế độ merge đặc biệt nơi bạn có thể
+chọn một bộ thay đổi hay bộ kia, hoặc cả hai. Có lẽ "cả hai" là những
+gì bạn muốn, nhưng hãy đưa ra quyết định có cơ sở về vấn đề này.
 
-Also, even when selecting "both", it could be that the editor puts them
-in the wrong order. It's up to you to make sure the file is _Right_
-before making the final commit to complete the merge.
+Ngoài ra, ngay cả khi chọn "cả hai", có thể là editor đặt chúng theo
+thứ tự sai. Tùy bạn đảm bảo file là *Right* (đúng) trước khi tạo commit
+cuối để hoàn thành merge.
 
-You can do this by, after the tool has been used to resolve the
-conflict, opening the file again in a new window and making sure it's as
-you want it, and editing it to be if it's not.
+Bạn có thể làm điều này bằng cách, sau khi công cụ được dùng để giải
+quyết xung đột, mở file lại trong một cửa sổ mới và đảm bảo nó theo ý
+bạn, và chỉnh sửa nó nếu không đúng.
 
-For more information about merge tools, see the [Mergetool](#mergetool)
-chapter.
+Để biết thêm thông tin về merge tools, xem chương [Mergetool](#mergetool).
 
-## Merge Big Ideas
+## Các Ý Tưởng Lớn về Merge
 
-***DON'T PANIC!*** If you have a merge conflict, you can totally work it
-out. They're a common occurrence, and the more of them you do, the
-better at them you get.
+***ĐỪNG HOẢNG LOẠN!*** Nếu bạn có merge conflict, bạn hoàn toàn có thể
+giải quyết được. Chúng là sự kiện phổ biến, và bạn càng làm nhiều, bạn
+càng giỏi hơn.
 
-Nothing to worry about. Everything is in Git's commit history, so even
-if you botch it, you can always get things back the way they were.
+Không có gì phải lo lắng. Mọi thứ đều ở trong lịch sử commit của Git,
+vì vậy ngay cả khi bạn làm hỏng, bạn luôn có thể lấy lại mọi thứ như
+trước.
 
 [i[Merge-->Conflicts]>]
 [i[Merge]>]
