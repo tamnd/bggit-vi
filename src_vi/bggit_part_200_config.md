@@ -1,29 +1,27 @@
-# Configuration {#configuration}
+# Cấu Hình {#configuration}
 
 [i[Configuration]<]
 
-Waaaaay back at the beginning of this book, we did some Git
-configuration. We did this:
+Hồi đầu cuốn sách này, chúng ta đã thực hiện một số cấu hình Git. Chúng ta đã
+làm thế này:
 
 ``` {.default}
 $ git config set --global user.name "Your Name"
 $ git config set --global user.email "your-email@example.com"
 ```
 
-When we did, it added that configuration information to a file and the
-info in that file applies to all the Git repos on your system.
+Khi làm vậy, nó đã thêm thông tin cấu hình đó vào một file và thông tin trong
+file đó áp dụng cho tất cả repo Git trên hệ thống của bạn.
 
-Unless you override them with a local config, that is. But stay tuned
-for more on that later.
+Trừ khi bạn ghi đè chúng bằng cấu hình local. Nhưng chờ thêm về điều đó sau.
 
-> **Some of you might be saying, "Hey, I've never written `set` before
-> to set variables with `git config`!"** And you'd be right. But that's
-> the old, deprecated way of using `git config`. If you're using an
-> older version of Git, the deprecated way might be the only way. So if
-> you're getting errors with the new usage, see [Older Git
-> Versions](#config-old), below.
+> **Một số bạn có thể nói, "Này, tôi chưa bao giờ viết `set` trước đây để đặt
+> biến với `git config`!"** Và bạn đúng. Nhưng đó là cách cũ, đã deprecated
+> (lỗi thời) của dùng `git config`. Nếu bạn đang dùng phiên bản Git cũ hơn,
+> cách deprecated có thể là cách duy nhất. Vì vậy nếu bạn gặp lỗi với cách
+> dùng mới, xem [Phiên Bản Git Cũ Hơn](#config-old), phía dưới.
 
-Let's look at one of those lines again:
+Hãy nhìn lại một trong những dòng đó:
 
 ``` {.default}
 $ git config set --global user.name "Your Name"
@@ -31,70 +29,65 @@ $ git config set --global user.name "Your Name"
                           variable     value
 ```
 
-There are two main things in this line.
+Có hai thứ chính trong dòng này.
 
-1. A *variable*, that is, the thing we're setting the value of.
-2. A *value*, the value we're giving that variable.
+1. Một *variable* (biến), tức là thứ chúng ta đang đặt giá trị.
+2. Một *value* (giá trị), giá trị chúng ta gán cho biến đó.
 
-In that case, the variable is `user.name` and the value is `"Your
-Name"`.
+Trong trường hợp đó, biến là `user.name` và giá trị là `"Your Name"`.
 
-> **What those two variables, `user.name` and `user.email`, are doing**
-> is they're setting the values that will go in your commit messages!
-> That's your identity when you commit! A side note here it that it's
-> incredibly easy to impersonate anyone else in the world just by
-> putting their name and email there. To mitigate this, one option is to
-> [fl[digitally sign your commits|https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work]],
-> something you can read a little bit more about in the [Changing
-> Identity](#changing-identity) chapter.
+> **Hai biến đó, `user.name` và `user.email`, đang làm gì** là chúng đang đặt
+> các giá trị sẽ đi vào commit message của bạn! Đó là danh tính của bạn khi bạn
+> commit! Một lưu ý bên lề là việc mạo danh bất kỳ ai khác trên thế giới cực
+> kỳ dễ dàng chỉ bằng cách đặt tên và email của họ vào đó. Để giảm thiểu điều
+> này, một lựa chọn là
+> [fl[ký số hóa commit của bạn|https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work]],
+> điều mà bạn có thể đọc thêm một chút trong chương [Thay Đổi Danh Tính](#changing-identity).
 
-If the commands in this chapter are giving you errors, see the section
-on [older Git versions](#config-old), below.
+Nếu các lệnh trong chương này đang báo lỗi, xem phần về [các phiên bản Git
+cũ hơn](#config-old), phía dưới.
 
-## Local Configuration
+## Cấu Hình Local
 
 [i[Configuration-->Local]<]
 
-In those `git config` lines, above, you might have noticed the
-`--global` switch:
+Trong những dòng `git config` đó, ở trên, bạn có thể đã thấy switch `--global`:
 
 ``` {.default}
 $ git config set --global user.name "Your Name"
 ```
 
-Unless you explicitly say `--global`, Git assumes you mean the local
-configuration.
+Trừ khi bạn nói rõ `--global`, Git giả định bạn có ý muốn cấu hình local.
 
-What is the local configuration? It's the configuration that applies to
-the repo that you're currently in, and no others.
+Cấu hình local là gì? Đó là cấu hình áp dụng cho repo mà bạn đang ở trong đó,
+và không cho repo nào khác.
 
-*Configuration options in the local config override the global config!*
+*Các tùy chọn cấu hình trong config local ghi đè config global!*
 
-Here's a practical example of why you might do this. Let's say you have
-a personal email for your fun projects, and a contractor email that you
-use for work-for-hire. But since you're an independent contractor, you
-have all these projects on one computer.
+Đây là ví dụ thực tế về lý do tại sao bạn có thể làm điều này. Giả sử bạn có
+email cá nhân cho các dự án vui, và email nhà thầu bạn dùng cho công việc thuê.
+Nhưng vì bạn là nhà thầu độc lập, bạn có tất cả các dự án này trên một máy tính.
 
-However, you want to use your work identity (name and email) for your
-contract work and your hacker identify for your fun work.
+Tuy nhiên, bạn muốn dùng danh tính công việc (tên và email) cho công việc hợp
+đồng và danh tính hacker cho công việc vui.
 
-One thing you might do is set the following globally:
+Một điều bạn có thể làm là đặt toàn cục như sau:
 
 ``` {.default}
 $ git config set --global user.name "HAx0rBYnit3"
 $ git config set --global user.email "l333T@example.com"
 ```
 
-and that would be the default for all your repos. And then you might
-have a new repo for a job:
+và đó sẽ là mặc định cho tất cả repo của bạn. Và sau đó bạn có thể có repo mới
+cho một công việc:
 
 ``` {.default}
 $ git init corporate_job_12
   Initialized empty Git repository in /user/corporate_job_12/.git/
 ```
 
-And we pop in there, and we set the local config just for that repo
-(it's local because we're not specifying `--global`):
+Và chúng ta vào đó, và đặt config local chỉ cho repo đó (nó là local vì chúng
+ta không chỉ định `--global`):
 
 ``` {.default}
 $ cd corporate_job_12
@@ -102,24 +95,23 @@ $ git config set user.name "Professional Name"
 $ git config set user.email "professional@example.com"
 ```
 
-And now, just in the `corporate_job_12` directory, we'll be using our
-professional name and email in our commits. Everywhere else we'll be
-using our elite hacker name.
+Và giờ, chỉ trong thư mục `corporate_job_12`, chúng ta sẽ dùng tên và email
+chuyên nghiệp trong commit. Ở mọi nơi khác chúng ta sẽ dùng tên hacker ưu tú.
 
-You can override all the global configs on a per-repo basis by
-specifying local configs.
+Bạn có thể ghi đè tất cả các config global trên cơ sở từng repo bằng cách chỉ
+định các config local.
 
-Finally, the local config for a repo is found in the `.git/config` file
-out of the repo's root directory.
+Cuối cùng, config local cho một repo được tìm thấy trong file `.git/config` từ
+thư mục root của repo.
 
 [i[Configuration-->Local]>]
 
-## Listing the Current Config
+## Liệt Kê Config Hiện Tại
 
 [i[Configuration-->Listing]<]
 
-You can view the current config with `git config list`. Add the
-`--global` flag if you want to see the global config.
+Bạn có thể xem config hiện tại với `git config list`. Thêm flag `--global` nếu
+bạn muốn xem config global.
 
 ``` {.default}
 $ git config list
@@ -134,103 +126,96 @@ $ git config list
   user.email=professional@example.com
 ```
 
-You can see in there that `user.name` and `user.email` appear twice. The
-first is from the global config, which is overridden later by the value
-in the local config.
+Bạn có thể thấy trong đó rằng `user.name` và `user.email` xuất hiện hai lần.
+Cái đầu tiên từ config global, cái sau bị ghi đè bởi giá trị trong config local.
 
 [i[Configuration-->Listing]>]
 
-## Getting, Setting, and Deleting Variables
+## Lấy, Đặt, và Xóa Biến
 
 [i[Configuration-->Get]]
-An example "get":
+Ví dụ "get" (lấy):
 
 ``` {.default}
 $ git config get user.name
   Professional Name
 ```
 
-Note that it is only giving the active value (the local one in this
-case) even though we saw with `git config list` that both the global and
-local values were there.
+Lưu ý rằng nó chỉ đưa ra giá trị đang hoạt động (cái local trong trường hợp
+này) mặc dù chúng ta thấy với `git config list` rằng cả giá trị global lẫn
+local đều có ở đó.
 
 [i[Configuration-->Set]]
-And we've already seen a "set":
+Và chúng ta đã thấy "set" (đặt):
 
 ``` {.default}
 $ git config set user.name "Harvey Manfrengensenton"
 ```
 
-The double quotes are there so that the shell delivers the name as a
-single argument. Normally it splits all arguments on spaces. You could
-also use single quotes which is useful if the value has special shell
-characters in it. The grotesquely oversimplified rule, with apologies to
-shell enthusiasts, is to use quotes around the value if it has a space
-in it.
+Dấu nháy kép ở đó để shell đưa tên như một đối số duy nhất. Thông thường nó
+tách tất cả đối số theo khoảng trắng. Bạn cũng có thể dùng dấu nháy đơn, hữu
+ích nếu giá trị có ký tự shell đặc biệt. Quy tắc đơn giản hóa thô thiển, xin
+lỗi những người yêu thích shell, là dùng dấu nháy xung quanh giá trị nếu nó có
+khoảng trắng.
 
-Set will overwrite any previously-existing value of the `user.name`
-variable.
+Set sẽ ghi đè bất kỳ giá trị nào đã tồn tại trước đó của biến `user.name`.
 
 [i[Configuration-->Delete]]
 [i[Configuration-->Unset]]
-And last but not least, we can delete a variable with `unset`:
+Và cuối cùng không kém phần quan trọng, chúng ta có thể xóa biến với `unset`:
 
 ``` {.default}
 $ git config unset user.name
 ```
 
-## Some Popular Variables
+## Một Số Biến Phổ Biến
 
 [i[Configuration-->Commonly-set variables]<]
 
-To see which variables you can set, look in the manual page for the
-appropriate command. You can usually get there by looking at the first
-hit on your favorite search engine for `man git whatever`. For example,
-you might find configuration variables for `git pull` by searching for
-`man git pull` and bringing up the first hit.
+Để xem các biến bạn có thể đặt, hãy xem trang manual cho lệnh phù hợp. Bạn
+thường có thể đến đó bằng cách tìm hit đầu tiên trên công cụ tìm kiếm yêu thích
+của bạn với `man git whatever`. Ví dụ, bạn có thể tìm thấy các biến cấu hình
+cho `git pull` bằng cách tìm kiếm `man git pull` và mở hit đầu tiên.
 
-That said, there's a [fl[big ol' list of them in the `git config` manual
-page that you can
-peruse|https://git-scm.com/docs/git-config#_variables]].
+Nói vậy, có [fl[danh sách lớn trong trang manual `git config` mà bạn có thể xem
+qua|https://git-scm.com/docs/git-config#_variables]].
 
-But here are some fun, common ones.
+Nhưng đây là một số cái thú vị, phổ biến.
 
-Variable        | Description
+Variable        | Mô tả
 ----------------|----------------------------------------------------------
-`user.name`        | Your name
-`user.email`       | Your email
-`pull.rebase`      | Set to `true` to have a pull try to rebase. Set to `false` to have it try to merge.
-`core.editor`      | Your default editor for commit messages, etc. Set to `vim`, `nano`, `code`, `emacs`, or whatever.
-`merge.tool`       | Your default merge tool, e.g. `meld` or whatever.
-`diff.tool`        | Your default diff tool, e.g. `vimdiff`
-`difftool.prompt`  | Set to `false` to stop Git from always asking you if you want to launch your difftool.
-`color.ui`         | Set to `true` for more colorful Git output
-`core.autocrlf`    | Set to `true` if you're on Windows **and** not in WSL **and** the remote repo has Unix-style newlines **and** you want to use Windows-style newlines in your working directory. On other systems, set to `input`. This is all about working around Window's ancient newlines.
-`commit.gpgsign`   | Set to `true` if you've configured [GPG commit signing](#gpg-signing) and want to always sign.
-`help.autocorrect` | Set to `0` to show the command Git thinks you meant to type if you misspelled it. Set to `immediate` to have it run the corrected command right now. Set to `prompt` to ask you if you want to run it.
+`user.name`        | Tên của bạn
+`user.email`       | Email của bạn
+`pull.rebase`      | Đặt `true` để pull cố rebase. Đặt `false` để thử merge.
+`core.editor`      | Editor mặc định của bạn cho commit message, v.v. Đặt là `vim`, `nano`, `code`, `emacs`, hoặc bất cứ thứ gì.
+`merge.tool`       | Merge tool mặc định của bạn, ví dụ `meld` hoặc bất cứ thứ gì.
+`diff.tool`        | Diff tool mặc định của bạn, ví dụ `vimdiff`
+`difftool.prompt`  | Đặt `false` để ngăn Git luôn hỏi bạn có muốn khởi chạy difftool không.
+`color.ui`         | Đặt `true` để có output Git màu sắc hơn
+`core.autocrlf`    | Đặt `true` nếu bạn đang dùng Windows **và** không trong WSL **và** repo remote có newline kiểu Unix **và** bạn muốn dùng newline kiểu Windows trong working directory. Trên các hệ thống khác, đặt là `input`. Tất cả về cách xử lý newline cổ lỗi của Windows.
+`commit.gpgsign`   | Đặt `true` nếu bạn đã cấu hình [GPG commit signing](#gpg-signing) và muốn luôn ký.
+`help.autocorrect` | Đặt `0` để hiển thị lệnh Git nghĩ bạn muốn gõ nếu bạn viết sai chính tả. Đặt `immediate` để chạy lệnh đã sửa ngay. Đặt `prompt` để hỏi bạn có muốn chạy nó không.
 
-Again, there are a *lot* more of these. Peruse the docs for more.
+Một lần nữa, có *rất nhiều* cái nữa. Xem docs để biết thêm.
 
 [i[Configuration-->Commonly-set variables]>]
 
-## Editing the Config Directly
+## Chỉnh Sửa Config Trực Tiếp
 
 [i[Configuration-->Editing directly]<]
 
-You can launch an editor (the one specified in the `core.editor`
-variable) to edit the config file directly. Some people might find this
-easier.
+Bạn có thể khởi chạy editor (cái được chỉ định trong biến `core.editor`) để
+chỉnh sửa file config trực tiếp. Một số người có thể thấy điều này dễ hơn.
 
-I can launch the editor like this:
+Tôi có thể khởi chạy editor như sau:
 
 ``` {.default}
 $ git config edit
 ```
 
-Add the `--global` flag to edit the global config file.
+Thêm flag `--global` để chỉnh sửa file config global.
 
-When you get into the editor, you'll see a config file that might look
-something like this:
+Khi vào editor, bạn sẽ thấy file config có thể trông như thế này:
 
 ``` {.default .numberLines}
 [core]
@@ -244,67 +229,64 @@ something like this:
     email = user@example.com
 ```
 
-If you look, you can see where `user.name` and `user.email` ended up.
-That's how the config file is organized.
+Nếu bạn nhìn, bạn có thể thấy `user.name` và `user.email` đã kết thúc ở đâu.
+Đó là cách file config được tổ chức.
 
-So you can edit it here and save those changes. Some people might find
-this easier than adding or modifying variables on the command line.
+Vậy bạn có thể chỉnh sửa nó ở đây và lưu những thay đổi đó. Một số người có
+thể thấy cách này dễ hơn so với thêm hoặc chỉnh sửa biến trên command line.
 
-> **If you corrupt your config with sloppy editing, you're in for an
-> interesting time.** You won't be able to run `git config edit` again.
-> You'll have to manually fix the config file in your favorite text
-> editor.
+> **Nếu bạn làm hỏng config bằng việc chỉnh sửa cẩu thả, bạn sẽ có thời gian
+> thú vị đấy.** Bạn sẽ không thể chạy `git config edit` nữa. Bạn sẽ phải sửa
+> file config thủ công trong editor văn bản yêu thích của mình.
 >
-> The local config file can be found relative to the root directory for
-> the repo in question in `.git/config`.
+> File config local có thể được tìm thấy tương đối so với thư mục root cho repo
+> liên quan trong `.git/config`.
 >
-> The global config file can be found at `~/.gitconfig` on Unix-like
-> systems and `C:\Users\YourName\.gitconfig` on Windows.
+> File config global có thể được tìm thấy tại `~/.gitconfig` trên các hệ thống
+> giống Unix và `C:\Users\YourName\.gitconfig` trên Windows.
 >
-> Bring the appropriate file up in your editor, fix the mistake, save
-> it, and then `git config edit` should work again.
+> Mở file phù hợp trong editor, sửa lỗi, lưu nó, và sau đó `git config edit`
+> sẽ hoạt động trở lại.
 
 [i[Configuration-->Editing directly]>]
 
-## Conditional Configuration
+## Cấu Hình Có Điều Kiện
 
 [i[Configuration-->Conditional]<]
 
-This is more than I want to talk about, but it's neat enough to point
-out.
+Đây là nhiều hơn tôi muốn nói, nhưng nó đủ hay để đề cập.
 
-In Git config files, you can *include* other config files. This gives
-you a way, if your config files are bananas, to break them apart
-logically.
+Trong các file config Git, bạn có thể *include* (bao gồm) các file config khác.
+Điều này cho bạn một cách, nếu các file config của bạn trở nên phức tạp, để chia
+chúng ra theo logic.
 
-You can also do *conditional includes*. That is, you can choose to
-include a file based on some condition being true.
+Bạn cũng có thể thực hiện *conditional includes* (bao gồm có điều kiện). Tức
+là, bạn có thể chọn bao gồm một file dựa trên một số điều kiện là đúng.
 
-Testable conditions are:
+Các điều kiện có thể kiểm tra:
 
-* Which directory this repo is in
-* If you're on a particular branch
-* If there is a particular remote configured
+* Repo này đang ở thư mục nào
+* Nếu bạn đang ở trên một nhánh cụ thể
+* Nếu có một remote cụ thể được cấu hình
 
-This gives you all kinds of power. Personally, all of it is more than I
-need, and I've never used this feature, but that's just me.
+Điều này cho bạn đủ loại quyền lực. Cá nhân tôi, tất cả điều đó nhiều hơn tôi
+cần, và tôi chưa bao giờ dùng tính năng này, nhưng đó chỉ là tôi.
 
-[fl[Get more info and examples in the official
-book|https://git-scm.com/docs/git-config#_conditional_includes]].
+[fl[Lấy thêm thông tin và ví dụ trong cuốn sách chính thức|https://git-scm.com/docs/git-config#_conditional_includes]].
 
 [i[Configuration-->Conditional]>]
 
-## Older Git Versions {#config-old}
+## Phiên Bản Git Cũ Hơn {#config-old}
 
 [i[Configuration-->Deprecated usage]<]
 
-I'm assuming you have a recent version of Git installed. But if you
-don't, these commands might be different.
+Tôi giả sử bạn đã cài đặt phiên bản Git gần đây. Nhưng nếu không, các lệnh này
+có thể khác.
 
-The [fl[Git manual page for `git config` has a complete summary of the
-changes|https://git-scm.com/docs/git-config#_deprecated_modes]].
+[fl[Trang manual Git cho `git config` có tóm tắt đầy đủ các thay
+đổi|https://git-scm.com/docs/git-config#_deprecated_modes]].
 
-And here are the modern commands we used in this chapter:
+Và đây là các lệnh hiện đại chúng ta đã dùng trong chương này:
 
 ```{.default}
 git config get user.email                     # Get
@@ -314,7 +296,7 @@ git config list                               # List
 git config edit                               # Edit
 ```
 
-And here are the older equivalents:
+Và đây là các tương đương cũ hơn:
 
 ``` {.default}
 git config user.email                     # Get
@@ -324,7 +306,7 @@ git config --list                         # List
 git config --edit                         # Edit
 ```
 
-Use the new ones if you can!
+Hãy dùng cái mới nếu bạn có thể!
 
 [i[Configuration-->Deprecated usage]>]
 
