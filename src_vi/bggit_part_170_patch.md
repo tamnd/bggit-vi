@@ -1,30 +1,29 @@
-# Patch Mode: Applying Partial Changes
+# Patch Mode: Áp Dụng Thay Đổi Từng Phần
 
 [i[Patch mode]<]
 
-A lot of Git commands obey the `-p` switch that puts them in ***patch
-mode***. This is a powerful mode that allows you to select *some* of the
-changes for a particular command, but not *all* of the changes.
+Rất nhiều lệnh Git tuân theo switch (công tắc) `-p` để đưa chúng vào ***patch
+mode*** (chế độ patch). Đây là chế độ mạnh mẽ cho phép bạn chọn *một số* thay
+đổi cho một lệnh cụ thể, nhưng không phải *tất cả* thay đổi.
 
-Commands that use `-p` include `add`, `reset`, `stash`, `restore`,
-`commit`, and more.
+Các lệnh dùng `-p` bao gồm `add`, `reset`, `stash`, `restore`, `commit`, và
+nhiều hơn nữa.
 
-Basically any time you have changes to a file and you're thinking, "I
-want to do something with just *some* of these changes", patch mode will
-help you out.
+Về cơ bản bất cứ khi nào bạn có thay đổi trong file và đang nghĩ, "Tôi muốn làm
+gì đó chỉ với *một số* thay đổi này", patch mode sẽ giúp bạn.
 
-Some terminology: Git calls a collection of close changes a *hunk*. An
-example might be if you modified function `foo()` by adding a few lines
-and modified function `bar()` by adding a few lines, you would likely
-have two hunks, one for each group of changes.
+Một số thuật ngữ: Git gọi một tập hợp các thay đổi gần nhau là *hunk* (khối).
+Ví dụ là nếu bạn chỉnh sửa hàm `foo()` bằng cách thêm vài dòng và chỉnh sửa
+hàm `bar()` bằng cách thêm vài dòng, bạn sẽ có hai hunk, một cho mỗi nhóm thay
+đổi.
 
-Patch mode allows you to select which hunks will be operated on.
+Patch mode cho phép bạn chọn hunk nào sẽ được thao tác.
 
-## Adding Files in Patch Mode
+## Add File trong Patch Mode
 
 [i[Patch mode-->Add]<]
 
-Let's say you had a commit that added `Line 1` to `Line 8` in a file:
+Giả sử bạn có commit đã thêm `Line 1` đến `Line 8` trong file:
 
 ``` {.default}
 Line 1
@@ -37,7 +36,7 @@ Line 7
 Line 8
 ```
 
-And we make a couple changes, adding a line to the top and bottom:
+Và chúng ta thực hiện vài thay đổi, thêm một dòng ở đầu và cuối:
 
 ``` {.default}
 Line BEGIN
@@ -52,13 +51,14 @@ Line 8
 Line END
 ```
 
-And I'm about to add and commit, but I realize that I only want to add
-`Line BEGIN` at this time, and not `Line END`.
+Và tôi sắp add và commit, nhưng tôi nhận ra rằng tôi chỉ muốn thêm `Line BEGIN`
+lúc này, không phải `Line END`.
 
-If I did a regular `git add`, it would add both changes to the stage.
-But if I do `git add -p`, we can select one or the other. Let's try it.
+Nếu tôi thực hiện `git add` thông thường, nó sẽ thêm cả hai thay đổi vào stage.
+Nhưng nếu tôi dùng `git add -p`, chúng ta có thể chọn cái này hoặc cái kia.
+Hãy thử.
 
-First let's have a look at our diff.
+Đầu tiên hãy xem diff của chúng ta.
 
 ``` {.default}
 $ git diff
@@ -78,11 +78,10 @@ $ git diff
   +Line END
 ```
 
-Poring over that, you see we've added `Line BEGIN` to the top and `Line
-END` to the bottom. (Recall that lines with `+` in front of them are
-additions in diff.)
+Nhìn qua đó, bạn thấy chúng ta đã thêm `Line BEGIN` ở đầu và `Line END` ở cuối.
+(Nhớ rằng các dòng có `+` phía trước là những bổ sung trong diff.)
 
-Now let's do a patch add.
+Giờ hãy thực hiện patch add.
 
 ``` {.default}
 $ git add -p
@@ -98,15 +97,16 @@ $ git add -p
   (1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,p,?]? 
 ```
 
-Well, that's a lot of options! The easy ones are `y` for "yes" and `n`
-for "no". And also you can type `?` to get more detailed help.
+Ồ, nhiều lựa chọn vậy! Những cái dễ là `y` cho "yes" (có) và `n` cho "no"
+(không). Và bạn cũng có thể gõ `?` để được trợ giúp chi tiết hơn.
 
-Also we see that this is hunk 1 of 2, which makes sense because we have
-one change at the top of the file and another at the bottom.
+Ngoài ra chúng ta thấy đây là hunk 1 trong 2, điều này có nghĩa là chúng ta có
+một thay đổi ở đầu file và một thay đổi khác ở cuối.
 
-In our case, we do want to keep this first hunk, so we'll answer `y`.
+Trong trường hợp này, chúng ta thực sự muốn giữ hunk đầu tiên này, nên chúng ta
+trả lời `y`.
 
-And then we get to hunk 2 of 2:
+Và sau đó chúng ta đến hunk 2 trong 2:
 
 ``` {.default}
 (1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,p,?]? y
@@ -118,15 +118,15 @@ And then we get to hunk 2 of 2:
 (2/2) Stage this hunk [y,n,q,a,d,K,g,/,e,p,?]?
 ```
 
-And for this one, I'm going to say `n` to not stage it. Then we're back
-out to the shell prompt.
+Và với cái này, tôi sẽ nói `n` để không stage nó. Sau đó chúng ta quay lại
+shell prompt.
 
-Now I'm going to type `git status` to see where we are, but first I want
-you to think about what it's going to tell us.
+Giờ tôi sẽ gõ `git status` để xem chúng ta đang ở đâu, nhưng trước tiên tôi
+muốn bạn nghĩ xem nó sẽ nói gì với chúng ta.
 
-We have one of the changes staged, and the other change not staged. What
-state are files in when they have unstaged changes? And when there are
-staged changes? We have both right now, right?
+Chúng ta có một trong các thay đổi được staged, và thay đổi kia chưa staged. Các
+file ở trạng thái nào khi có thay đổi chưa staged? Và khi có thay đổi đã staged?
+Chúng ta có cả hai lúc này, phải không?
 
 ``` {.default}
 $ git status
@@ -142,44 +142,40 @@ $ git status
 	  modified:   foo.txt
 ```
 
-Sure enough! Because we only did a partial add of the changes in the
-file, the added changes are on the stage, and the not-added changes are
-still out in the working directory. It *has* to be this way because we
-haven't staged *all* our changes!
+Đúng vậy! Vì chúng ta chỉ add một phần thay đổi trong file, các thay đổi đã add
+ở trên stage, và các thay đổi chưa add vẫn ở trong working directory. Nó *phải*
+như vậy vì chúng ta chưa staged *tất cả* thay đổi của mình!
 
-At this point we can go ahead and commit the partially-added changes
-that are on the stage.
+Lúc này chúng ta có thể tiến hành commit các thay đổi đã add một phần đang trên
+stage.
 
 [i[Patch mode-->Add]>]
 
-## Resetting Files in Patch Mode
+## Reset File trong Patch Mode
 
 [i[Patch mode-->Reset]<]
 
-Kind of the opposite of `git add -p` is `git reset -p`. You can use
-`reset -p` to selectively change hunks *on the stage*.
+Thứ gần như ngược lại với `git add -p` là `git reset -p`. Bạn có thể dùng
+`reset -p` để thay đổi có chọn lọc các hunk *trên stage*.
 
-It's that last part that makes it a bit weird, but you can think of `add
--p` as selectively adding hunks to the stage from the working tree, and
-`reset -p` as selectively removing hunks from the stage relative to a
-particular commit.
+Chính cái phần cuối đó làm nó hơi kỳ lạ, nhưng bạn có thể nghĩ `add -p` là
+thêm có chọn lọc các hunk vào stage từ working tree, và `reset -p` là xóa có
+chọn lọc các hunk khỏi stage so với commit cụ thể.
 
-That is, I can reset to an earlier commit, but choose what hunks to
-reset.
+Tức là, tôi có thể reset về commit cũ hơn, nhưng chọn hunk nào để reset.
 
-> **This is not a hard, soft, or mixed reset.** It's its own thing. If
-> you try to specify a certain type of reset in addition to `-p`, Git
-> will complain. Arguably this should be a different command entirely,
-> but that's Git for ya!
+> **Đây không phải hard, soft, hay mixed reset.** Nó là thứ riêng của nó. Nếu
+> bạn cố chỉ định loại reset nhất định ngoài `-p`, Git sẽ phàn nàn. Có thể lập
+> luận rằng đây nên là lệnh hoàn toàn khác, nhưng đó là Git cho bạn đấy!
 
-Let's say I have two commits. In the first one, I added `Line 1` through
-`Line 8`, and in the second commit I added `Line BEGIN` and `Line END`,
-just like in the earlier example.
+Giả sử tôi có hai commit. Trong cái đầu tiên, tôi đã thêm `Line 1` đến `Line 8`,
+và trong commit thứ hai tôi đã thêm `Line BEGIN` và `Line END`, giống như ví dụ
+trước.
 
-But now I decide I want to reset the `Line END`, but it's part of
-another commit. I can break it out with `git reset -p`. Let's do it.
+Nhưng giờ tôi quyết định muốn reset `Line END`, nhưng nó là một phần của commit
+khác. Tôi có thể tách nó ra bằng `git reset -p`. Hãy làm vậy.
 
-Here's my log:
+Đây là log của tôi:
 
 ``` {.default}
 commit d2d5899a253d5ce277d4d5981d03a43e68da6677 (HEAD -> main)
@@ -195,9 +191,9 @@ Date:   Fri Oct 11 16:12:04 2024 -0700
     added
 ```
 
-I want to do a partial reset to the earlier commit `aae75`. And I'm
-going to say "no" I don't want to reset the first hunk, and "yes" I want
-to reset the second. Here's what it looks like:
+Tôi muốn thực hiện partial reset (reset một phần) về commit cũ hơn `aae75`. Và
+tôi sẽ nói "no" tôi không muốn reset hunk đầu tiên, và "yes" tôi muốn reset cái
+thứ hai. Đây là trông như thế nào:
 
 ``` {.default}
 $ git reset -p aae75
@@ -219,11 +215,11 @@ $ git reset -p aae75
   (2/2) Apply this hunk to index [y,n,q,a,d,K,g,/,e,p,?]? y
 ```
 
-The first question is asking, "Do you want to remove 'Line BEGIN'?" And
-I said "no". And the second question is asking "Do you want to remove
-'Line END'?" And I said "yes".
+Câu hỏi đầu tiên đang hỏi, "Bạn có muốn xóa 'Line BEGIN' không?" Và tôi nói
+"no". Và câu hỏi thứ hai hỏi "Bạn có muốn xóa 'Line END' không?" Và tôi nói
+"yes".
 
-Where are we?
+Chúng ta đang ở đâu?
 
 ``` {.default}
 $ git status
@@ -239,7 +235,7 @@ $ git status
 	  modified:   foo.txt
 ```
 
-Hmm. Let's check the difference between the stage and `HEAD`.
+Hmm. Hãy kiểm tra sự khác biệt giữa stage và `HEAD`.
 
 ``` {.default}
 $ git diff --staged
@@ -254,11 +250,11 @@ $ git diff --staged
   -Line END
 ```
 
-That's telling us that, compared to `HEAD`, the stage has the `Line END`
-removed. Which is great, because that's what we asked for with `reset
--p`. So we're on track.
+Cái đó cho chúng ta biết rằng, so với `HEAD`, stage có `Line END` bị xóa. Điều
+đó tốt, vì đó là những gì chúng ta yêu cầu với `reset -p`. Vậy chúng ta đang
+trên đúng hướng.
 
-But why is `foo.txt` modified? Let's see:
+Nhưng tại sao `foo.txt` lại modified? Hãy xem:
 
 ``` {.default}
 $ git diff
@@ -273,11 +269,11 @@ $ git diff
   +Line END
 ```
 
-This is telling us that, compared to the stage, the working tree has
-`Line END` added to the end.
+Cái này cho chúng ta biết rằng, so với stage, working tree có `Line END` được
+thêm vào cuối.
 
-And sure enough, if we look at the `foo.txt` file in the working tree,
-*it still has `Line END` in it*.
+Và đúng vậy, nếu chúng ta nhìn vào file `foo.txt` trong working tree, *nó vẫn
+còn `Line END` trong đó*.
 
 ``` {.default}
 $ cat foo.txt
@@ -293,16 +289,15 @@ $ cat foo.txt
   Line END
 ```
 
-What does it all mean? Well, it means `reset -p` messed with the stage,
-but not with the working tree. Our working tree is still the same as it
-was with the last commit. (`git diff HEAD` will show no changes.)
+Ý nghĩa của tất cả điều này là gì? Có nghĩa là `reset -p` đã can thiệp vào
+stage, nhưng không phải working tree. Working tree của chúng ta vẫn giống như
+khi commit cuối cùng. (`git diff HEAD` sẽ không hiển thị thay đổi.)
 
-Now, admittedly, it's likely this isn't what you want. Maybe you wanted
-to reset the hunk **and** get your working tree reset to that hunk, as
-well.
+Giờ, thừa nhận là, điều này có thể không phải là điều bạn muốn. Có thể bạn muốn
+reset hunk **và** cũng reset working tree về hunk đó.
 
-But we can still get there! Remember that the reset hunk is on the stage
-ready to be committed! Let's do that!
+Nhưng chúng ta vẫn có thể đến đó! Nhớ rằng hunk đã reset đang trên stage sẵn
+sàng để commit! Hãy làm vậy!
 
 ``` {.default}
 $ git commit -m "remove END"
@@ -310,9 +305,8 @@ $ git commit -m "remove END"
    1 file changed, 1 deletion(-)
 ```
 
-There. Now the stage and `HEAD` are the same, both having had `Line END`
-removed. But `Line END` still exists in our working tree, like `status`
-informs us:
+Đây rồi. Giờ stage và `HEAD` giống nhau, cả hai đều đã xóa `Line END`. Nhưng
+`Line END` vẫn tồn tại trong working tree của chúng ta, như `status` thông báo:
 
 ``` {.default}
 $ git status
@@ -324,34 +318,33 @@ $ git status
 	  modified:   foo.txt
 ```
 
-So how do we get the reset change back into our working tree? The answer
-is right there in the hints.
+Vậy làm sao chúng ta đưa thay đổi reset trở lại vào working tree? Câu trả lời
+ngay trong các gợi ý.
 
 ``` {.default}
 $ git restore foo.txt
 ```
 
-There. Now we're all on the same page with the `Line END` removed
-entirely.
+Đây rồi. Giờ chúng ta đều trên cùng trang với `Line END` đã bị xóa hoàn toàn.
 
-> **There's another way to synchronize the stage and working tree during
-> a patch reset.** After you do the `reset -p`, you can copy the file
-> `foo.txt` from the stage to the working tree with:
+> **Còn một cách khác để đồng bộ stage và working tree trong quá trình patch
+> reset.** Sau khi bạn thực hiện `reset -p`, bạn có thể sao chép file `foo.txt`
+> từ stage vào working tree bằng:
 >
 > ``` {.default}
 > git checkout -- foo.txt
 > ```
 >
 > <!-- ` -->
-> That will make the stage and working tree the same, so everything will
-> all be on the same page when the commit is complete.
+> Điều đó sẽ làm cho stage và working tree giống nhau, vì vậy mọi thứ sẽ đồng
+> bộ khi commit hoàn tất.
 
 [i[Patch mode-->Reset]>]
 
-## Other Patch Mode Commands
+## Các Lệnh Patch Mode Khác
 
-You can use `-p` with `stash`, `restore`, `commit`, and more. The UI
-behaves basically the same way as described above. See the manual pages
-for any particular command to learn more about it.
+Bạn có thể dùng `-p` với `stash`, `restore`, `commit`, và nhiều hơn nữa. Giao
+diện người dùng hoạt động về cơ bản giống như mô tả ở trên. Xem các trang
+manual (hướng dẫn) cho từng lệnh cụ thể để tìm hiểu thêm.
 
 [i[Patch mode]>]
