@@ -1,149 +1,138 @@
-# Appendix: Just Enough Vim {#vim-tutorial}
+# Phụ lục: Đủ Dùng Vim {#vim-tutorial}
 
-[fl[Vim|https://www.vim.org/]] is a very-commonly installed editor with
-a steep learning curve.
+[fl[Vim|https://www.vim.org/]] là editor (trình soạn thảo) được cài sẵn rất
+phổ biến, nhưng có đường cong học tập khá dốc.
 
-This appendix is here just to give you enough Vim to be dangerous!
+Phụ lục này chỉ để cho bạn đủ Vim để không bị bí!
 
-## Launching Vim
+## Khởi động Vim
 
-It could be you found yourself in Vim because you were committing and
-you didn't use `-m` to specify a message. You'll know it if you see some
-`~` characters down the left and some kind of status bar at the bottom.
+Có thể bạn rơi vào Vim vì đang commit mà quên dùng `-m` để chỉ định message.
+Bạn sẽ biết ngay nếu thấy một đống ký tự `~` dọc bên trái và thanh trạng
+thái ở phía dưới.
 
-Or you might have launched it yourself with something like this, to edit
-`foo.c`:
+Hoặc bạn có thể tự mở nó bằng lệnh kiểu này, để chỉnh sửa `foo.c`:
 
 ``` {.default}
 $ vim foo.c
 ```
 
-## Modal Editing
+## Chỉnh Sửa Theo Chế Độ
 
-Vim primarily exists in two modes:
+Vim tồn tại chủ yếu ở hai chế độ:
 
-* ***Insert Mode***: This is the mode where you're pressing keys and the
-  corresponding letters appear in your document, just like you expect
-  from any normal editor.
+* ***Insert Mode*** (chế độ chèn): Đây là chế độ bạn nhấn phím và các ký tự
+  tương ứng xuất hiện trong tài liệu, giống như mọi editor bình thường khác.
 
-* ***Normal mode***: This is the special Vim mode that you're not
-  familiar with in virtually all other editors. In this mode, keys have
-  special meaning. For example, the `h` key moves the cursor one
-  character to the left.
+* ***Normal mode*** (chế độ thường): Đây là chế độ đặc biệt của Vim mà bạn
+  gần như không gặp ở bất kỳ editor nào khác. Trong chế độ này, các phím có
+  ý nghĩa đặc biệt. Ví dụ, phím `h` di chuyển con trỏ sang trái một ký tự.
 
-  **The editor starts in normal mode!** This is why when you get dumped
-  into it none of the keys do what you want.
+  **Editor khởi động ở normal mode!** Đó là lý do khi bị hất vào Vim, không
+  có phím nào làm đúng việc bạn muốn.
 
-The power of Vim comes from memorizing *tons* of Normal Mode commands.
-This allows you to move the cursor and edit at speed. The [fl[vimhelp
-website has a reference of all the normal mode
-commands|https://vimhelp.org/index.txt.html#normal-index]], just to give
-you a rough idea of what's available.
+Sức mạnh của Vim đến từ việc thuộc lòng *hàng tấn* lệnh Normal Mode. Điều
+này cho phép di chuyển con trỏ và chỉnh sửa với tốc độ cao. [fl[Trang web
+vimhelp có tài liệu tham khảo tất cả lệnh normal mode|https://vimhelp.org/index.txt.html#normal-index]],
+chỉ để bạn có ý niệm sơ bộ về những gì có thể làm.
 
-But at first, when you barely know any Normal Mode commands, modal
-editing just seems to get in the way. But as you get better at it,
-you'll see it's actually a really powerful feature.
+Nhưng lúc đầu, khi gần như không biết lệnh Normal Mode nào, việc chỉnh sửa
+theo chế độ có vẻ chỉ cản trở. Nhưng khi thành thạo hơn, bạn sẽ thấy đây
+thực sự là một tính năng rất mạnh.
 
-## Going Between Modes
+## Chuyển Giữa Các Chế Độ
 
-Here are the two main modes:
+Đây là hai chế độ chính:
 
-* To get from *normal mode* to *insert mode*, press `i`.
-* To get from *insert mode* back to *normal mode*, press `ESC`. (That's
-  the "escape" key in the upper left of the keyboard.)
+* Để chuyển từ *normal mode* sang *insert mode*, nhấn `i`.
+* Để chuyển từ *insert mode* trở lại *normal mode*, nhấn `ESC`. (Đó là
+  phím "escape" ở góc trên bên trái bàn phím.)
 
-There! You've learned one normal mode command! `i` to insert some text!
+Đó! Bạn đã học được một lệnh normal mode! `i` để chèn văn bản!
 
-> **Try it:** launch Vim, type `i`, then type `hello world!`, then hit
-> `ESC` to get back to normal mode.
+> **Thử xem:** mở Vim, gõ `i`, rồi gõ `hello world!`, rồi nhấn `ESC` để
+> trở về normal mode.
 
-## Moving the Cursor
+## Di Chuyển Con Trỏ
 
-You can probably use the cursor keys. In fact, your version of Vim might
-even allow you to use them without ever leaving insert mode.
+Bạn có thể dùng các phím mũi tên. Thực ra, phiên bản Vim của bạn có thể
+cho phép dùng chúng ngay cả khi đang ở insert mode.
 
-*Real* Vim users move the cursor in normal mode with the following keys.
+Người dùng Vim *thực thụ* di chuyển con trỏ trong normal mode bằng các phím sau.
 
-* Up: `k`
-* Down: `j`
-* Left: `h`
-* Right: `l`
+* Lên: `k`
+* Xuống: `j`
+* Sang trái: `h`
+* Sang phải: `l`
 
-Muscle memory will eventually take over with these.
+Cơ bắp sẽ ghi nhớ những phím này theo thời gian.
 
-If you're in insert mode, the delete key should generally work as
-expected, as well.
+Nếu đang ở insert mode, phím delete cũng hoạt động bình thường.
 
-## More Modes
+## Thêm Chế Độ
 
-I said there were two main modes, but there are actually more. Here are
-two more bonus modes:
+Tôi nói có hai chế độ chính, nhưng thực ra có nhiều hơn. Đây là hai chế độ
+thêm:
 
-* To get from *normal mode* to *command-line mode*, press `:`. More on
-  this, below.
-* To get from *normal mode* to *search mode*, enter `/`. Type a string
-  to search for.
+* Để chuyển từ *normal mode* sang *command-line mode* (chế độ dòng lệnh),
+  nhấn `:`. Thêm chi tiết bên dưới.
+* Để chuyển từ *normal mode* sang *search mode* (chế độ tìm kiếm), nhập `/`.
+  Gõ chuỗi cần tìm.
 
-## Command Line Mode
+## Chế Độ Dòng Lệnh
 
-As mentioned earlier, if you're in normal mode, you can hit `:` to get
-to ***command line mode***.
+Như đề cập ở trên, nếu đang ở normal mode, bạn có thể nhấn `:` để vào
+***command line mode***.
 
-This moves the cursor to the bottom of the screen and allows you to type
-a command there.
+Lệnh này di chuyển con trỏ xuống cuối màn hình và cho phép gõ lệnh ở đó.
 
-So from now on in this chapter, when I say something like `:q!`, that
-means to type those three characters from normal mode.
+Vậy từ đây trong chương này, khi tôi nói điều gì đó như `:q!`, tức là gõ
+ba ký tự đó từ normal mode.
 
-If you get into command line mode and want to get back to normal mode,
-just press return without entering a command.
+Nếu vào command line mode và muốn trở lại normal mode, chỉ cần nhấn Enter
+mà không gõ lệnh gì.
 
-## Exiting Vim
+## Thoát Vim
 
-There are a few ways, and all of them start from normal mode. (So hit
-`ESC` after you're done entering text, then try to exit.)
+Có một vài cách, và tất cả đều bắt đầu từ normal mode. (Vậy hãy nhấn `ESC`
+sau khi nhập xong văn bản, rồi thử thoát.)
 
-* `ZZ` — exit, saving only if there have been changes
-* `:wq` — exit, saving unconditionally ("write, quit")
-* `:q` — exit, don't save
-* `:q!` — exit, don't save even if there have been changes!
+* `ZZ` --- thoát, chỉ lưu khi có thay đổi
+* `:wq` --- thoát, luôn lưu ("write, quit")
+* `:q` --- thoát, không lưu
+* `:q!` --- thoát, không lưu dù có thay đổi!
 
-And one more that's of use for Git:
+Và thêm một cái hữu ích cho Git:
 
-* `:cq` — exit with a non-zero (AKA error) exit status
+* `:cq` --- thoát với exit status (mã thoát) khác không (tức là lỗi)
 
-If you do a `:cq` when entering a commit message in Vim, Git will think
-something went wrong and not complete the commit. So if you find
-yourself in Vim writing a commit message and think, "I didn't mean to do
-this yet!" you can `:cq` to get out of it. The files will remain on the
-stage.
+Nếu bạn `:cq` khi đang nhập commit message trong Vim, Git sẽ cho là có lỗi
+và không hoàn thành commit. Vậy nếu thấy mình trong Vim đang viết commit
+message và nghĩ "Tôi chưa muốn làm điều này!", bạn có thể `:cq` để thoát.
+Các file sẽ vẫn còn trên stage.
 
-## Learn More
+## Tìm Hiểu Thêm
 
-If you have Vim installed, you already have Vim Tutor installed! This is
-just a file that gets opened and directs you through using and learning
-vim.
+Nếu bạn đã cài Vim, bạn cũng đã có Vim Tutor rồi! Đây chỉ là một file
+được mở ra và hướng dẫn bạn cách dùng và học vim.
 
-Launch it with:
+Khởi động bằng:
 
 ``` {.default}
 $ vimtutor
 ```
 
-If you don't feel like messing with it right now, you can just `:q!` to
-quit.
+Nếu không muốn mày mò lúc này, chỉ cần `:q!` để thoát.
 
-There's also an interactive online tutorial called
-[fl[OpenVim|https://openvim.com/]] that gets you through the first
-steps.
+Ngoài ra còn có hướng dẫn tương tác online tên
+[fl[OpenVim|https://openvim.com/]] dẫn bạn qua những bước đầu tiên.
 
-Finally, [fl[ChatGPT|https://chatgpt.com/]] or other AIs will be helpful
-in finding new normal mode commands and answering questions.
+Cuối cùng, [fl[ChatGPT|https://chatgpt.com/]] hay các AI khác sẽ rất hữu
+ích trong việc tìm lệnh normal mode mới và trả lời câu hỏi.
 
-> _"This your last chance. After this there is no turning back. You take
-> the blue pill, the story ends. You wake up using your normal editor
-> and edit files whatever way you want to. You take the red pill, you
-> stay in Vim and I show you how deep the rabbit hole goes."_
+> _"Đây là cơ hội cuối của bạn. Sau đây không còn đường quay lại. Bạn uống
+> viên thuốc xanh, câu chuyện kết thúc. Bạn thức dậy dùng editor bình thường
+> của mình và chỉnh sửa file theo cách bạn muốn. Bạn uống viên thuốc đỏ,
+> bạn ở lại trong Vim và tôi cho bạn thấy lỗ thỏ sâu đến mức nào."_
 >
-> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ —With apologies to Morpheus, _The Matrix_
-
+> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ---Xin lỗi Morpheus, _The Matrix_
